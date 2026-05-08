@@ -46,7 +46,7 @@
       <div class="user-avatar-sm">GV</div>
       <div class="user-mini-info"><span class="user-mini-name">Guilherme V.</span><span class="user-mini-plan">Plano Pro</span></div>
     </div>
-    <a href="login.html" class="logout-btn" title="Sair">⬅️</a>
+    <a href="#" onclick="logout()" class="logout-btn" title="Sair">⬅️</a>
   </div>
 </aside>
 
@@ -298,7 +298,9 @@
   </div>
 </div>
 
+<script src="js/supabase-config.js"></script>
 <script src="js/main.js"></script>
 <script src="js/whatsapp.js"></script>
+<script>document.addEventListener("DOMContentLoaded", async () => { await requireAuth(); await fillUserInfo(); });</script>
 </body>
 </html>

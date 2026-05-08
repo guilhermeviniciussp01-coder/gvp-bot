@@ -93,9 +93,15 @@
     </div>
   </div>
 
+  <script src="js/supabase-config.js"></script>
   <script src="js/main.js"></script>
   <script>
-    function handleLogin(e) {
+    // Redirecionar se já logado
+    document.addEventListener('DOMContentLoaded', () => {
+      redirectIfLoggedIn();
+    });
+
+    async function handleLogin(e) {
       e.preventDefault();
       clearErrors();
       let valid = true;
@@ -116,10 +122,33 @@
 
       const btn = document.getElementById('submitBtn');
       btn.classList.add('loading');
-      setTimeout(() => {
-        btn.classList.remove('loading');
+
+      try {
+        await waitSupabase();
+        const { data, error } = await window.supabase.auth.signInWithPassword({ email, password });
+
+        if (error) {
+          btn.classList.remove('loading');
+          const msg = error.message.includes('Invalid') ? 'E-mail ou senha incorretos' : error.message;
+          document.getElementById('formError').textContent = msg;
+          return;
+        }
+
         window.location.href = 'dashboard.html';
-      }, 1800);
+      } catch (err) {
+        btn.classList.remove('loading');
+        document.getElementById('formError').textContent = 'Erro ao conectar. Tente novamente.';
+      }
+    }
+
+    async function socialLogin(provider) {
+      await waitSupabase();
+      const providerName = provider === 'Google' ? 'google' : 'facebook';
+      const { error } = await window.supabase.auth.signInWithOAuth({
+        provider: providerName,
+        options: { redirectTo: window.location.origin + '/dashboard.html' }
+      });
+      if (error) alert('Erro ao conectar com ' + provider);
     }
 
     function validateEmail(e) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e); }
@@ -127,16 +156,12 @@
     function clearErrors() {
       document.querySelectorAll('.field-error').forEach(e => e.textContent = '');
       document.querySelectorAll('.input-wrapper').forEach(e => e.classList.remove('error'));
+      document.getElementById('formError').textContent = '';
     }
     function togglePassword(id, btn) {
       const inp = document.getElementById(id);
       inp.type = inp.type === 'password' ? 'text' : 'password';
       btn.textContent = inp.type === 'password' ? '👁️' : '🙈';
-    }
-    function socialLogin(provider) {
-      const btn = event.target.closest('.btn-social');
-      btn.classList.add('loading');
-      setTimeout(() => { btn.classList.remove('loading'); window.location.href = 'dashboard.html'; }, 1500);
     }
   </script>
 </body>

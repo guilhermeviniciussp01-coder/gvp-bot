@@ -192,6 +192,7 @@
     </div>
   </div>
 
+  <script src="js/supabase-config.js"></script>
   <script src="js/main.js"></script>
   <script>
     let currentStep = 1;
@@ -259,7 +260,7 @@
       selectedPlan = plan;
     }
 
-    function handleCadastro(e) {
+    async function handleCadastro(e) {
       e.preventDefault();
       if (!document.getElementById('terms').checked) {
         document.getElementById('formError').textContent = 'Você precisa aceitar os termos para continuar.';
@@ -268,7 +269,44 @@
       document.getElementById('formError').textContent = '';
       const btn = document.getElementById('submitBtn');
       btn.classList.add('loading');
-      setTimeout(() => { window.location.href = 'dashboard.html'; }, 2000);
+
+      const nome = document.getElementById('nome').value;
+      const email = document.getElementById('email').value;
+      const senha = document.getElementById('senha').value;
+      const tel = document.getElementById('tel').value;
+      const empresa = document.getElementById('empresa').value;
+      const segmento = document.getElementById('segmento').value;
+
+      try {
+        await waitSupabase();
+        const { data, error } = await window.supabase.auth.signUp({
+          email,
+          password: senha,
+          options: {
+            data: { nome, telefone: tel, empresa, segmento, plano: selectedPlan }
+          }
+        });
+
+        if (error) {
+          btn.classList.remove('loading');
+          const msg = error.message.includes('already') ? 'Este e-mail já está cadastrado.' : error.message;
+          document.getElementById('formError').textContent = msg;
+          return;
+        }
+
+        // Atualizar perfil com dados extras
+        if (data.user) {
+          await window.supabase.from('profiles').upsert({
+            id: data.user.id,
+            nome, email, telefone: tel, empresa, segmento, plano: selectedPlan
+          });
+        }
+
+        window.location.href = 'dashboard.html';
+      } catch (err) {
+        btn.classList.remove('loading');
+        document.getElementById('formError').textContent = 'Erro ao criar conta. Tente novamente.';
+      }
     }
   </script>
 </body>
