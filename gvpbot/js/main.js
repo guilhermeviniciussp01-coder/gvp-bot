@@ -182,3 +182,22 @@ function setChartFilter(btn, range) {
     window.conversasChart.update('active');
   }
 }
+async function waitSupabase() {
+  while (!window.supabase) {
+    await new Promise(resolve => setTimeout(resolve, 100));
+  }
+}
+
+async function redirectIfLoggedIn() {
+  try {
+    await waitSupabase();
+
+    const { data: { session } } = await window.supabase.auth.getSession();
+
+    if (session) {
+      window.location.href = 'dashboard.html';
+    }
+  } catch (err) {
+    console.error('Erro ao verificar sessão:', err);
+  }
+}
