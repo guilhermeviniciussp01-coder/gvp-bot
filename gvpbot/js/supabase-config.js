@@ -1,98 +1,178 @@
-// ================================================
-// GVP BOT — CONFIGURAÇÃO SUPABASE
-// ================================================
+// ============================================================
+// SUPABASE CONFIG — GVP BOT
+// Substitua as variáveis abaixo pelas suas do Supabase
+// ============================================================
+const SUPABASE_URL = 'https://SEU_PROJETO.supabase.co';
+const SUPABASE_KEY = 'SUA_CHAVE_ANON_PUBLICA';
 
-const SUPABASE_URL = 'https://ypeqnvmaenlnlxmotbrr.supabase.co';
-const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InlwZXFudm1hZW5sbmx4bW90YnJyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgxOTgzMzgsImV4cCI6MjA5Mzc3NDMzOH0.DX2ZX6a4cxy2dyTgxSl5HjUqaGGQmblLNUk860Zab2U';
+const _sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-// Carregar Supabase via CDN
-const supabaseScript = document.createElement('script');
-supabaseScript.src = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2';
-supabaseScript.onload = () => {
-  window.supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-  window.dispatchEvent(new Event('supabase-ready'));
-};
-document.head.appendChild(supabaseScript);
-
-// ================================================
-// AUTH HELPERS
-// ================================================
-
-// Verificar sessão ativa
-async function getSession() {
-  await waitSupabase();
-  const { data: { session } } = await window.supabase.auth.getSession();
-  return session;
-}
-
-// Verificar se está logado, senão redireciona
+// ── AUTH ────────────────────────────────────────────────────
 async function requireAuth() {
-  const session = await getSession();
-  if (!session) {
-    window.location.href = 'login.html';
-    return null;
-  }
+  const { data: { session } } = await _sb.auth.getSession();
+  if (!session) { window.location.href = 'login.html'; return null; }
   return session;
 }
 
-// Redirecionar se já logado (para login/cadastro)
-async function redirectIfLoggedIn() {
-  const session = await getSession();
-  if (session) {
-    window.location.href = 'dashboard.html';
-  }
+async function fillUserInfo() {
+  const { data: { user } } = await _sb.auth.getUser();
+  if (!user) return null;
+  const { data } = await _sb.from('perfis').select('*').eq('id', user.id).single();
+  return data || { email: user.email };
 }
 
-// Buscar perfil do usuário
-async function getProfile() {
-  const session = await getSession();
-  if (!session) return null;
-  const { data } = await window.supabase
-    .from('profiles')
-    .select('*')
-    .eq('id', session.user.id)
-    .single();
+async function loginUser(email, senha) {
+  const { data, error } = await _sb.auth.signInWithPassword({ email, password: senha });
+  if (error) throw error;
   return data;
 }
 
-// Logout
-async function logout() {
-  await waitSupabase();
-  await window.supabase.auth.signOut();
+async function cadastrarUser(email, senha, nome) {
+  const { data, error } = await _sb.auth.signUp({
+    email, password: senha,
+    options: { data: { nome } }
+  });
+  if (error) throw error;
+  if (data.user) {
+    await _sb.from('perfis').upsert({ id: data.user.id, nome, email, plano: 'trial' });
+  }
+  return data;
+}
+
+async function logoutUser() {
+  await _sb.auth.signOut();
   window.location.href = 'login.html';
 }
 
-// Aguardar Supabase carregar
-function waitSupabase() {
-  return new Promise(resolve => {
-    if (window.supabase && typeof window.supabase.auth !== 'undefined') {
-      resolve();
-    } else {
-      window.addEventListener('supabase-ready', resolve, { once: true });
-    }
-  });
+// ── CLIENTES ────────────────────────────────────────────────
+async function getClientes() {
+  const { data: { user } } = await _sb.auth.getUser();
+  if (!user) return [];
+  const { data } = await _sb.from('clientes')
+    .select('*, mensagens(count)')
+    .eq('user_id', user.id)
+    .order('created_at', { ascending: false });
+  return data || [];
 }
 
-// Preencher dados do usuário na interface
-async function fillUserInfo() {
-  const profile = await getProfile();
-  if (!profile) return;
+async function saveCliente(cliente) {
+  const { data: { user } } = await _sb.auth.getUser();
+  const { data, error } = await _sb.from('clientes').upsert({
+    ...cliente, user_id: user.id, updated_at: new Date().toISOString()
+  }).select().single();
+  if (error) throw error;
+  return data;
+}
 
-  const nome = profile.nome || profile.email || 'Usuário';
-  const iniciais = nome.split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase();
-  const empresa = profile.empresa || 'Minha Empresa';
-  const plano = profile.plano || 'starter';
+async function deleteCliente(id) {
+  const { error } = await _sb.from('clientes').delete().eq('id', id);
+  if (error) throw error;
+}
 
-  document.querySelectorAll('.user-avatar, .user-avatar-sm').forEach(el => {
-    el.textContent = iniciais;
-  });
-  document.querySelectorAll('.user-mini-name').forEach(el => {
-    el.textContent = nome.split(' ')[0];
-  });
-  document.querySelectorAll('.user-mini-plan').forEach(el => {
-    el.textContent = 'Plano ' + plano.charAt(0).toUpperCase() + plano.slice(1);
-  });
-  document.querySelectorAll('[data-user-name]').forEach(el => {
-    el.textContent = nome.split(' ')[0];
-  });
+// ── MENSAGENS ───────────────────────────────────────────────
+async function getMensagens(limite = 50) {
+  const { data: { user } } = await _sb.auth.getUser();
+  if (!user) return [];
+  const { data } = await _sb.from('mensagens')
+    .select('*, clientes(nome, telefone)')
+    .eq('user_id', user.id)
+    .order('created_at', { ascending: false })
+    .limit(limite);
+  return data || [];
+}
+
+async function saveMensagem(msg) {
+  const { data: { user } } = await _sb.auth.getUser();
+  const { data, error } = await _sb.from('mensagens').insert({
+    ...msg, user_id: user.id
+  }).select().single();
+  if (error) throw error;
+  return data;
+}
+
+// ── FLUXOS ──────────────────────────────────────────────────
+async function getFluxos() {
+  const { data: { user } } = await _sb.auth.getUser();
+  if (!user) return [];
+  const { data } = await _sb.from('fluxos')
+    .select('*')
+    .eq('user_id', user.id)
+    .order('created_at', { ascending: false });
+  return data || [];
+}
+
+async function saveFluxo(fluxo) {
+  const { data: { user } } = await _sb.auth.getUser();
+  const { data, error } = await _sb.from('fluxos').upsert({
+    ...fluxo, user_id: user.id, updated_at: new Date().toISOString()
+  }).select().single();
+  if (error) throw error;
+  return data;
+}
+
+async function deleteFluxo(id) {
+  const { error } = await _sb.from('fluxos').delete().eq('id', id);
+  if (error) throw error;
+}
+
+// ── INTEGRAÇÕES ─────────────────────────────────────────────
+async function getIntegracao(tipo) {
+  const { data: { user } } = await _sb.auth.getUser();
+  if (!user) return null;
+  const { data } = await _sb.from('integracoes')
+    .select('*').eq('user_id', user.id).eq('tipo', tipo).single();
+  return data;
+}
+
+async function saveIntegracao(tipo, config) {
+  const { data: { user } } = await _sb.auth.getUser();
+  const { data, error } = await _sb.from('integracoes').upsert({
+    user_id: user.id, tipo, config, updated_at: new Date().toISOString()
+  }).select().single();
+  if (error) throw error;
+  return data;
+}
+
+// ── MÉTRICAS ────────────────────────────────────────────────
+async function getMetricasRange(dias = 7) {
+  const { data: { user } } = await _sb.auth.getUser();
+  if (!user) return [];
+  const desde = new Date();
+  desde.setDate(desde.getDate() - dias);
+  const { data } = await _sb.from('metricas')
+    .select('*')
+    .eq('user_id', user.id)
+    .gte('data', desde.toISOString().split('T')[0])
+    .order('data', { ascending: true });
+  return data || [];
+}
+
+async function incrementarMetrica(campo) {
+  const { data: { user } } = await _sb.auth.getUser();
+  if (!user) return;
+  const hoje = new Date().toISOString().split('T')[0];
+  const { data: exist } = await _sb.from('metricas')
+    .select('*').eq('user_id', user.id).eq('data', hoje).single();
+  if (exist) {
+    await _sb.from('metricas').update({ [campo]: (exist[campo] || 0) + 1 })
+      .eq('id', exist.id);
+  } else {
+    await _sb.from('metricas').insert({ user_id: user.id, data: hoje, [campo]: 1 });
+  }
+}
+
+// ── PLANO ───────────────────────────────────────────────────
+async function getPlanoPerfil() {
+  const profile = await fillUserInfo();
+  return profile?.plano || 'trial';
+}
+
+async function atualizarPlano(plano, dados_pagamento = {}) {
+  const { data: { user } } = await _sb.auth.getUser();
+  if (!user) return;
+  await _sb.from('perfis').update({
+    plano,
+    dados_pagamento,
+    plano_ativo_ate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString()
+  }).eq('id', user.id);
 }
