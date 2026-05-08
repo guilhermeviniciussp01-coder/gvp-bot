@@ -33,7 +33,6 @@ function togglePricing() {
   if (knob) knob.classList.toggle('annual', isAnnual);
   if (ml) ml.classList.toggle('active', !isAnnual);
   if (al) al.classList.toggle('active', isAnnual);
-
   document.querySelectorAll('.price-amount').forEach(el => {
     const v = isAnnual ? el.dataset.annual : el.dataset.monthly;
     if (v) {
@@ -60,13 +59,9 @@ function closeDemo() {
   if (m) m.classList.remove('open');
   document.body.style.overflow = '';
 }
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeDemo(); });
 
-// Keyboard close modal
-document.addEventListener('keydown', e => {
-  if (e.key === 'Escape') closeDemo();
-});
-
-// Smooth scroll for anchor links
+// Smooth scroll
 document.querySelectorAll('a[href^="#"]').forEach(a => {
   a.addEventListener('click', e => {
     const id = a.getAttribute('href').slice(1);
@@ -80,7 +75,7 @@ document.querySelectorAll('a[href^="#"]').forEach(a => {
   });
 });
 
-// Intersection Observer for scroll animations
+// Scroll animations
 const obs = new IntersectionObserver((entries) => {
   entries.forEach(e => {
     if (e.isIntersecting) {
@@ -95,47 +90,6 @@ document.querySelectorAll('.benefit-card, .testimonial-card, .pricing-card, .ste
   el.style.transform = 'translateY(30px)';
   el.style.transition = 'opacity .6s ease, transform .6s ease';
   obs.observe(el);
-});
-
-// Dashboard: sidebar toggle
-function toggleSidebar() {
-  const sb = document.getElementById('sidebar');
-  if (!sb) return;
-  if (window.innerWidth <= 768) {
-    sb.classList.toggle('mobile-open');
-  } else {
-    sb.classList.toggle('collapsed');
-  }
-}
-
-// Dashboard: set active nav
-function setActive(el, page) {
-  if (el) {
-    document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
-    el.classList.add('active');
-  }
-  const title = document.getElementById('pageTitle');
-  if (title) {
-    title.textContent = page.charAt(0).toUpperCase() + page.slice(1);
-  }
-}
-
-// Dashboard: notifications
-function toggleNotifications() {
-  const p = document.getElementById('notifPanel');
-  if (p) p.classList.toggle('open');
-}
-
-// Dashboard: user dropdown
-function toggleUserMenu() {
-  const d = document.getElementById('userDropdown');
-  if (d) d.classList.toggle('open');
-}
-document.addEventListener('click', e => {
-  const dd = document.getElementById('userDropdown');
-  if (dd && !e.target.closest('.topbar-user')) {
-    dd.classList.remove('open');
-  }
 });
 
 // Channel connect
@@ -155,49 +109,32 @@ function connectChannel(ch) {
   }, 1500);
 }
 
-// Open message (simulate)
+// Open message
 function openMessage(el) {
   el.style.background = 'rgba(59,130,246,.08)';
   el.style.borderColor = 'rgba(59,130,246,.3)';
-  setTimeout(() => {
-    el.style.background = '';
-    el.style.borderColor = '';
-  }, 400);
+  setTimeout(() => { el.style.background = ''; el.style.borderColor = ''; }, 400);
 }
 
-// Chart filter
-function setChartFilter(btn, range) {
-  document.querySelectorAll('.cf-btn').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
-  // Regenerate chart data
-  if (window.conversasChart) {
-    const labels = range === '7d'
-      ? ['Seg','Ter','Qua','Qui','Sex','Sáb','Dom']
-      : range === '30d'
-        ? Array.from({length:30},(_,i)=>`${i+1}`)
-        : Array.from({length:12},(_,i)=>['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'][i]);
-    window.conversasChart.data.labels = labels;
-    window.conversasChart.data.datasets[0].data = labels.map(() => Math.floor(Math.random()*200)+50);
-    window.conversasChart.data.datasets[1].data = labels.map(() => Math.floor(Math.random()*100)+20);
-    window.conversasChart.update('active');
-  }
-}
-async function waitSupabase() {
-  while (!window.supabase) {
-    await new Promise(resolve => setTimeout(resolve, 100));
-  }
-}
+// User dropdown close on outside click
+document.addEventListener('click', e => {
+  const dd = document.getElementById('userDropdown');
+  if (dd && !e.target.closest('.topbar-user')) dd.classList.remove('open');
+});
 
+// ── AUTH HELPERS ─────────────────────────────────────────────
+// Redireciona para dashboard se já logado (usado na landing/login)
 async function redirectIfLoggedIn() {
   try {
-    await waitSupabase();
-
-    const { data: { session } } = await window.supabase.auth.getSession();
-
-    if (session) {
-      window.location.href = 'dashboard.html';
-    }
-  } catch (err) {
+    const { data: { session } } = await _sb.auth.getSession();
+    if (session) window.location.href = 'dashboard.html';
+  } catch(err) {
     console.error('Erro ao verificar sessão:', err);
   }
+}
+
+// Logout global
+async function logout() {
+  await _sb.auth.signOut();
+  window.location.href = 'login.html';
 }
