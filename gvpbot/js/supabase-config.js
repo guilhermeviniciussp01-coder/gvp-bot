@@ -2,10 +2,11 @@
 // SUPABASE CONFIG — GVP BOT
 // Substitua as variáveis abaixo pelas suas do Supabase
 // ============================================================
-const SUPABASE_URL = 'https://SEU_PROJETO.supabase.co';
-const SUPABASE_KEY = 'SUA_CHAVE_ANON_PUBLICA';
+const SUPABASE_URL = 'https://ypeqnvmaenlnlxmotbrr.supabase.co';
 
-const _sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+const SUPABASE_KEY = 'sb_publishable_SUA_CHAVE_COMPLETA';
+
+window.supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
 // ── AUTH ────────────────────────────────────────────────────
 async function requireAuth() {
