@@ -36,20 +36,11 @@
       <p class="auth-subtitle">7 dias grátis · Sem cartão de crédito</p>
 
       <div class="progress-steps">
-        <div class="progress-step active" id="pStep1">
-          <div class="ps-num">1</div>
-          <span>Dados</span>
-        </div>
+        <div class="progress-step active" id="pStep1"><div class="ps-num">1</div><span>Dados</span></div>
         <div class="progress-line" id="pLine1"></div>
-        <div class="progress-step" id="pStep2">
-          <div class="ps-num">2</div>
-          <span>Empresa</span>
-        </div>
+        <div class="progress-step" id="pStep2"><div class="ps-num">2</div><span>Empresa</span></div>
         <div class="progress-line" id="pLine2"></div>
-        <div class="progress-step" id="pStep3">
-          <div class="ps-num">3</div>
-          <span>Plano</span>
-        </div>
+        <div class="progress-step" id="pStep3"><div class="ps-num">3</div><span>Plano</span></div>
       </div>
 
       <form class="auth-form" id="cadastroForm" onsubmit="handleCadastro(event)">
@@ -192,8 +183,8 @@
     </div>
   </div>
 
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="js/supabase-config.js"></script>
-  <script src="js/main.js"></script>
   <script>
     let currentStep = 1;
     let selectedPlan = 'pro';
@@ -225,7 +216,10 @@
       return true;
     }
 
-    function showFieldError(id, msg) { document.getElementById(id).textContent = msg; setTimeout(()=>document.getElementById(id).textContent='',3000); }
+    function showFieldError(id, msg) {
+      document.getElementById(id).textContent = msg;
+      setTimeout(() => document.getElementById(id).textContent = '', 3000);
+    }
 
     function checkStrength(pw) {
       const fill = document.getElementById('pwFill');
@@ -237,7 +231,7 @@
       if (/[^A-Za-z0-9]/.test(pw)) score++;
       const colors = ['#EF4444','#F59E0B','#3B82F6','#22C55E'];
       const labels = ['Fraca','Média','Boa','Forte'];
-      fill.style.width = (score*25)+'%';
+      fill.style.width = (score * 25) + '%';
       fill.style.background = colors[score-1] || '#333';
       label.textContent = labels[score-1] || '';
       label.style.color = colors[score-1] || '';
@@ -267,44 +261,48 @@
         return;
       }
       document.getElementById('formError').textContent = '';
+
       const btn = document.getElementById('submitBtn');
       btn.classList.add('loading');
+      btn.disabled = true;
 
-      const nome = document.getElementById('nome').value;
-      const email = document.getElementById('email').value;
-      const senha = document.getElementById('senha').value;
-      const tel = document.getElementById('tel').value;
-      const empresa = document.getElementById('empresa').value;
+      const nome     = document.getElementById('nome').value.trim();
+      const email    = document.getElementById('email').value.trim();
+      const senha    = document.getElementById('senha').value;
+      const tel      = document.getElementById('tel').value.trim();
+      const empresa  = document.getElementById('empresa').value.trim();
       const segmento = document.getElementById('segmento').value;
 
       try {
-        await waitSupabase();
-        const { data, error } = await window.supabase.auth.signUp({
+        const { data, error } = await _sb.auth.signUp({
           email,
           password: senha,
-          options: {
-            data: { nome, telefone: tel, empresa, segmento, plano: selectedPlan }
-          }
+          options: { data: { nome, telefone: tel, empresa, segmento, plano: selectedPlan } }
         });
 
         if (error) {
           btn.classList.remove('loading');
+          btn.disabled = false;
           const msg = error.message.includes('already') ? 'Este e-mail já está cadastrado.' : error.message;
           document.getElementById('formError').textContent = msg;
           return;
         }
 
-        // Atualizar perfil com dados extras
+        // Salva perfil na tabela perfis
         if (data.user) {
-          await window.supabase.from('profiles').upsert({
+          await _sb.from('perfis').upsert({
             id: data.user.id,
-            nome, email, telefone: tel, empresa, segmento, plano: selectedPlan
+            nome, email,
+            telefone: tel,
+            empresa, segmento,
+            plano: selectedPlan
           });
         }
 
-        window.location.href = 'dashboard.html';
+        window.location.href = 'painel.html';
       } catch (err) {
         btn.classList.remove('loading');
+        btn.disabled = false;
         document.getElementById('formError').textContent = 'Erro ao criar conta. Tente novamente.';
       }
     }
