@@ -93,20 +93,20 @@
     </div>
   </div>
 
- <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="js/supabase-config.js"></script>
-<script src="js/main.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/supabase-config.js"></script>
   <script>
     // Redirecionar se já logado
-    document.addEventListener('DOMContentLoaded', () => {
-      redirectIfLoggedIn();
+    document.addEventListener('DOMContentLoaded', async () => {
+      const { data: { session } } = await _sb.auth.getSession();
+      if (session) window.location.href = 'painel.html';
     });
 
     async function handleLogin(e) {
       e.preventDefault();
       clearErrors();
       let valid = true;
-      const email = document.getElementById('email').value;
+      const email    = document.getElementById('email').value.trim();
       const password = document.getElementById('password').value;
 
       if (!email || !validateEmail(email)) {
@@ -123,31 +123,32 @@
 
       const btn = document.getElementById('submitBtn');
       btn.classList.add('loading');
+      btn.disabled = true;
 
       try {
-        await waitSupabase();
-        const { data, error } = await window.supabase.auth.signInWithPassword({ email, password });
+        const { data, error } = await _sb.auth.signInWithPassword({ email, password });
 
         if (error) {
           btn.classList.remove('loading');
+          btn.disabled = false;
           const msg = error.message.includes('Invalid') ? 'E-mail ou senha incorretos' : error.message;
           document.getElementById('formError').textContent = msg;
           return;
         }
 
-        window.location.href = 'dashboard.html';
+        window.location.href = 'painel.html';
       } catch (err) {
         btn.classList.remove('loading');
+        btn.disabled = false;
         document.getElementById('formError').textContent = 'Erro ao conectar. Tente novamente.';
       }
     }
 
     async function socialLogin(provider) {
-      await waitSupabase();
       const providerName = provider === 'Google' ? 'google' : 'facebook';
-      const { error } = await window.supabase.auth.signInWithOAuth({
+      const { error } = await _sb.auth.signInWithOAuth({
         provider: providerName,
-        options: { redirectTo: window.location.origin + '/dashboard.html' }
+        options: { redirectTo: window.location.origin + '/painel.html' }
       });
       if (error) alert('Erro ao conectar com ' + provider);
     }
