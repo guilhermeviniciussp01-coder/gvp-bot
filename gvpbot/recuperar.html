@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Recuperar Senha — GVP BOT</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+</head>
+<body class="auth-page">
+  <div class="auth-bg">
+    <div class="auth-orb orb-1"></div>
+    <div class="auth-orb orb-2"></div>
+    <div class="grid-overlay"></div>
+  </div>
+
+  <div class="auth-container">
+    <div class="auth-card" id="step1Card">
+      <a href="index.html" class="auth-logo">
+        <svg width="40" height="40" viewBox="0 0 32 32" fill="none">
+          <defs><linearGradient id="lg3" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#3B82F6"/><stop offset="100%" style="stop-color:#8B5CF6"/></linearGradient></defs>
+          <rect width="32" height="32" rx="8" fill="url(#lg3)"/>
+          <path d="M8 10h16M8 16h10M8 22h13" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
+          <circle cx="24" cy="22" r="4" fill="#22C55E"/>
+        </svg>
+        <span class="logo-text">GVP<span class="logo-accent">BOT</span></span>
+      </a>
+
+      <div class="recover-icon">🔑</div>
+      <h1 class="auth-title">Esqueceu a senha?</h1>
+      <p class="auth-subtitle">Digite seu e-mail e enviaremos um link para redefinir sua senha</p>
+
+      <form class="auth-form" onsubmit="handleRecover(event)">
+        <div class="form-group">
+          <label>E-mail da conta</label>
+          <div class="input-wrapper">
+            <span class="input-icon">✉️</span>
+            <input type="email" id="email" placeholder="seu@email.com" />
+          </div>
+          <span class="field-error" id="emailError"></span>
+        </div>
+
+        <button type="submit" class="btn-submit" id="submitBtn">
+          <span class="btn-text">Enviar link de recuperação</span>
+          <div class="btn-loader" id="btnLoader"></div>
+        </button>
+      </form>
+      <p class="auth-footer-text"><a href="login.html">← Voltar para o login</a></p>
+    </div>
+
+    <!-- SUCCESS STATE -->
+    <div class="auth-card" id="successCard" style="display:none;text-align:center">
+      <div class="success-animation">
+        <div class="success-circle">✅</div>
+      </div>
+      <h1 class="auth-title">E-mail enviado!</h1>
+      <p class="auth-subtitle">Verifique sua caixa de entrada. O link expira em 15 minutos.</p>
+      <div class="email-sent-box" id="sentEmailBox"></div>
+      <button class="btn-submit" onclick="resendEmail()" id="resendBtn" style="margin-top:1rem">Reenviar e-mail</button>
+      <p class="auth-footer-text"><a href="login.html">← Voltar para o login</a></p>
+    </div>
+  </div>
+
+  <script src="js/main.js"></script>
+  <script>
+    function handleRecover(e) {
+      e.preventDefault();
+      const email = document.getElementById('email').value;
+      const err = document.getElementById('emailError');
+      if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        err.textContent = 'Digite um e-mail válido';
+        return;
+      }
+      err.textContent = '';
+      const btn = document.getElementById('submitBtn');
+      btn.classList.add('loading');
+      setTimeout(() => {
+        btn.classList.remove('loading');
+        document.getElementById('step1Card').style.display = 'none';
+        document.getElementById('successCard').style.display = 'block';
+        document.getElementById('sentEmailBox').textContent = email;
+      }, 1800);
+    }
+
+    let resendTimer = 30;
+    function resendEmail() {
+      const btn = document.getElementById('resendBtn');
+      btn.disabled = true;
+      let t = resendTimer;
+      const interval = setInterval(() => {
+        btn.textContent = `Reenviar em ${t}s`;
+        t--;
+        if (t < 0) { clearInterval(interval); btn.disabled = false; btn.textContent = 'Reenviar e-mail'; }
+      }, 1000);
+    }
+  </script>
+</body>
+</html>

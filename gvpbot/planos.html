@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Planos & Pagamentos — GVP BOT</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/planos.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+</head>
+<body class="dashboard-page">
+
+<!-- SIDEBAR -->
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-header">
+    <div class="nav-logo">
+      <div class="logo-icon">
+        <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+          <defs><linearGradient id="lg4" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#3B82F6"/><stop offset="100%" style="stop-color:#8B5CF6"/></linearGradient></defs>
+          <rect width="32" height="32" rx="8" fill="url(#lg4)"/>
+          <path d="M8 10h16M8 16h10M8 22h13" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
+          <circle cx="24" cy="22" r="4" fill="#22C55E"/>
+        </svg>
+      </div>
+      <span class="logo-text">GVP<span class="logo-accent">BOT</span></span>
+    </div>
+    <button class="sidebar-toggle-btn" onclick="toggleSidebar()">☰</button>
+  </div>
+  <nav class="sidebar-nav">
+    <div class="nav-section-label">Principal</div>
+    <a href="dashboard.html" class="nav-item"><span class="nav-icon">📊</span><span class="nav-label">Dashboard</span></a>
+    <a href="#" class="nav-item"><span class="nav-icon">💬</span><span class="nav-label">Conversas</span><span class="nav-badge">23</span></a>
+    <a href="clientes.html" class="nav-item"><span class="nav-icon">👥</span><span class="nav-label">Clientes</span></a>
+    <a href="fluxos.html" class="nav-item"><span class="nav-icon">🔀</span><span class="nav-label">Fluxos</span></a>
+    <a href="#" class="nav-item"><span class="nav-icon">📣</span><span class="nav-label">Campanhas</span></a>
+    <div class="nav-section-label">Canais</div>
+    <a href="whatsapp.html" class="nav-item"><span class="nav-icon">🟢</span><span class="nav-label">WhatsApp</span><span class="channel-status online"></span></a>
+    <a href="instagram.html" class="nav-item"><span class="nav-icon">📸</span><span class="nav-label">Instagram</span><span class="channel-status online"></span></a>
+    <div class="nav-section-label">Config.</div>
+    <a href="ia.html" class="nav-item"><span class="nav-icon">🤖</span><span class="nav-label">Config. IA</span></a>
+    <a href="planos.html" class="nav-item active"><span class="nav-icon">💳</span><span class="nav-label">Planos</span></a>
+    <a href="#" class="nav-item"><span class="nav-icon">⚙️</span><span class="nav-label">Configurações</span></a>
+  </nav>
+  <div class="sidebar-footer">
+    <div class="user-mini">
+      <div class="user-avatar-sm">GV</div>
+      <div class="user-mini-info"><span class="user-mini-name">Guilherme V.</span><span class="user-mini-plan">Plano Business</span></div>
+    </div>
+    <a href="login.html" class="logout-btn">⬅️</a>
+  </div>
+</aside>
+
+<!-- MAIN -->
+<main class="main-content" id="mainContent">
+
+  <!-- TOPBAR -->
+  <header class="topbar">
+    <div class="topbar-left">
+      <button class="mobile-sidebar-btn" onclick="toggleSidebar()">☰</button>
+      <div class="page-title">
+        <h1>Planos & Pagamentos</h1>
+        <p class="page-subtitle">Escolha o plano ideal para o seu negócio</p>
+      </div>
+    </div>
+    <div class="topbar-right">
+      <div class="current-plan-chip">
+        <span class="cpc-dot"></span>
+        <span>Plano Business ativo</span>
+        <span class="cpc-venc">Vence em 23 dias</span>
+      </div>
+      <div class="topbar-user" onclick="toggleUserMenu()">
+        <div class="user-avatar">GV</div>
+        <span>Guilherme</span>
+        <span>▾</span>
+        <div class="user-dropdown" id="userDropdown">
+          <a href="#">👤 Perfil</a>
+          <a href="#">⚙️ Configurações</a>
+          <div class="dropdown-divider"></div>
+          <a href="login.html" style="color:#EF4444">⬅️ Sair</a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <div class="content-area planos-content">
+
+    <!-- HERO -->
+    <div class="planos-hero">
+      <div class="ph-orb ph-orb-1"></div>
+      <div class="ph-orb ph-orb-2"></div>
+      <div class="ph-badge">✨ Sem taxas de instalação · Cancele quando quiser</div>
+      <h2 class="ph-title">Escale seu negócio com<br/><span class="gradient-text">automação inteligente</span></h2>
+      <p class="ph-sub">Mais de 5.000 empresas já aumentaram suas vendas com o GVP BOT</p>
+
+      <!-- TOGGLE -->
+      <div class="billing-toggle">
+        <span class="bt-label" id="btMonthly">Mensal</span>
+        <div class="bt-switch" id="btSwitch" onclick="toggleBilling()">
+          <div class="bt-knob" id="btKnob"></div>
+        </div>
+        <span class="bt-label" id="btAnnual">
+          Anual
+          <span class="bt-save-badge">Economize 20%</span>
+        </span>
+      </div>
+    </div>
+
+    <!-- PLANS GRID -->
+    <div class="plans-grid" id="plansGrid">
+
+      <!-- BÁSICO -->
+      <div class="plan-card" id="planBasico" data-plan="basico">
+        <div class="pc-header">
+          <div class="pc-icon-wrap" style="background:linear-gradient(135deg,rgba(100,116,139,.2),rgba(100,116,139,.05));border-color:rgba(100,116,139,.25)">
+            <span>🌱</span>
+          </div>
+          <div class="pc-name">Básico</div>
+          <div class="pc-desc">Perfeito para começar</div>
+        </div>
+
+        <div class="pc-price-block">
+          <div class="pc-price">
+            <span class="pc-curr">R$</span>
+            <span class="pc-amount" data-monthly="47" data-annual="37">47</span>
+            <span class="pc-period">/mês</span>
+          </div>
+          <div class="pc-annual-note" id="annualNote1" style="display:none">
+            R$ 444/ano — <strong>economize R$ 120</strong>
+          </div>
+          <div class="pc-billing-note">Cobrado mensalmente · sem contrato</div>
+        </div>
+
+        <ul class="pc-features">
+          <li class="pf-yes"><span class="pf-check">✓</span>1 número WhatsApp</li>
+          <li class="pf-yes"><span class="pf-check">✓</span>500 conversas/mês</li>
+          <li class="pf-yes"><span class="pf-check">✓</span>Fluxos básicos</li>
+          <li class="pf-yes"><span class="pf-check">✓</span>Respostas automáticas</li>
+          <li class="pf-yes"><span class="pf-check">✓</span>Dashboard básico</li>
+          <li class="pf-yes"><span class="pf-check">✓</span>Suporte por email</li>
+          <li class="pf-no"><span class="pf-x">✕</span>Instagram conectado</li>
+          <li class="pf-no"><span class="pf-x">✕</span>IA avançada (GPT-4o)</li>
+          <li class="pf-no"><span class="pf-x">✕</span>Analytics avançado</li>
+          <li class="pf-no"><span class="pf-x">✕</span>API de integração</li>
+        </ul>
+
+        <button class="pc-btn" onclick="openPayment('basico')">
+          Começar com Básico
+        </button>
+        <p class="pc-trial">7 dias grátis, sem cartão</p>
+      </div>
+
+      <!-- BUSINESS (DESTAQUE) -->
+      <div class="plan-card plan-featured" id="planBusiness" data-plan="business">
+        <div class="pc-glow"></div>
+        <div class="pc-popular-badge">
+          <span>🔥 Mais vendido</span>
+        </div>
+
+        <div class="pc-header">
+          <div class="pc-icon-wrap featured-icon" style="background:linear-gradient(135deg,rgba(59,130,246,.25),rgba(139,92,246,.15));border-color:rgba(59,130,246,.4)">
+            <span>🚀</span>
+          </div>
+          <div class="pc-name">Business</div>
+          <div class="pc-desc">Para negócios em crescimento</div>
+        </div>
+
+        <div class="pc-price-block">
+          <div class="pc-price">
+            <span class="pc-curr">R$</span>
+            <span class="pc-amount" data-monthly="97" data-annual="77">97</span>
+            <span class="pc-period">/mês</span>
+          </div>
+          <div class="pc-annual-note" id="annualNote2" style="display:none">
+            R$ 924/ano — <strong>economize R$ 240</strong>
+          </div>
+          <div class="pc-billing-note">Cobrado mensalmente · sem contrato</div>
+        </div>
+
+        <ul class="pc-features">
+          <li class="pf-yes"><span class="pf-check featured-check">✓</span>3 números WhatsApp</li>
+          <li class="pf-yes"><span class="pf-check featured-check">✓</span>Conversas ilimitadas</li>
+          <li class="pf-yes"><span class="pf-check featured-check">✓</span>Fluxos avançados</li>
+          <li class="pf-yes"><span class="pf-check featured-check">✓</span>IA avançada (GPT-4o)</li>
+          <li class="pf-yes"><span class="pf-check featured-check">✓</span>Instagram conectado</li>
+          <li class="pf-yes"><span class="pf-check featured-check">✓</span>Analytics completo</li>
+          <li class="pf-yes"><span class="pf-check featured-check">✓</span>Captura de leads</li>
+          <li class="pf-yes"><span class="pf-check featured-check">✓</span>Suporte prioritário</li>
+          <li class="pf-yes"><span class="pf-check featured-check">✓</span>Relatórios avançados</li>
+          <li class="pf-yes"><span class="pf-check featured-check">✓</span>Multi-atendentes (3)</li>
+        </ul>
+
+        <button class="pc-btn pc-btn-featured" onclick="openPayment('business')">
+          <span>Assinar Business</span>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </button>
+        <p class="pc-trial">7 dias grátis, sem cartão</p>
+      </div>
+
+      <!-- PREMIUM -->
+      <div class="plan-card" id="planPremium" data-plan="premium">
+        <div class="pc-header">
+          <div class="pc-icon-wrap" style="background:linear-gradient(135deg,rgba(139,92,246,.2),rgba(99,102,241,.1));border-color:rgba(139,92,246,.3)">
+            <span>💎</span>
+          </div>
+          <div class="pc-name">Premium</div>
+          <div class="pc-desc">Para grandes operações</div>
+        </div>
+
+        <div class="pc-price-block">
+          <div class="pc-price">
+            <span class="pc-curr">R$</span>
+            <span class="pc-amount" data-monthly="247" data-annual="197">247</span>
+            <span class="pc-period">/mês</span>
+          </div>
+          <div class="pc-annual-note" id="annualNote3" style="display:none">
+            R$ 2.364/ano — <strong>economize R$ 600</strong>
+          </div>
+          <div class="pc-billing-note">Cobrado mensalmente · sem contrato</div>
+        </div>
+
+        <ul class="pc-features">
+          <li class="pf-yes"><span class="pf-check premium-check">✓</span>Números ilimitados</li>
+          <li class="pf-yes"><span class="pf-check premium-check">✓</span>Conversas ilimitadas</li>
+          <li class="pf-yes"><span class="pf-check premium-check">✓</span>Tudo do Business</li>
+          <li class="pf-yes"><span class="pf-check premium-check">✓</span>White-label completo</li>
+          <li class="pf-yes"><span class="pf-check premium-check">✓</span>API dedicada</li>
+          <li class="pf-yes"><span class="pf-check premium-check">✓</span>Multi-agentes ilimitados</li>
+          <li class="pf-yes"><span class="pf-check premium-check">✓</span>Dashboard customizado</li>
+          <li class="pf-yes"><span class="pf-check premium-check">✓</span>Gerente de conta</li>
+          <li class="pf-yes"><span class="pf-check premium-check">✓</span>SLA garantido 99.9%</li>
+          <li class="pf-yes"><span class="pf-check premium-check">✓</span>Onboarding dedicado</li>
+        </ul>
+
+        <button class="pc-btn pc-btn-premium" onclick="openPayment('premium')">
+          Assinar Premium
+        </button>
+        <p class="pc-trial">Fale com um consultor</p>
+      </div>
+
+    </div>
+
+    <!-- COMPARAÇÃO -->
+    <div class="comparison-section">
+      <div class="cs-header">
+        <h3>Comparação detalhada</h3>
+        <p>Veja exatamente o que cada plano inclui</p>
+      </div>
+      <div class="comparison-table-wrap">
+        <table class="comparison-table">
+          <thead>
+            <tr>
+              <th class="ct-feature">Funcionalidade</th>
+              <th>Básico</th>
+              <th class="ct-featured">Business <span class="ct-badge">Popular</span></th>
+              <th>Premium</th>
+            </tr>
+          </thead>
+          <tbody id="compTableBody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- CURRENT PLAN INFO -->
+    <div class="current-plan-card">
+      <div class="cpc-left">
+        <div class="cpc-icon">💳</div>
+        <div>
+          <h4>Seu plano atual</h4>
+          <p>Business — vence em <strong>23 dias</strong> (08/06/2026)</p>
+        </div>
+      </div>
+      <div class="cpc-right">
+        <div class="cpc-usage">
+          <div class="cpu-item">
+            <span class="cpu-label">Conversas</span>
+            <div class="cpu-bar"><div class="cpu-fill" style="width:68%"></div></div>
+            <span class="cpu-val">3.400 / 5.000</span>
+          </div>
+          <div class="cpu-item">
+            <span class="cpu-label">Leads</span>
+            <div class="cpu-bar"><div class="cpu-fill" style="width:42%;background:linear-gradient(90deg,#8B5CF6,#6D28D9)"></div></div>
+            <span class="cpu-val">847 / 2.000</span>
+          </div>
+        </div>
+        <button class="pc-btn-sm" onclick="openPayment('business')">🔄 Renovar plano</button>
+      </div>
+    </div>
+
+    <!-- FAQ -->
+    <div class="planos-faq">
+      <h3>Perguntas frequentes</h3>
+      <div class="pf-list">
+        <div class="pf-item" onclick="togglePFaq(this)">
+          <div class="pfi-q"><span>Posso cancelar a qualquer momento?</span><span class="pfi-icon">+</span></div>
+          <div class="pfi-a">Sim! Cancele quando quiser, sem multa e sem burocracia. Seu acesso continua até o fim do período pago.</div>
+        </div>
+        <div class="pf-item" onclick="togglePFaq(this)">
+          <div class="pfi-q"><span>O que acontece se eu ultrapassar o limite de conversas?</span><span class="pfi-icon">+</span></div>
+          <div class="pfi-a">Você receberá um aviso quando atingir 80% do limite. Ao atingir 100%, o bot continua funcionando mas você tem 5 dias para fazer upgrade.</div>
+        </div>
+        <div class="pf-item" onclick="togglePFaq(this)">
+          <div class="pfi-q"><span>Posso trocar de plano a qualquer momento?</span><span class="pfi-icon">+</span></div>
+          <div class="pfi-a">Sim! Você pode fazer upgrade ou downgrade a qualquer momento. O valor é ajustado proporcionalmente ao período restante.</div>
+        </div>
+        <div class="pf-item" onclick="togglePFaq(this)">
+          <div class="pfi-q"><span>Quais formas de pagamento são aceitas?</span><span class="pfi-icon">+</span></div>
+          <div class="pfi-a">Aceitamos cartão de crédito (Visa, Mastercard, Elo, Amex), PIX e boleto bancário. PIX tem 5% de desconto adicional!</div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /content-area -->
+</main>
+
+<!-- ══════════════════════════════════
+     PAYMENT MODAL
+══════════════════════════════════ -->
+<div class="modal-overlay" id="paymentModal">
+  <div class="payment-modal" onclick="event.stopPropagation()">
+
+    <!-- STEP 1: CHECKOUT -->
+    <div class="pm-step" id="step-checkout">
+      <div class="pm-header">
+        <div class="pm-header-left">
+          <div class="pm-plan-icon" id="pmPlanIcon">🚀</div>
+          <div>
+            <div class="pm-plan-name" id="pmPlanName">Business</div>
+            <div class="pm-plan-price" id="pmPlanPrice">R$ 97/mês</div>
+          </div>
+        </div>
+        <button class="pm-close" onclick="closePayment()">✕</button>
+      </div>
+
+      <div class="pm-body">
+        <!-- PAYMENT METHOD TABS -->
+        <div class="pm-method-tabs">
+          <button class="pmt-btn active" onclick="switchPayMethod(this,'card')" id="methodCard">
+            <span>💳</span> Cartão
+          </button>
+          <button class="pmt-btn" onclick="switchPayMethod(this,'pix')" id="methodPix">
+            <span>⚡</span> PIX
+            <span class="pmt-discount">-5%</span>
+          </button>
+          <button class="pmt-btn" onclick="switchPayMethod(this,'boleto')" id="methodBoleto">
+            <span>📄</span> Boleto
+          </button>
+        </div>
+
+        <!-- CARD METHOD -->
+        <div class="pay-method-panel active" id="panel-card">
+          <!-- FAKE CARD VISUAL -->
+          <div class="card-scene" id="cardScene">
+            <div class="credit-card" id="creditCardEl">
+              <div class="card-front" id="cardFront">
+                <div class="card-shimmer"></div>
+                <div class="card-top">
+                  <div class="card-logo">GVP<span>PAY</span></div>
+                  <div class="card-network" id="cardNetwork">
+                    <svg width="38" height="24" viewBox="0 0 38 24"><circle cx="15" cy="12" r="12" fill="#EB001B" opacity=".9"/><circle cx="23" cy="12" r="12" fill="#F79E1B" opacity=".9"/><path d="M19 4.8a12 12 0 0 1 0 14.4A12 12 0 0 1 19 4.8z" fill="#FF5F00"/></svg>
+                  </div>
+                </div>
+                <div class="card-chip">
+                  <div class="chip-lines"><div></div><div></div><div></div></div>
+                </div>
+                <div class="card-number" id="cardNumberDisplay">•••• •••• •••• ••••</div>
+                <div class="card-bottom">
+                  <div class="card-holder-wrap">
+                    <div class="card-label">TITULAR</div>
+                    <div class="card-holder" id="cardHolderDisplay">SEU NOME</div>
+                  </div>
+                  <div class="card-expiry-wrap">
+                    <div class="card-label">VALIDADE</div>
+                    <div class="card-expiry" id="cardExpiryDisplay">MM/AA</div>
+                  </div>
+                </div>
+              </div>
+              <div class="card-back" id="cardBack">
+                <div class="card-stripe"></div>
+                <div class="card-cvv-row">
+                  <div class="card-cvv-label">CVV</div>
+                  <div class="card-cvv-box"><span id="cardCVVDisplay">•••</span></div>
+                </div>
+                <div class="card-back-logo">GVP<span>PAY</span></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- CARD FORM -->
+          <div class="card-form">
+            <div class="cf-field full">
+              <label>Número do cartão</label>
+              <div class="cf-input-wrap">
+                <input type="text" id="inputCardNum" maxlength="19"
+                  placeholder="0000 0000 0000 0000"
+                  oninput="formatCardNumber(this)"
+                  onfocus="flipCardFront()" />
+                <div class="cf-card-type" id="cfCardType"></div>
+              </div>
+            </div>
+            <div class="cf-field full">
+              <label>Nome no cartão</label>
+              <input type="text" id="inputHolder" placeholder="NOME COMPLETO"
+                oninput="document.getElementById('cardHolderDisplay').textContent = this.value.toUpperCase() || 'SEU NOME'"
+                onfocus="flipCardFront()" />
+            </div>
+            <div class="cf-row">
+              <div class="cf-field">
+                <label>Validade</label>
+                <input type="text" id="inputExpiry" maxlength="5" placeholder="MM/AA"
+                  oninput="formatExpiry(this)"
+                  onfocus="flipCardFront()" />
+              </div>
+              <div class="cf-field">
+                <label>CVV</label>
+                <input type="text" id="inputCVV" maxlength="3" placeholder="•••"
+                  oninput="document.getElementById('cardCVVDisplay').textContent = this.value || '•••'"
+                  onfocus="flipCardBack()"
+                  onblur="flipCardFront()" />
+              </div>
+            </div>
+            <div class="cf-field full">
+              <label>Parcelamento</label>
+              <select id="inputParc" class="cf-select">
+                <option value="1">1x sem juros</option>
+                <option value="2">2x sem juros</option>
+                <option value="3">3x sem juros</option>
+                <option value="6">6x sem juros</option>
+                <option value="10">10x sem juros</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- PIX METHOD -->
+        <div class="pay-method-panel" id="panel-pix">
+          <div class="pix-container">
+            <div class="pix-header">
+              <div class="pix-logo">
+                <svg width="32" height="32" viewBox="0 0 32 32"><defs><linearGradient id="pixG" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#32BCAD"/><stop offset="100%" stop-color="#3A9B8E"/></linearGradient></defs><rect width="32" height="32" rx="8" fill="url(#pixG)"/><path d="M8 16l3.5-3.5 4 4 4-4 4 4M8 16l3.5 3.5 4-4 4 4 4-4" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
+                <span>PIX</span>
+              </div>
+              <div class="pix-discount-badge">🎉 5% desconto aplicado</div>
+            </div>
+
+            <div class="pix-qr-wrap">
+              <div class="pix-qr-frame">
+                <canvas id="pixQRCanvas" width="180" height="180"></canvas>
+                <div class="pix-qr-logo">
+                  <svg width="28" height="28" viewBox="0 0 32 32"><rect width="32" height="32" rx="8" fill="url(#pixG)"/><path d="M8 16l3.5-3.5 4 4 4-4 4 4M8 16l3.5 3.5 4-4 4 4 4-4" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
+                </div>
+              </div>
+              <div class="pix-timer">
+                <svg width="36" height="36"><circle cx="18" cy="18" r="14" stroke="rgba(255,255,255,.1)" stroke-width="2.5" fill="none"/><circle cx="18" cy="18" r="14" stroke="#32BCAD" stroke-width="2.5" fill="none" stroke-dasharray="88" stroke-dashoffset="0" id="pixTimerCircle" style="transform:rotate(-90deg);transform-origin:center;transition:stroke-dashoffset .9s linear"/></svg>
+                <span id="pixTimerVal">10:00</span>
+              </div>
+            </div>
+
+            <div class="pix-copy-wrap">
+              <div class="pix-key-label">Chave PIX copia e cola</div>
+              <div class="pix-key-box">
+                <span id="pixKey">00020126580014br.gov.bcb.pix0136a629532e-7693-4846-b028-f142082c3c3a5204000053039865802BR5913GVP BOT LTDA6009SAO PAULO62070503***6304A1B2</span>
+                <button class="pix-copy-btn" onclick="copyPIX(this)">📋 Copiar</button>
+              </div>
+            </div>
+
+            <div class="pix-steps">
+              <div class="ps-item"><div class="ps-num">1</div><span>Abra seu banco e acesse o PIX</span></div>
+              <div class="ps-item"><div class="ps-num">2</div><span>Escaneie o QR Code ou cole a chave</span></div>
+              <div class="ps-item"><div class="ps-num">3</div><span>Confirme o pagamento de <strong id="pixAmount">R$ 92,15</strong></span></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- BOLETO METHOD -->
+        <div class="pay-method-panel" id="panel-boleto">
+          <div class="boleto-container">
+            <div class="boleto-visual">
+              <div class="bv-header">
+                <div class="bv-logo">GVP<span>PAY</span></div>
+                <div class="bv-bank">341-7 · Itaú Unibanco</div>
+                <div class="bv-amount" id="boletoAmount">R$ 97,00</div>
+              </div>
+              <div class="bv-barcode">
+                <div class="bv-bc-lines" id="bvBcLines"></div>
+              </div>
+              <div class="bv-code" id="bvCode">34191.09008 00053.209001 04003.903000 2 00000009700</div>
+              <div class="bv-venc">Vencimento: <strong id="bvVenc"></strong></div>
+            </div>
+            <button class="boleto-copy-btn" onclick="copyBoleto(this)">📋 Copiar código de barras</button>
+            <button class="boleto-pdf-btn" onclick="downloadBoleto()">⬇️ Baixar PDF do boleto</button>
+            <div class="boleto-note">⚠️ O boleto pode levar até 3 dias úteis para ser processado</div>
+          </div>
+        </div>
+
+        <!-- ORDER SUMMARY -->
+        <div class="order-summary" id="orderSummary">
+          <div class="os-row"><span>Plano <span id="osPlan">Business</span></span><span id="osPrice">R$ 97,00</span></div>
+          <div class="os-row discount" id="osDiscountRow" style="display:none"><span>Desconto PIX (5%)</span><span id="osDiscount">-R$ 4,85</span></div>
+          <div class="os-divider"></div>
+          <div class="os-row total"><span>Total</span><span id="osTotal">R$ 97,00</span></div>
+        </div>
+      </div>
+
+      <div class="pm-footer">
+        <div class="pm-security">
+          <span>🔒</span>
+          <span>Pagamento 100% seguro · SSL 256-bit · PCI DSS</span>
+        </div>
+        <button class="pm-pay-btn" id="pmPayBtn" onclick="processPayment()">
+          <span id="pmPayText">🔒 Pagar agora</span>
+          <div class="btn-loader" id="pmPayLoader" style="display:none"></div>
+        </button>
+      </div>
+    </div>
+
+    <!-- STEP 2: PROCESSING -->
+    <div class="pm-step" id="step-processing" style="display:none">
+      <div class="processing-screen">
+        <div class="ps-animation">
+          <div class="ps-ring ps-ring-1"></div>
+          <div class="ps-ring ps-ring-2"></div>
+          <div class="ps-ring ps-ring-3"></div>
+          <div class="ps-icon">💳</div>
+        </div>
+        <h3>Processando pagamento</h3>
+        <p id="processingMsg">Conectando com o banco...</p>
+        <div class="ps-progress-bar"><div class="ps-progress-fill" id="psProgressFill"></div></div>
+        <div class="ps-steps-list" id="psStepsList"></div>
+      </div>
+    </div>
+
+    <!-- STEP 3: SUCCESS -->
+    <div class="pm-step" id="step-success" style="display:none">
+      <div class="success-screen">
+        <div class="ss-confetti" id="ssConfetti"></div>
+        <div class="ss-circle">
+          <div class="ss-check">✓</div>
+        </div>
+        <h3>Pagamento confirmado! 🎉</h3>
+        <p>Seu plano foi ativado com sucesso</p>
+        <div class="ss-details" id="ssDetails"></div>
+        <div class="ss-actions">
+          <button class="ss-btn-primary" onclick="closePayment()">Ir para o Dashboard →</button>
+          <button class="ss-btn-ghost" onclick="closePayment()">Ver recibo</button>
+        </div>
+        <div class="ss-note">📧 Um recibo foi enviado para seu e-mail</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast-container" id="toastContainer"></div>
+
+<script src="js/main.js"></script>
+<script src="js/planos.js"></script>
+</body>
+</html>

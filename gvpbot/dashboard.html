@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard — GVP BOT</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body class="dashboard-page">
+
+<!-- SIDEBAR -->
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-header">
+    <div class="nav-logo">
+      <div class="logo-icon">
+        <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+          <defs>
+            <linearGradient id="lg4" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" style="stop-color:#3B82F6"/>
+              <stop offset="100%" style="stop-color:#8B5CF6"/>
+            </linearGradient>
+          </defs>
+          <rect width="32" height="32" rx="8" fill="url(#lg4)"/>
+          <path d="M8 10h16M8 16h10M8 22h13" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
+          <circle cx="24" cy="22" r="4" fill="#22C55E"/>
+        </svg>
+      </div>
+      <span class="logo-text">GVP<span class="logo-accent">BOT</span></span>
+    </div>
+    <button class="sidebar-toggle-btn" onclick="toggleSidebar()">☰</button>
+  </div>
+
+  <nav class="sidebar-nav">
+    <div class="nav-section-label">Principal</div>
+    <a href="#" class="nav-item active" onclick="setActive(this,'dashboard')">
+      <span class="nav-icon">📊</span>
+      <span class="nav-label">Dashboard</span>
+    </a>
+    <a href="#" class="nav-item" onclick="setActive(this,'conversas')">
+      <span class="nav-icon">💬</span>
+      <span class="nav-label">Conversas</span>
+      <span class="nav-badge">23</span>
+    </a>
+    <a href="#" class="nav-item" onclick="setActive(this,'leads')">
+      <span class="nav-icon">👥</span>
+      <span class="nav-label">Leads</span>
+    </a>
+    <a href="#" class="nav-item" onclick="setActive(this,'fluxos')">
+      <span class="nav-icon">🔀</span>
+      <span class="nav-label">Fluxos</span>
+    </a>
+    <a href="#" class="nav-item" onclick="setActive(this,'campanhas')">
+      <span class="nav-icon">📣</span>
+      <span class="nav-label">Campanhas</span>
+    </a>
+    <div class="nav-section-label">Canais</div>
+    <a href="#" class="nav-item" onclick="setActive(this,'whatsapp')">
+      <span class="nav-icon">🟢</span>
+      <span class="nav-label">WhatsApp</span>
+      <span class="channel-status online"></span>
+    </a>
+    <a href="#" class="nav-item" onclick="setActive(this,'instagram')">
+      <span class="nav-icon">📸</span>
+      <span class="nav-label">Instagram</span>
+      <span class="channel-status online"></span>
+    </a>
+    <div class="nav-section-label">Config.</div>
+    <a href="#" class="nav-item" onclick="setActive(this,'integrações')">
+      <span class="nav-icon">🔗</span>
+      <span class="nav-label">Integrações</span>
+    </a>
+    <a href="#" class="nav-item" onclick="setActive(this,'configurações')">
+      <span class="nav-icon">⚙️</span>
+      <span class="nav-label">Configurações</span>
+    </a>
+  </nav>
+
+  <div class="sidebar-footer">
+    <div class="user-mini">
+      <div class="user-avatar-sm">GV</div>
+      <div class="user-mini-info">
+        <span class="user-mini-name">Guilherme V.</span>
+        <span class="user-mini-plan">Plano Pro</span>
+      </div>
+    </div>
+    <a href="login.html" class="logout-btn" title="Sair">⬅️</a>
+  </div>
+</aside>
+
+<!-- MAIN CONTENT -->
+<main class="main-content" id="mainContent">
+  <!-- TOP BAR -->
+  <header class="topbar">
+    <div class="topbar-left">
+      <button class="mobile-sidebar-btn" onclick="toggleSidebar()">☰</button>
+      <div class="page-title">
+        <h1 id="pageTitle">Dashboard</h1>
+        <p class="page-subtitle">Bem-vindo de volta, Guilherme! 👋</p>
+      </div>
+    </div>
+    <div class="topbar-right">
+      <div class="topbar-search">
+        <span>🔍</span>
+        <input type="text" placeholder="Pesquisar..." />
+      </div>
+      <button class="topbar-btn" onclick="toggleNotifications()">
+        🔔
+        <span class="notif-dot"></span>
+      </button>
+      <button class="topbar-btn">❓</button>
+      <div class="topbar-user" onclick="toggleUserMenu()">
+        <div class="user-avatar">GV</div>
+        <span>Guilherme</span>
+        <span>▾</span>
+        <div class="user-dropdown" id="userDropdown">
+          <a href="#">👤 Perfil</a>
+          <a href="#">⚙️ Configurações</a>
+          <a href="#">💳 Assinatura</a>
+          <div class="dropdown-divider"></div>
+          <a href="login.html" style="color:#EF4444">⬅️ Sair</a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- DASHBOARD CONTENT -->
+  <div class="content-area" id="contentArea">
+
+    <!-- CHANNEL STATUS STRIP -->
+    <div class="channel-strip">
+      <div class="channel-pill online">
+        <span>🟢</span>
+        <span>WhatsApp</span>
+        <span class="pill-status">● Conectado</span>
+      </div>
+      <div class="channel-pill online">
+        <span>📸</span>
+        <span>Instagram</span>
+        <span class="pill-status">● Conectado</span>
+      </div>
+      <div class="channel-pill offline">
+        <span>💬</span>
+        <span>Messenger</span>
+        <span class="pill-status" style="color:#EF4444">● Desconectado</span>
+        <button class="pill-connect" onclick="connectChannel('Messenger')">Conectar</button>
+      </div>
+    </div>
+
+    <!-- KPI CARDS -->
+    <div class="kpi-grid">
+      <div class="kpi-card">
+        <div class="kpi-header">
+          <span class="kpi-label">Conversas Hoje</span>
+          <div class="kpi-icon" style="background:linear-gradient(135deg,#3B82F6,#1D4ED8)">💬</div>
+        </div>
+        <div class="kpi-value" id="kConversas">0</div>
+        <div class="kpi-trend up">↑ 12% vs ontem</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-header">
+          <span class="kpi-label">Leads Capturados</span>
+          <div class="kpi-icon" style="background:linear-gradient(135deg,#8B5CF6,#6D28D9)">👥</div>
+        </div>
+        <div class="kpi-value" id="kLeads">0</div>
+        <div class="kpi-trend up">↑ 8% vs ontem</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-header">
+          <span class="kpi-label">Taxa de Conversão</span>
+          <div class="kpi-icon" style="background:linear-gradient(135deg,#22C55E,#16A34A)">📈</div>
+        </div>
+        <div class="kpi-value" id="kConversao">0%</div>
+        <div class="kpi-trend up">↑ 3% vs semana passada</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-header">
+          <span class="kpi-label">Tempo Médio Resposta</span>
+          <div class="kpi-icon" style="background:linear-gradient(135deg,#F59E0B,#D97706)">⚡</div>
+        </div>
+        <div class="kpi-value" id="kTempo">0s</div>
+        <div class="kpi-trend up">↑ 5% mais rápido</div>
+      </div>
+    </div>
+
+    <!-- CHART + MESSAGES -->
+    <div class="content-grid">
+      <div class="chart-card">
+        <div class="card-header">
+          <h3>Conversas por dia</h3>
+          <div class="chart-filters">
+            <button class="cf-btn active" onclick="setChartFilter(this,'7d')">7D</button>
+            <button class="cf-btn" onclick="setChartFilter(this,'30d')">30D</button>
+            <button class="cf-btn" onclick="setChartFilter(this,'90d')">90D</button>
+          </div>
+        </div>
+        <canvas id="conversasChart" height="220"></canvas>
+      </div>
+
+      <div class="messages-card">
+        <div class="card-header">
+          <h3>Mensagens Recentes</h3>
+          <button class="see-all-btn" onclick="setActive(null,'conversas')">Ver todas →</button>
+        </div>
+        <div class="messages-list">
+          <div class="message-item" onclick="openMessage(this)">
+            <div class="msg-avatar" style="background:linear-gradient(135deg,#3B82F6,#8B5CF6)">MC</div>
+            <div class="msg-body">
+              <div class="msg-name">Marcela Costa</div>
+              <div class="msg-preview">Quero saber o preço do vestido azul...</div>
+            </div>
+            <div class="msg-meta">
+              <span class="msg-time">2min</span>
+              <span class="msg-dot">🟢</span>
+            </div>
+          </div>
+          <div class="message-item" onclick="openMessage(this)">
+            <div class="msg-avatar" style="background:linear-gradient(135deg,#22C55E,#16A34A)">RS</div>
+            <div class="msg-body">
+              <div class="msg-name">Rafael Santos</div>
+              <div class="msg-preview">Qual o tempo de entrega para minha região?</div>
+            </div>
+            <div class="msg-meta">
+              <span class="msg-time">8min</span>
+              <span class="msg-dot">🟡</span>
+            </div>
+          </div>
+          <div class="message-item" onclick="openMessage(this)">
+            <div class="msg-avatar" style="background:linear-gradient(135deg,#F59E0B,#D97706)">AP</div>
+            <div class="msg-body">
+              <div class="msg-name">Ana Paula</div>
+              <div class="msg-preview">Vocês fazem atendimento no sábado?</div>
+            </div>
+            <div class="msg-meta">
+              <span class="msg-time">15min</span>
+              <span class="msg-dot">🟢</span>
+            </div>
+          </div>
+          <div class="message-item" onclick="openMessage(this)">
+            <div class="msg-avatar" style="background:linear-gradient(135deg,#EC4899,#BE185D)">JF</div>
+            <div class="msg-body">
+              <div class="msg-name">João Ferreira</div>
+              <div class="msg-preview">Gostei muito do atendimento, quero comprar!</div>
+            </div>
+            <div class="msg-meta">
+              <span class="msg-time">22min</span>
+              <span class="msg-dot">🟢</span>
+            </div>
+          </div>
+          <div class="message-item" onclick="openMessage(this)">
+            <div class="msg-avatar" style="background:linear-gradient(135deg,#14B8A6,#0D9488)">LM</div>
+            <div class="msg-body">
+              <div class="msg-name">Luana Martins</div>
+              <div class="msg-preview">Tem alguma promoção ativa agora?</div>
+            </div>
+            <div class="msg-meta">
+              <span class="msg-time">35min</span>
+              <span class="msg-dot">🔵</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- LEADS TABLE + DONUT -->
+    <div class="content-grid-3">
+      <div class="leads-table-card" style="grid-column: span 2">
+        <div class="card-header">
+          <h3>Leads Recentes</h3>
+          <button class="btn-primary-sm">+ Novo Lead</button>
+        </div>
+        <div class="table-wrapper">
+          <table class="leads-table">
+            <thead>
+              <tr>
+                <th>Nome</th>
+                <th>Canal</th>
+                <th>Status</th>
+                <th>Data</th>
+                <th>Ação</th>
+              </tr>
+            </thead>
+            <tbody id="leadsTableBody"></tbody>
+          </table>
+        </div>
+      </div>
+      <div class="donut-card">
+        <div class="card-header"><h3>Canais</h3></div>
+        <canvas id="channelDonut" height="200"></canvas>
+        <div class="donut-legend">
+          <div class="dl-item"><span style="background:#3B82F6"></span> WhatsApp (68%)</div>
+          <div class="dl-item"><span style="background:#8B5CF6"></span> Instagram (32%)</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<!-- NOTIFICATION PANEL -->
+<div class="notif-panel" id="notifPanel">
+  <div class="notif-header">
+    <h3>Notificações</h3>
+    <button onclick="toggleNotifications()">✕</button>
+  </div>
+  <div class="notif-list">
+    <div class="notif-item unread">
+      <div class="notif-icon">💬</div>
+      <div class="notif-body">
+        <p><strong>23 novas conversas</strong> aguardando revisão</p>
+        <span>há 5 minutos</span>
+      </div>
+    </div>
+    <div class="notif-item unread">
+      <div class="notif-icon">🎉</div>
+      <div class="notif-body">
+        <p><strong>Meta atingida!</strong> 100 leads capturados hoje</p>
+        <span>há 1 hora</span>
+      </div>
+    </div>
+    <div class="notif-item">
+      <div class="notif-icon">⚡</div>
+      <div class="notif-body">
+        <p>Bot ativo há <strong>72 horas</strong> sem interrupção</p>
+        <span>há 3 horas</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="js/main.js"></script>
+<script src="js/dashboard.js"></script>
+</body>
+</html>

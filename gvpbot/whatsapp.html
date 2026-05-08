@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>WhatsApp — GVP BOT</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/channels.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+</head>
+<body class="dashboard-page">
+
+<!-- SIDEBAR -->
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-header">
+    <div class="nav-logo">
+      <div class="logo-icon">
+        <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+          <defs><linearGradient id="lg4" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#3B82F6"/><stop offset="100%" style="stop-color:#8B5CF6"/></linearGradient></defs>
+          <rect width="32" height="32" rx="8" fill="url(#lg4)"/>
+          <path d="M8 10h16M8 16h10M8 22h13" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
+          <circle cx="24" cy="22" r="4" fill="#22C55E"/>
+        </svg>
+      </div>
+      <span class="logo-text">GVP<span class="logo-accent">BOT</span></span>
+    </div>
+    <button class="sidebar-toggle-btn" onclick="toggleSidebar()">☰</button>
+  </div>
+  <nav class="sidebar-nav">
+    <div class="nav-section-label">Principal</div>
+    <a href="dashboard.html" class="nav-item" onclick="setActive(this,'dashboard')"><span class="nav-icon">📊</span><span class="nav-label">Dashboard</span></a>
+    <a href="#" class="nav-item" onclick="setActive(this,'conversas')"><span class="nav-icon">💬</span><span class="nav-label">Conversas</span><span class="nav-badge">23</span></a>
+    <a href="#" class="nav-item" onclick="setActive(this,'leads')"><span class="nav-icon">👥</span><span class="nav-label">Leads</span></a>
+    <a href="#" class="nav-item" onclick="setActive(this,'fluxos')"><span class="nav-icon">🔀</span><span class="nav-label">Fluxos</span></a>
+    <a href="#" class="nav-item" onclick="setActive(this,'campanhas')"><span class="nav-icon">📣</span><span class="nav-label">Campanhas</span></a>
+    <div class="nav-section-label">Canais</div>
+    <a href="whatsapp.html" class="nav-item active"><span class="nav-icon">🟢</span><span class="nav-label">WhatsApp</span><span class="channel-status online"></span></a>
+    <a href="instagram.html" class="nav-item"><span class="nav-icon">📸</span><span class="nav-label">Instagram</span><span class="channel-status online"></span></a>
+    <div class="nav-section-label">Config.</div>
+    <a href="#" class="nav-item" onclick="setActive(this,'integrações')"><span class="nav-icon">🔗</span><span class="nav-label">Integrações</span></a>
+    <a href="#" class="nav-item" onclick="setActive(this,'configurações')"><span class="nav-icon">⚙️</span><span class="nav-label">Configurações</span></a>
+  </nav>
+  <div class="sidebar-footer">
+    <div class="user-mini">
+      <div class="user-avatar-sm">GV</div>
+      <div class="user-mini-info"><span class="user-mini-name">Guilherme V.</span><span class="user-mini-plan">Plano Pro</span></div>
+    </div>
+    <a href="login.html" class="logout-btn" title="Sair">⬅️</a>
+  </div>
+</aside>
+
+<!-- MAIN -->
+<main class="main-content" id="mainContent">
+  <header class="topbar">
+    <div class="topbar-left">
+      <button class="mobile-sidebar-btn" onclick="toggleSidebar()">☰</button>
+      <div class="page-title">
+        <h1>WhatsApp Business</h1>
+        <p class="page-subtitle">Gerencie sua conexão com o WhatsApp</p>
+      </div>
+    </div>
+    <div class="topbar-right">
+      <div class="topbar-search"><span>🔍</span><input type="text" placeholder="Pesquisar..." /></div>
+      <button class="topbar-btn" onclick="toggleNotifications()">🔔<span class="notif-dot"></span></button>
+      <div class="topbar-user" onclick="toggleUserMenu()">
+        <div class="user-avatar">GV</div>
+        <span>Guilherme</span>
+        <span>▾</span>
+        <div class="user-dropdown" id="userDropdown">
+          <a href="#">👤 Perfil</a>
+          <a href="#">⚙️ Configurações</a>
+          <a href="#">💳 Assinatura</a>
+          <div class="dropdown-divider"></div>
+          <a href="login.html" style="color:#EF4444">⬅️ Sair</a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <div class="content-area">
+
+    <!-- STATUS BAR -->
+    <div class="channel-status-bar" id="statusBar">
+      <div class="csb-left">
+        <div class="csb-icon wa-gradient">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.128.558 4.122 1.532 5.852L.057 23.535a.5.5 0 00.601.601l5.683-1.475A11.95 11.95 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.818 9.818 0 01-5.002-1.368l-.359-.213-3.722.966.99-3.613-.234-.372A9.818 9.818 0 012.182 12C2.182 6.57 6.57 2.182 12 2.182S21.818 6.57 21.818 12 17.43 21.818 12 21.818z"/></svg>
+        </div>
+        <div class="csb-info">
+          <span class="csb-name">WhatsApp Business</span>
+          <span class="csb-status connected" id="statusLabel">● Conectado</span>
+        </div>
+      </div>
+      <div class="csb-right">
+        <div class="csb-stat"><span class="cs-val" id="statMsgs">0</span><span class="cs-lab">msgs hoje</span></div>
+        <div class="csb-stat"><span class="cs-val" id="statLeads">0</span><span class="cs-lab">leads</span></div>
+        <div class="csb-stat"><span class="cs-val">99.9%</span><span class="cs-lab">uptime</span></div>
+        <button class="btn-disconnect" id="mainDisconnectBtn" onclick="disconnectWA()">Desconectar</button>
+      </div>
+    </div>
+
+    <!-- MAIN GRID -->
+    <div class="channel-grid">
+
+      <!-- QR CODE CARD -->
+      <div class="channel-card qr-card" id="qrCard">
+        <div class="card-header">
+          <h3>Conexão via QR Code</h3>
+          <span class="card-badge connected" id="qrBadge">Conectado</span>
+        </div>
+
+        <!-- CONNECTED STATE -->
+        <div class="qr-connected-state" id="connectedState">
+          <div class="connected-phone">
+            <div class="phone-icon-lg">
+              <div class="phone-signal">
+                <div class="signal-bar"></div><div class="signal-bar"></div><div class="signal-bar"></div>
+              </div>
+              <svg width="60" height="60" viewBox="0 0 24 24" fill="#25D366"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.128.558 4.122 1.532 5.852L.057 23.535a.5.5 0 00.601.601l5.683-1.475A11.95 11.95 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.818 9.818 0 01-5.002-1.368l-.359-.213-3.722.966.99-3.613-.234-.372A9.818 9.818 0 012.182 12C2.182 6.57 6.57 2.182 12 2.182S21.818 6.57 21.818 12 17.43 21.818 12 21.818z"/></svg>
+            </div>
+            <div class="connected-info">
+              <div class="connected-check">✓</div>
+              <h4>WhatsApp Conectado!</h4>
+              <p class="connected-number">+55 (11) 9 9999-9999</p>
+              <p class="connected-since">Conectado há 3 dias, 14h</p>
+            </div>
+          </div>
+          <div class="session-info">
+            <div class="si-item"><span class="si-label">Dispositivo</span><span class="si-val">iPhone 15 Pro</span></div>
+            <div class="si-item"><span class="si-label">Última atividade</span><span class="si-val">agora</span></div>
+            <div class="si-item"><span class="si-label">Versão API</span><span class="si-val">2.24.x</span></div>
+          </div>
+          <button class="btn-reconnect" onclick="showQRCode()">🔄 Reconectar</button>
+        </div>
+
+        <!-- QR CODE STATE -->
+        <div class="qr-scan-state" id="qrState" style="display:none">
+          <p class="qr-instruction">Abra o WhatsApp no seu celular, vá em <strong>Aparelhos conectados</strong> e escaneie o QR Code abaixo:</p>
+          <div class="qr-wrapper" id="qrWrapper">
+            <div class="qr-frame">
+              <div class="qr-corner tl"></div>
+              <div class="qr-corner tr"></div>
+              <div class="qr-corner bl"></div>
+              <div class="qr-corner br"></div>
+              <canvas id="qrCanvas" width="200" height="200"></canvas>
+              <div class="qr-scan-line" id="scanLine"></div>
+              <div class="qr-logo">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="#25D366"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.128.558 4.122 1.532 5.852L.057 23.535a.5.5 0 00.601.601l5.683-1.475A11.95 11.95 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.818 9.818 0 01-5.002-1.368l-.359-.213-3.722.966.99-3.613-.234-.372A9.818 9.818 0 012.182 12C2.182 6.57 6.57 2.182 12 2.182S21.818 6.57 21.818 12 17.43 21.818 12 21.818z"/></svg>
+              </div>
+            </div>
+            <div class="qr-timer">
+              <svg class="timer-ring" width="44" height="44">
+                <circle cx="22" cy="22" r="18" stroke="rgba(255,255,255,0.1)" stroke-width="3" fill="none"/>
+                <circle cx="22" cy="22" r="18" stroke="#25D366" stroke-width="3" fill="none"
+                  stroke-dasharray="113" stroke-dashoffset="0" id="timerCircle"
+                  style="transform:rotate(-90deg);transform-origin:center"/>
+              </svg>
+              <span id="timerCount">60</span>
+            </div>
+          </div>
+          <div class="qr-actions">
+            <button class="btn-wa-primary" onclick="simulateConnect()">
+              <span id="connectBtnText">Já escaniei o código</span>
+              <div class="btn-loader" id="connectLoader" style="display:none"></div>
+            </button>
+            <button class="btn-wa-ghost" onclick="refreshQR()">↺ Gerar novo QR</button>
+          </div>
+        </div>
+
+        <!-- DISCONNECTED STATE -->
+        <div class="qr-disconnected-state" id="disconnectedState" style="display:none">
+          <div class="disconnected-icon">⚠️</div>
+          <h4>WhatsApp Desconectado</h4>
+          <p>Seu WhatsApp foi desconectado. Reconecte para continuar recebendo mensagens.</p>
+          <button class="btn-wa-primary" onclick="showQRCode()">🔗 Conectar WhatsApp</button>
+        </div>
+      </div>
+
+      <!-- STATS + CONFIG SIDEBAR -->
+      <div class="channel-sidebar">
+
+        <!-- LIVE STATS -->
+        <div class="channel-card">
+          <div class="card-header"><h3>📊 Estatísticas em tempo real</h3></div>
+          <div class="live-stats">
+            <div class="ls-row">
+              <div class="ls-item">
+                <div class="ls-icon" style="background:rgba(59,130,246,.15);color:#3B82F6">💬</div>
+                <div class="ls-info"><span class="ls-val" id="lsMsgs">0</span><span class="ls-lab">Mensagens enviadas</span></div>
+              </div>
+              <div class="ls-item">
+                <div class="ls-icon" style="background:rgba(34,197,94,.15);color:#22C55E">✅</div>
+                <div class="ls-info"><span class="ls-val" id="lsRead">0</span><span class="ls-lab">Lidas</span></div>
+              </div>
+            </div>
+            <div class="ls-row">
+              <div class="ls-item">
+                <div class="ls-icon" style="background:rgba(139,92,246,.15);color:#8B5CF6">👥</div>
+                <div class="ls-info"><span class="ls-val" id="lsLeads">0</span><span class="ls-lab">Leads capturados</span></div>
+              </div>
+              <div class="ls-item">
+                <div class="ls-icon" style="background:rgba(245,158,11,.15);color:#F59E0B">⚡</div>
+                <div class="ls-info"><span class="ls-val">0.3s</span><span class="ls-lab">Tempo resposta</span></div>
+              </div>
+            </div>
+          </div>
+          <div class="activity-pulse">
+            <span class="pulse-dot"></span>
+            <span class="pulse-label" id="pulseLabel">Bot ativo — respondendo mensagens</span>
+          </div>
+        </div>
+
+        <!-- CONFIGURAÇÕES -->
+        <div class="channel-card">
+          <div class="card-header"><h3>⚙️ Configurações</h3></div>
+          <div class="config-list">
+            <div class="config-item">
+              <div class="ci-info"><span class="ci-name">Resposta automática</span><span class="ci-desc">Bot responde 24/7</span></div>
+              <div class="toggle-sw-sm active" onclick="toggleConfig(this)" id="cfgAuto"></div>
+            </div>
+            <div class="config-item">
+              <div class="ci-info"><span class="ci-name">Captura de leads</span><span class="ci-desc">Salvar contatos automaticamente</span></div>
+              <div class="toggle-sw-sm active" onclick="toggleConfig(this)"></div>
+            </div>
+            <div class="config-item">
+              <div class="ci-info"><span class="ci-name">Modo humano</span><span class="ci-desc">Simular digitação</span></div>
+              <div class="toggle-sw-sm active" onclick="toggleConfig(this)"></div>
+            </div>
+            <div class="config-item">
+              <div class="ci-info"><span class="ci-name">Horário comercial</span><span class="ci-desc">Seg-Sex, 08h-18h</span></div>
+              <div class="toggle-sw-sm" onclick="toggleConfig(this)"></div>
+            </div>
+            <div class="config-item">
+              <div class="ci-info"><span class="ci-name">Webhook ativo</span><span class="ci-desc">Notificar eventos</span></div>
+              <div class="toggle-sw-sm active" onclick="toggleConfig(this)"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- NÚMEROS CONECTADOS -->
+        <div class="channel-card">
+          <div class="card-header">
+            <h3>📱 Números conectados</h3>
+            <button class="btn-primary-sm" onclick="addNumber()">+ Adicionar</button>
+          </div>
+          <div class="numbers-list">
+            <div class="number-item active-num">
+              <div class="num-avatar wa-gradient">W</div>
+              <div class="num-info">
+                <span class="num-val">+55 (11) 9 9999-9999</span>
+                <span class="num-label">Principal · Plano Pro</span>
+              </div>
+              <div class="num-status online-dot"></div>
+            </div>
+            <div class="number-item add-number" onclick="addNumber()">
+              <div class="num-avatar add-avatar">+</div>
+              <div class="num-info">
+                <span class="num-val">Adicionar número</span>
+                <span class="num-label">Plano Pro: até 3 números</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- LOGS -->
+    <div class="channel-card full-width">
+      <div class="card-header">
+        <h3>📋 Log de atividade</h3>
+        <div style="display:flex;gap:.5rem">
+          <button class="cf-btn active" onclick="filterLog(this,'all')">Todos</button>
+          <button class="cf-btn" onclick="filterLog(this,'msgs')">Mensagens</button>
+          <button class="cf-btn" onclick="filterLog(this,'leads')">Leads</button>
+          <button class="cf-btn" onclick="filterLog(this,'system')">Sistema</button>
+        </div>
+      </div>
+      <div class="activity-log" id="activityLog"></div>
+    </div>
+
+  </div>
+</main>
+
+<!-- ADD NUMBER MODAL -->
+<div class="modal-overlay" id="addModal">
+  <div class="modal-box" onclick="event.stopPropagation()">
+    <button class="modal-close" onclick="closeAddModal()">✕</button>
+    <h3 style="margin-bottom:1.5rem">📱 Adicionar Número</h3>
+    <div class="form-group">
+      <label style="font-size:.85rem;font-weight:600;color:var(--text-soft);display:block;margin-bottom:.5rem">Número de WhatsApp</label>
+      <div class="input-wrapper">
+        <span class="input-icon">📱</span>
+        <input type="tel" placeholder="+55 (11) 9 9999-9999" style="padding:.8rem .9rem .8rem 2.8rem;width:100%;background:transparent;border:none;outline:none;color:var(--text);font-size:.9rem;font-family:inherit" />
+      </div>
+    </div>
+    <button class="btn-wa-primary" style="margin-top:1rem;width:100%" onclick="closeAddModal()">Gerar QR Code →</button>
+  </div>
+</div>
+
+<script src="js/main.js"></script>
+<script src="js/whatsapp.js"></script>
+</body>
+</html>

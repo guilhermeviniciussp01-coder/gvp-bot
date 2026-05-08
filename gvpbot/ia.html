@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Configuração de IA — GVP BOT</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/ia.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+</head>
+<body class="dashboard-page">
+
+<!-- SIDEBAR -->
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-header">
+    <div class="nav-logo">
+      <div class="logo-icon">
+        <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+          <defs><linearGradient id="lg4" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#3B82F6"/><stop offset="100%" style="stop-color:#8B5CF6"/></linearGradient></defs>
+          <rect width="32" height="32" rx="8" fill="url(#lg4)"/>
+          <path d="M8 10h16M8 16h10M8 22h13" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
+          <circle cx="24" cy="22" r="4" fill="#22C55E"/>
+        </svg>
+      </div>
+      <span class="logo-text">GVP<span class="logo-accent">BOT</span></span>
+    </div>
+    <button class="sidebar-toggle-btn" onclick="toggleSidebar()">☰</button>
+  </div>
+  <nav class="sidebar-nav">
+    <div class="nav-section-label">Principal</div>
+    <a href="dashboard.html" class="nav-item"><span class="nav-icon">📊</span><span class="nav-label">Dashboard</span></a>
+    <a href="#" class="nav-item"><span class="nav-icon">💬</span><span class="nav-label">Conversas</span><span class="nav-badge">23</span></a>
+    <a href="#" class="nav-item"><span class="nav-icon">👥</span><span class="nav-label">Leads</span></a>
+    <a href="fluxos.html" class="nav-item"><span class="nav-icon">🔀</span><span class="nav-label">Fluxos</span></a>
+    <a href="#" class="nav-item"><span class="nav-icon">📣</span><span class="nav-label">Campanhas</span></a>
+    <div class="nav-section-label">Canais</div>
+    <a href="whatsapp.html" class="nav-item"><span class="nav-icon">🟢</span><span class="nav-label">WhatsApp</span><span class="channel-status online"></span></a>
+    <a href="instagram.html" class="nav-item"><span class="nav-icon">📸</span><span class="nav-label">Instagram</span><span class="channel-status online"></span></a>
+    <div class="nav-section-label">Config.</div>
+    <a href="ia.html" class="nav-item active"><span class="nav-icon">🤖</span><span class="nav-label">Config. IA</span></a>
+    <a href="#" class="nav-item"><span class="nav-icon">🔗</span><span class="nav-label">Integrações</span></a>
+    <a href="#" class="nav-item"><span class="nav-icon">⚙️</span><span class="nav-label">Configurações</span></a>
+  </nav>
+  <div class="sidebar-footer">
+    <div class="user-mini">
+      <div class="user-avatar-sm">GV</div>
+      <div class="user-mini-info"><span class="user-mini-name">Guilherme V.</span><span class="user-mini-plan">Plano Pro</span></div>
+    </div>
+    <a href="login.html" class="logout-btn">⬅️</a>
+  </div>
+</aside>
+
+<!-- MAIN -->
+<main class="main-content" id="mainContent">
+
+  <!-- TOPBAR -->
+  <header class="topbar">
+    <div class="topbar-left">
+      <button class="mobile-sidebar-btn" onclick="toggleSidebar()">☰</button>
+      <div class="page-title">
+        <h1>Configuração de IA</h1>
+        <p class="page-subtitle">Treine e personalize o comportamento do seu bot</p>
+      </div>
+    </div>
+    <div class="topbar-right">
+      <div class="ia-model-badge">
+        <span class="imb-dot"></span>
+        <span>GPT-4o</span>
+        <span class="imb-arrow">▾</span>
+      </div>
+      <button class="topbar-btn" onclick="openTestChat()">🧪 Testar IA</button>
+      <button class="btn-primary" onclick="saveAll()">
+        <span id="saveAllText">💾 Salvar tudo</span>
+        <div class="btn-loader" id="saveAllLoader" style="display:none"></div>
+      </button>
+      <div class="topbar-user" onclick="toggleUserMenu()">
+        <div class="user-avatar">GV</div>
+        <span>Guilherme</span>
+        <span>▾</span>
+        <div class="user-dropdown" id="userDropdown">
+          <a href="#">👤 Perfil</a>
+          <a href="#">⚙️ Configurações</a>
+          <div class="dropdown-divider"></div>
+          <a href="login.html" style="color:#EF4444">⬅️ Sair</a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- CONTENT -->
+  <div class="content-area ia-content">
+
+    <!-- TABS -->
+    <div class="ia-tabs">
+      <button class="ia-tab active" onclick="switchTab(this,'personalidade')">🧠 Personalidade</button>
+      <button class="ia-tab" onclick="switchTab(this,'treinamento')">📚 Treinamento</button>
+      <button class="ia-tab" onclick="switchTab(this,'respostas')">⚡ Respostas Rápidas</button>
+      <button class="ia-tab" onclick="switchTab(this,'faq')">❓ FAQ</button>
+      <button class="ia-tab" onclick="switchTab(this,'avancado')">🔧 Avançado</button>
+    </div>
+
+    <div class="ia-body">
+
+      <!-- ── TAB: PERSONALIDADE ── -->
+      <div class="ia-tab-panel active" id="panel-personalidade">
+        <div class="ia-two-col">
+
+          <!-- LEFT -->
+          <div class="ia-col">
+
+            <!-- IDENTIDADE -->
+            <div class="ia-card">
+              <div class="ia-card-header">
+                <div class="ia-card-icon" style="background:linear-gradient(135deg,#3B82F6,#8B5CF6)">🧠</div>
+                <div>
+                  <h3>Identidade do Bot</h3>
+                  <p>Defina quem é o seu assistente</p>
+                </div>
+              </div>
+
+              <div class="ia-field">
+                <label>Nome do assistente</label>
+                <div class="ia-input-wrap">
+                  <input type="text" id="botName" value="Luna" placeholder="Ex: Luna, Max, Sofia..." oninput="liveUpdate()" />
+                </div>
+              </div>
+
+              <div class="ia-field">
+                <label>Prompt de sistema (personalidade)</label>
+                <div class="prompt-editor" id="promptEditor">
+                  <div class="pe-toolbar">
+                    <button class="pe-tb-btn" onclick="insertPromptTemplate('professional')">💼 Profissional</button>
+                    <button class="pe-tb-btn" onclick="insertPromptTemplate('friendly')">😊 Amigável</button>
+                    <button class="pe-tb-btn" onclick="insertPromptTemplate('sales')">🛍️ Vendas</button>
+                    <button class="pe-tb-btn" onclick="insertPromptTemplate('support')">🎧 Suporte</button>
+                    <button class="pe-tb-btn" onclick="insertPromptTemplate('restaurant')">🍕 Restaurante</button>
+                  </div>
+                  <textarea id="systemPrompt" rows="7" placeholder="Descreva como o bot deve se comportar...
+Ex: Você é Luna, atendente virtual da Loja Estilo Carioca. Seja sempre cordial, use linguagem jovem e descontraída. Foque em ajudar clientes a encontrar o look perfeito. Sempre ofereça produtos relacionados ao que o cliente busca."
+oninput="liveUpdate(); updateTokenCount()">Você é Luna, atendente virtual profissional de uma loja de roupas femininas. Seja sempre cordial, empática e prestativa. Use linguagem acessível e descontraída. Foque em entender o estilo da cliente e sugerir peças adequadas. Sempre mencione promoções ativas e ofereça ajuda para finalizar compras. Nunca invente informações sobre preços ou estoque.</textarea>
+                  <div class="pe-footer">
+                    <span class="token-count" id="tokenCount">0 tokens estimados</span>
+                    <button class="pe-clear-btn" onclick="clearPrompt()">🗑 Limpar</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- TOM DA CONVERSA -->
+            <div class="ia-card">
+              <div class="ia-card-header">
+                <div class="ia-card-icon" style="background:linear-gradient(135deg,#F59E0B,#D97706)">🎭</div>
+                <div>
+                  <h3>Tom da Conversa</h3>
+                  <p>Como o bot deve se comunicar</p>
+                </div>
+              </div>
+
+              <div class="tone-grid" id="toneGrid">
+                <div class="tone-card selected" onclick="selectTone(this,'formal')" data-tone="formal">
+                  <span class="tone-emoji">💼</span>
+                  <span class="tone-name">Formal</span>
+                  <span class="tone-desc">Corporativo e profissional</span>
+                </div>
+                <div class="tone-card" onclick="selectTone(this,'friendly')" data-tone="friendly">
+                  <span class="tone-emoji">😊</span>
+                  <span class="tone-name">Amigável</span>
+                  <span class="tone-desc">Leve e acolhedor</span>
+                </div>
+                <div class="tone-card" onclick="selectTone(this,'casual')" data-tone="casual">
+                  <span class="tone-emoji">🤙</span>
+                  <span class="tone-name">Casual</span>
+                  <span class="tone-desc">Descontraído e jovem</span>
+                </div>
+                <div class="tone-card" onclick="selectTone(this,'sales')" data-tone="sales">
+                  <span class="tone-emoji">🚀</span>
+                  <span class="tone-name">Vendedor</span>
+                  <span class="tone-desc">Persuasivo e direto</span>
+                </div>
+                <div class="tone-card" onclick="selectTone(this,'empathetic')" data-tone="empathetic">
+                  <span class="tone-emoji">🤝</span>
+                  <span class="tone-name">Empático</span>
+                  <span class="tone-desc">Humano e acolhedor</span>
+                </div>
+                <div class="tone-card" onclick="selectTone(this,'technical')" data-tone="technical">
+                  <span class="tone-emoji">⚙️</span>
+                  <span class="tone-name">Técnico</span>
+                  <span class="tone-desc">Preciso e informativo</span>
+                </div>
+              </div>
+
+              <!-- SLIDERS -->
+              <div class="ia-sliders">
+                <div class="ia-slider-item">
+                  <div class="isl-header">
+                    <span>🌡️ Criatividade (Temperature)</span>
+                    <span class="isl-val" id="tempVal">0.7</span>
+                  </div>
+                  <input type="range" class="ia-range" id="tempRange" min="0" max="1" step="0.1" value="0.7" oninput="document.getElementById('tempVal').textContent=this.value;liveUpdate()" />
+                  <div class="isl-labels"><span>Preciso</span><span>Criativo</span></div>
+                </div>
+                <div class="ia-slider-item">
+                  <div class="isl-header">
+                    <span>📏 Tamanho das respostas</span>
+                    <span class="isl-val" id="lenVal">Médio</span>
+                  </div>
+                  <input type="range" class="ia-range" id="lenRange" min="1" max="3" step="1" value="2" oninput="updateLenLabel(this.value);liveUpdate()" />
+                  <div class="isl-labels"><span>Curto</span><span>Longo</span></div>
+                </div>
+                <div class="ia-slider-item">
+                  <div class="isl-header">
+                    <span>😀 Uso de emojis</span>
+                    <span class="isl-val" id="emojiVal">Moderado</span>
+                  </div>
+                  <input type="range" class="ia-range" id="emojiRange" min="1" max="3" step="1" value="2" oninput="updateEmojiLabel(this.value);liveUpdate()" />
+                  <div class="isl-labels"><span>Nunca</span><span>Sempre</span></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- RESTRIÇÕES -->
+            <div class="ia-card">
+              <div class="ia-card-header">
+                <div class="ia-card-icon" style="background:linear-gradient(135deg,#EF4444,#DC2626)">🚫</div>
+                <div>
+                  <h3>Restrições</h3>
+                  <p>O que o bot não deve fazer</p>
+                </div>
+              </div>
+              <div class="restrictions-list" id="restrictionsList">
+                <div class="restriction-item">
+                  <div class="ri-toggle active" onclick="this.classList.toggle('active')"></div>
+                  <span>Não revelar que é uma IA</span>
+                </div>
+                <div class="restriction-item">
+                  <div class="ri-toggle active" onclick="this.classList.toggle('active')"></div>
+                  <span>Não discutir concorrentes</span>
+                </div>
+                <div class="restriction-item">
+                  <div class="ri-toggle active" onclick="this.classList.toggle('active')"></div>
+                  <span>Não falar sobre política ou religião</span>
+                </div>
+                <div class="restriction-item">
+                  <div class="ri-toggle" onclick="this.classList.toggle('active')"></div>
+                  <span>Não dar descontos acima de 10%</span>
+                </div>
+                <div class="restriction-item">
+                  <div class="ri-toggle active" onclick="this.classList.toggle('active')"></div>
+                  <span>Sempre redirecionar compras para o site</span>
+                </div>
+              </div>
+              <button class="btn-add-restriction" onclick="addRestriction()">+ Adicionar restrição</button>
+            </div>
+
+          </div><!-- /left col -->
+
+          <!-- RIGHT: LIVE PREVIEW CHAT -->
+          <div class="ia-col ia-col-preview">
+            <div class="ia-card preview-card sticky-preview">
+              <div class="ia-card-header">
+                <div class="ia-card-icon" style="background:linear-gradient(135deg,#22C55E,#16A34A)">▶</div>
+                <div>
+                  <h3>Preview ao vivo</h3>
+                  <p id="previewBotName">Testando: Luna</p>
+                </div>
+                <button class="reset-preview-btn" onclick="resetPreviewChat()" title="Reiniciar">↺</button>
+              </div>
+
+              <div class="preview-chat-window" id="previewChatWindow">
+                <div class="pcw-messages" id="pcwMessages">
+                  <div class="pcw-msg bot">
+                    <div class="pcw-avatar" style="background:linear-gradient(135deg,#3B82F6,#8B5CF6)">🤖</div>
+                    <div class="pcw-bubble">Olá! Eu sou a <strong>Luna</strong>, assistente virtual da loja. Como posso te ajudar hoje? 😊</div>
+                  </div>
+                </div>
+                <div class="pcw-suggestions" id="pcwSuggestions">
+                  <button class="pcw-sug" onclick="sendPreviewMsg(this.textContent)">👗 Ver coleção nova</button>
+                  <button class="pcw-sug" onclick="sendPreviewMsg(this.textContent)">💰 Consultar preços</button>
+                  <button class="pcw-sug" onclick="sendPreviewMsg(this.textContent)">📦 Rastrear pedido</button>
+                </div>
+              </div>
+
+              <div class="pcw-input-bar">
+                <input type="text" id="pcwInput" placeholder="Simule uma mensagem..." onkeydown="if(event.key==='Enter')sendPreviewChat()" />
+                <button class="pcw-send" onclick="sendPreviewChat()">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 2L11 13M22 2L15 22l-4-9-9-4 20-7z"/></svg>
+                </button>
+              </div>
+
+              <div class="pcw-stats">
+                <div class="pcws-item"><span id="pcwMsgCount">1</span> mensagens</div>
+                <div class="pcws-dot"></div>
+                <div class="pcws-item">Temp: <span id="pcwTemp">0.7</span></div>
+                <div class="pcws-dot"></div>
+                <div class="pcws-item" id="pcwTone">Tom: Formal</div>
+              </div>
+            </div>
+          </div>
+
+        </div><!-- /two-col -->
+      </div>
+
+      <!-- ── TAB: TREINAMENTO ── -->
+      <div class="ia-tab-panel" id="panel-treinamento">
+        <div class="training-header">
+          <div class="th-info">
+            <h2>Base de Conhecimento</h2>
+            <p>Adicione informações sobre seu negócio para a IA responder com precisão</p>
+          </div>
+          <div class="training-stats">
+            <div class="ts-item"><span class="ts-val" id="docCount">3</span><span class="ts-lab">documentos</span></div>
+            <div class="ts-item"><span class="ts-val" id="chunkCount">247</span><span class="ts-lab">fragmentos</span></div>
+            <div class="ts-item"><span class="ts-val">98%</span><span class="ts-lab">precisão</span></div>
+          </div>
+        </div>
+
+        <div class="training-grid">
+
+          <!-- UPLOAD AREA -->
+          <div class="ia-card upload-card" id="uploadArea"
+               ondragover="event.preventDefault();this.classList.add('drag-over')"
+               ondragleave="this.classList.remove('drag-over')"
+               ondrop="handleFileDrop(event)">
+            <div class="upload-icon">📄</div>
+            <h4>Arraste arquivos ou clique para enviar</h4>
+            <p>PDF, DOCX, TXT, CSV — máx 10MB por arquivo</p>
+            <button class="btn-upload" onclick="simulateUpload()">📎 Selecionar arquivo</button>
+          </div>
+
+          <!-- DOCUMENTS LIST -->
+          <div class="ia-card docs-card">
+            <div class="ia-card-header">
+              <div class="ia-card-icon" style="background:linear-gradient(135deg,#8B5CF6,#6D28D9)">📚</div>
+              <div><h3>Documentos</h3><p>Sua base de conhecimento</p></div>
+              <button class="btn-primary-sm" onclick="simulateUpload()">+ Adicionar</button>
+            </div>
+            <div class="docs-list" id="docsList">
+              <div class="doc-item">
+                <div class="doc-icon pdf">PDF</div>
+                <div class="doc-info">
+                  <span class="doc-name">catalogo_produtos_2026.pdf</span>
+                  <span class="doc-meta">2.4 MB · 89 fragmentos · há 2 dias</span>
+                </div>
+                <div class="doc-status trained">✓ Treinado</div>
+                <button class="doc-del" onclick="removeDoc(this)" title="Remover">✕</button>
+              </div>
+              <div class="doc-item">
+                <div class="doc-icon txt">TXT</div>
+                <div class="doc-info">
+                  <span class="doc-name">politica_de_trocas.txt</span>
+                  <span class="doc-meta">15 KB · 12 fragmentos · há 5 dias</span>
+                </div>
+                <div class="doc-status trained">✓ Treinado</div>
+                <button class="doc-del" onclick="removeDoc(this)" title="Remover">✕</button>
+              </div>
+              <div class="doc-item">
+                <div class="doc-icon csv">CSV</div>
+                <div class="doc-info">
+                  <span class="doc-name">tabela_precos.csv</span>
+                  <span class="doc-meta">48 KB · 146 fragmentos · há 1 semana</span>
+                </div>
+                <div class="doc-status trained">✓ Treinado</div>
+                <button class="doc-del" onclick="removeDoc(this)" title="Remover">✕</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- TEXTO LIVRE -->
+          <div class="ia-card" style="grid-column:span 2">
+            <div class="ia-card-header">
+              <div class="ia-card-icon" style="background:linear-gradient(135deg,#14B8A6,#0D9488)">✏️</div>
+              <div><h3>Conhecimento Manual</h3><p>Adicione informações diretamente</p></div>
+            </div>
+            <div class="knowledge-editor">
+              <div class="ke-tabs">
+                <button class="ke-tab active" onclick="switchKETab(this,'sobre')">Sobre a empresa</button>
+                <button class="ke-tab" onclick="switchKETab(this,'produtos')">Produtos</button>
+                <button class="ke-tab" onclick="switchKETab(this,'politicas')">Políticas</button>
+                <button class="ke-tab" onclick="switchKETab(this,'contatos')">Contatos</button>
+              </div>
+              <textarea class="ke-textarea" id="ke-sobre" placeholder="Descreva sua empresa, missão, valores, diferenciais...">A Loja GVP é uma boutique de moda feminina fundada em 2018 em São Paulo. Trabalhamos com peças exclusivas e acessíveis, com foco em mulheres que buscam estilo e conforto no dia a dia. Nosso diferencial é o atendimento personalizado e a curadoria especial de peças nacionais e importadas.</textarea>
+              <textarea class="ke-textarea" id="ke-produtos" style="display:none" placeholder="Liste seus produtos, categorias, marcas...">Categorias principais:
+- Vestidos (casual, festa, social)
+- Blusas e tops (R$ 49 - R$ 189)
+- Calças e shorts (R$ 89 - R$ 249)
+- Acessórios (bolsas, cintos, bijuterias)
+- Coleção Plus Size (todos os modelos disponíveis)
+
+Marcas trabalhadas: Renner, C&A Exclusive, Zara Select, marcas nacionais independentes.</textarea>
+              <textarea class="ke-textarea" id="ke-politicas" style="display:none" placeholder="Políticas de troca, devolução, entrega...">Política de trocas: 30 dias corridos após a compra.
+Entrega: São Paulo capital em até 2 dias úteis. Interior SP e outros estados em 5-7 dias úteis. Frete grátis acima de R$ 199.
+Formas de pagamento: Cartão de crédito (até 10x sem juros), PIX (5% desconto), boleto.
+Trocas presenciais: Seg-Sex 10h-19h, Sáb 10h-16h.</textarea>
+              <textarea class="ke-textarea" id="ke-contatos" style="display:none" placeholder="Telefones, endereços, horários...">WhatsApp: (11) 9 9999-9999
+Instagram: @lojavpstyle
+Site: www.lojavpstyle.com.br
+Endereço: Rua da Moda, 123 - Pinheiros, São Paulo - SP
+Horário de atendimento: Seg-Sex 9h-18h / Sáb 10h-15h
+E-mail: contato@lojavpstyle.com.br</textarea>
+              <div class="ke-footer">
+                <span id="keCharCount">0 caracteres</span>
+                <button class="btn-primary-sm" onclick="saveKnowledge()">💾 Salvar conhecimento</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- TRAINING STATUS -->
+          <div class="ia-card training-status-card" style="grid-column:span 2">
+            <div class="ia-card-header">
+              <div class="ia-card-icon" style="background:linear-gradient(135deg,#22C55E,#16A34A)">🎯</div>
+              <div><h3>Status do Treinamento</h3><p>Última atualização da base de conhecimento</p></div>
+              <button class="btn-retrain" onclick="retrainIA()">
+                <span id="retrainText">🔄 Retreinar IA</span>
+                <div class="btn-loader" id="retrainLoader" style="display:none"></div>
+              </button>
+            </div>
+            <div class="training-progress-area" id="trainingProgressArea">
+              <div class="tp-item done">
+                <div class="tpi-icon">✅</div>
+                <div class="tpi-info"><span>Documentos processados</span><span class="tpi-meta">3 arquivos · 247 fragmentos</span></div>
+                <div class="tpi-time">há 2 dias</div>
+              </div>
+              <div class="tp-item done">
+                <div class="tpi-icon">✅</div>
+                <div class="tpi-info"><span>Vetorização concluída</span><span class="tpi-meta">Embeddings gerados com sucesso</span></div>
+                <div class="tpi-time">há 2 dias</div>
+              </div>
+              <div class="tp-item done">
+                <div class="tpi-icon">✅</div>
+                <div class="tpi-info"><span>Modelo atualizado</span><span class="tpi-meta">GPT-4o · Fine-tuning aplicado</span></div>
+                <div class="tpi-time">há 2 dias</div>
+              </div>
+              <div class="tp-item pending" id="tp4">
+                <div class="tpi-icon">⏳</div>
+                <div class="tpi-info"><span>Próximo retreinamento</span><span class="tpi-meta">Aguardando novos dados</span></div>
+                <div class="tpi-time">pendente</div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- ── TAB: RESPOSTAS RÁPIDAS ── -->
+      <div class="ia-tab-panel" id="panel-respostas">
+        <div class="ia-card">
+          <div class="ia-card-header">
+            <div class="ia-card-icon" style="background:linear-gradient(135deg,#F59E0B,#D97706)">⚡</div>
+            <div><h3>Respostas Automáticas</h3><p>Gatilhos e respostas instantâneas</p></div>
+            <button class="btn-primary-sm" onclick="addAutoResponse()">+ Nova resposta</button>
+          </div>
+          <div class="auto-responses-list" id="autoResponsesList">
+            <!-- items injected by JS -->
+          </div>
+        </div>
+
+        <!-- VARIÁVEIS -->
+        <div class="ia-card" style="margin-top:1.5rem">
+          <div class="ia-card-header">
+            <div class="ia-card-icon" style="background:linear-gradient(135deg,#6366F1,#4338CA)">🔧</div>
+            <div><h3>Variáveis Disponíveis</h3><p>Use em qualquer resposta</p></div>
+          </div>
+          <div class="variables-grid">
+            <div class="var-chip" onclick="copyVar(this)">{{nome_cliente}}</div>
+            <div class="var-chip" onclick="copyVar(this)">{{numero_pedido}}</div>
+            <div class="var-chip" onclick="copyVar(this)">{{data_hoje}}</div>
+            <div class="var-chip" onclick="copyVar(this)">{{hora_atual}}</div>
+            <div class="var-chip" onclick="copyVar(this)">{{nome_empresa}}</div>
+            <div class="var-chip" onclick="copyVar(this)">{{canal}}</div>
+            <div class="var-chip" onclick="copyVar(this)">{{link_catalogo}}</div>
+            <div class="var-chip" onclick="copyVar(this)">{{telefone_suporte}}</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── TAB: FAQ ── -->
+      <div class="ia-tab-panel" id="panel-faq">
+        <div class="ia-card">
+          <div class="ia-card-header">
+            <div class="ia-card-icon" style="background:linear-gradient(135deg,#EC4899,#BE185D)">❓</div>
+            <div><h3>Perguntas Frequentes</h3><p>A IA priorizará essas respostas quando o cliente perguntar</p></div>
+            <button class="btn-primary-sm" onclick="addFAQ()">+ Adicionar</button>
+          </div>
+          <div class="faq-editor-list" id="faqEditorList">
+            <!-- injected by JS -->
+          </div>
+        </div>
+      </div>
+
+      <!-- ── TAB: AVANÇADO ── -->
+      <div class="ia-tab-panel" id="panel-avancado">
+        <div class="adv-grid">
+
+          <div class="ia-card">
+            <div class="ia-card-header">
+              <div class="ia-card-icon" style="background:linear-gradient(135deg,#3B82F6,#1D4ED8)">🤖</div>
+              <div><h3>Modelo de IA</h3><p>Selecione o motor de linguagem</p></div>
+            </div>
+            <div class="model-selector">
+              <div class="model-option selected" onclick="selectModel(this,'gpt4o')">
+                <div class="mo-badge">Recomendado</div>
+                <div class="mo-name">GPT-4o</div>
+                <div class="mo-desc">Melhor qualidade, respostas naturais</div>
+                <div class="mo-price">⚡ Rápido · 💎 Premium</div>
+              </div>
+              <div class="model-option" onclick="selectModel(this,'gpt4mini')">
+                <div class="mo-name">GPT-4o Mini</div>
+                <div class="mo-desc">Ótimo custo-benefício</div>
+                <div class="mo-price">⚡ Muito rápido · 💰 Econômico</div>
+              </div>
+              <div class="model-option" onclick="selectModel(this,'claude')">
+                <div class="mo-name">Claude 3.5 Sonnet</div>
+                <div class="mo-desc">Excelente para textos longos</div>
+                <div class="mo-price">⚡ Rápido · 💎 Premium</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="ia-card">
+            <div class="ia-card-header">
+              <div class="ia-card-icon" style="background:linear-gradient(135deg,#14B8A6,#0D9488)">🛡️</div>
+              <div><h3>Moderação e Segurança</h3><p>Filtros de conteúdo</p></div>
+            </div>
+            <div class="adv-toggles">
+              <div class="adv-toggle-item">
+                <div class="ati-info"><span>Filtro de linguagem inapropriada</span><span class="ati-desc">Bloqueia mensagens ofensivas</span></div>
+                <div class="toggle-sw-sm active" onclick="this.classList.toggle('active')"></div>
+              </div>
+              <div class="adv-toggle-item">
+                <div class="ati-info"><span>Detecção de spam</span><span class="ati-desc">Ignora mensagens repetidas</span></div>
+                <div class="toggle-sw-sm active" onclick="this.classList.toggle('active')"></div>
+              </div>
+              <div class="adv-toggle-item">
+                <div class="ati-info"><span>Anti-prompt injection</span><span class="ati-desc">Protege contra manipulações</span></div>
+                <div class="toggle-sw-sm active" onclick="this.classList.toggle('active')"></div>
+              </div>
+              <div class="adv-toggle-item">
+                <div class="ati-info"><span>Limite de mensagens por hora</span><span class="ati-desc">Max 30 msgs/hora por usuário</span></div>
+                <div class="toggle-sw-sm" onclick="this.classList.toggle('active')"></div>
+              </div>
+              <div class="adv-toggle-item">
+                <div class="ati-info"><span>Log de conversas</span><span class="ati-desc">Salvar histórico completo</span></div>
+                <div class="toggle-sw-sm active" onclick="this.classList.toggle('active')"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="ia-card">
+            <div class="ia-card-header">
+              <div class="ia-card-icon" style="background:linear-gradient(135deg,#F97316,#EA580C)">📊</div>
+              <div><h3>Contexto e Memória</h3><p>Como a IA lembra da conversa</p></div>
+            </div>
+            <div class="ia-field">
+              <label>Janela de contexto (mensagens anteriores)</label>
+              <select class="ia-select">
+                <option value="5">Últimas 5 mensagens</option>
+                <option value="10" selected>Últimas 10 mensagens</option>
+                <option value="20">Últimas 20 mensagens</option>
+                <option value="full">Conversa completa</option>
+              </select>
+            </div>
+            <div class="ia-field">
+              <label>Memória entre sessões</label>
+              <select class="ia-select">
+                <option value="none">Sem memória</option>
+                <option value="name" selected>Lembrar nome do cliente</option>
+                <option value="full">Memória completa do perfil</option>
+              </select>
+            </div>
+            <div class="ia-field">
+              <label>Idioma principal</label>
+              <select class="ia-select">
+                <option value="pt" selected>🇧🇷 Português (Brasil)</option>
+                <option value="en">🇺🇸 English</option>
+                <option value="es">🇪🇸 Español</option>
+                <option value="auto">🌍 Automático (detectar)</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="ia-card">
+            <div class="ia-card-header">
+              <div class="ia-card-icon" style="background:linear-gradient(135deg,#22C55E,#16A34A)">📈</div>
+              <div><h3>Uso da API</h3><p>Consumo do mês atual</p></div>
+            </div>
+            <div class="usage-stats">
+              <div class="usage-bar-wrap">
+                <div class="ub-header"><span>Tokens usados</span><span class="ub-val">142.350 / 500.000</span></div>
+                <div class="ub-bar"><div class="ub-fill" style="width:28%;background:linear-gradient(90deg,#3B82F6,#8B5CF6)"></div></div>
+              </div>
+              <div class="usage-bar-wrap">
+                <div class="ub-header"><span>Conversas com IA</span><span class="ub-val">1.247 / 5.000</span></div>
+                <div class="ub-bar"><div class="ub-fill" style="width:25%;background:linear-gradient(90deg,#22C55E,#16A34A)"></div></div>
+              </div>
+              <div class="usage-bar-wrap">
+                <div class="ub-header"><span>Documentos vetorizados</span><span class="ub-val">3 / 50</span></div>
+                <div class="ub-bar"><div class="ub-fill" style="width:6%;background:linear-gradient(90deg,#F59E0B,#D97706)"></div></div>
+              </div>
+            </div>
+            <div class="usage-reset">Reset em: <strong>23 dias</strong> · Plano Pro</div>
+          </div>
+
+        </div>
+      </div>
+
+    </div><!-- /ia-body -->
+  </div><!-- /ia-content -->
+</main>
+
+<!-- FULL TEST CHAT MODAL -->
+<div class="modal-overlay" id="testChatModal">
+  <div class="test-chat-box" onclick="event.stopPropagation()">
+    <div class="tcb-header">
+      <div style="display:flex;align-items:center;gap:.75rem">
+        <div class="ia-model-badge"><span class="imb-dot"></span>GPT-4o</div>
+        <h3>🧪 Testar IA — Simulação completa</h3>
+      </div>
+      <button onclick="closeTestChat()">✕</button>
+    </div>
+    <div class="tcb-body">
+      <div class="tcb-messages" id="tcbMessages">
+        <div class="tcb-system-msg">Sistema inicializado · Personalidade: <strong id="tcbPersonality">Luna</strong> · Tom: <strong id="tcbTone">Formal</strong></div>
+        <div class="pcw-msg bot">
+          <div class="pcw-avatar" style="background:linear-gradient(135deg,#3B82F6,#8B5CF6)">🤖</div>
+          <div class="pcw-bubble">Olá! Sou a <strong>Luna</strong>, assistente virtual. Como posso te ajudar hoje? 😊</div>
+        </div>
+      </div>
+      <div class="tcb-input-row">
+        <input type="text" id="tcbInput" class="tcb-input" placeholder="Digite uma mensagem para testar a IA..." onkeydown="if(event.key==='Enter')sendTestMsg()" />
+        <button class="pcw-send" onclick="sendTestMsg()">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 2L11 13M22 2L15 22l-4-9-9-4 20-7z"/></svg>
+        </button>
+      </div>
+    </div>
+    <div class="tcb-footer">
+      <button class="ft-btn" onclick="clearTestChat()">🗑 Limpar conversa</button>
+      <button class="ft-btn" onclick="exportTestChat()">📋 Exportar</button>
+      <span style="margin-left:auto;font-size:.75rem;color:var(--text-muted)" id="tcbMsgCount">1 mensagem</span>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast-container" id="toastContainer"></div>
+
+<script src="js/main.js"></script>
+<script src="js/ia.js"></script>
+</body>
+</html>

@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Instagram — GVP BOT</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/channels.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+</head>
+<body class="dashboard-page">
+
+<!-- SIDEBAR -->
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-header">
+    <div class="nav-logo">
+      <div class="logo-icon">
+        <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+          <defs><linearGradient id="lg4" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#3B82F6"/><stop offset="100%" style="stop-color:#8B5CF6"/></linearGradient></defs>
+          <rect width="32" height="32" rx="8" fill="url(#lg4)"/>
+          <path d="M8 10h16M8 16h10M8 22h13" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
+          <circle cx="24" cy="22" r="4" fill="#22C55E"/>
+        </svg>
+      </div>
+      <span class="logo-text">GVP<span class="logo-accent">BOT</span></span>
+    </div>
+    <button class="sidebar-toggle-btn" onclick="toggleSidebar()">☰</button>
+  </div>
+  <nav class="sidebar-nav">
+    <div class="nav-section-label">Principal</div>
+    <a href="dashboard.html" class="nav-item"><span class="nav-icon">📊</span><span class="nav-label">Dashboard</span></a>
+    <a href="#" class="nav-item"><span class="nav-icon">💬</span><span class="nav-label">Conversas</span><span class="nav-badge">23</span></a>
+    <a href="#" class="nav-item"><span class="nav-icon">👥</span><span class="nav-label">Leads</span></a>
+    <a href="#" class="nav-item"><span class="nav-icon">🔀</span><span class="nav-label">Fluxos</span></a>
+    <a href="#" class="nav-item"><span class="nav-icon">📣</span><span class="nav-label">Campanhas</span></a>
+    <div class="nav-section-label">Canais</div>
+    <a href="whatsapp.html" class="nav-item"><span class="nav-icon">🟢</span><span class="nav-label">WhatsApp</span><span class="channel-status online"></span></a>
+    <a href="instagram.html" class="nav-item active"><span class="nav-icon">📸</span><span class="nav-label">Instagram</span><span class="channel-status online"></span></a>
+    <div class="nav-section-label">Config.</div>
+    <a href="#" class="nav-item"><span class="nav-icon">🔗</span><span class="nav-label">Integrações</span></a>
+    <a href="#" class="nav-item"><span class="nav-icon">⚙️</span><span class="nav-label">Configurações</span></a>
+  </nav>
+  <div class="sidebar-footer">
+    <div class="user-mini">
+      <div class="user-avatar-sm">GV</div>
+      <div class="user-mini-info"><span class="user-mini-name">Guilherme V.</span><span class="user-mini-plan">Plano Pro</span></div>
+    </div>
+    <a href="login.html" class="logout-btn">⬅️</a>
+  </div>
+</aside>
+
+<!-- MAIN -->
+<main class="main-content" id="mainContent">
+  <header class="topbar">
+    <div class="topbar-left">
+      <button class="mobile-sidebar-btn" onclick="toggleSidebar()">☰</button>
+      <div class="page-title">
+        <h1>Instagram Business</h1>
+        <p class="page-subtitle">Gerencie sua conexão com o Instagram</p>
+      </div>
+    </div>
+    <div class="topbar-right">
+      <div class="topbar-search"><span>🔍</span><input type="text" placeholder="Pesquisar..." /></div>
+      <button class="topbar-btn">🔔<span class="notif-dot"></span></button>
+      <div class="topbar-user" onclick="toggleUserMenu()">
+        <div class="user-avatar">GV</div>
+        <span>Guilherme</span>
+        <span>▾</span>
+        <div class="user-dropdown" id="userDropdown">
+          <a href="#">👤 Perfil</a>
+          <a href="#">⚙️ Configurações</a>
+          <div class="dropdown-divider"></div>
+          <a href="login.html" style="color:#EF4444">⬅️ Sair</a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <div class="content-area">
+
+    <!-- STATUS BAR -->
+    <div class="channel-status-bar ig-bar" id="igStatusBar">
+      <div class="csb-left">
+        <div class="csb-icon ig-gradient">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="white"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+        </div>
+        <div class="csb-info">
+          <span class="csb-name">Instagram Business</span>
+          <span class="csb-status connected" id="igStatusLabel">● Conectado</span>
+        </div>
+      </div>
+      <div class="csb-right">
+        <div class="csb-stat"><span class="cs-val" id="igFollowers">0</span><span class="cs-lab">seguidores</span></div>
+        <div class="csb-stat"><span class="cs-val" id="igDMs">0</span><span class="cs-lab">DMs hoje</span></div>
+        <div class="csb-stat"><span class="cs-val" id="igComments">0</span><span class="cs-lab">comentários</span></div>
+        <button class="btn-disconnect ig-disconnect" id="igDisconnectBtn" onclick="disconnectIG()">Desconectar</button>
+      </div>
+    </div>
+
+    <!-- MAIN GRID -->
+    <div class="channel-grid">
+
+      <!-- CONTA CARD -->
+      <div class="channel-card account-card">
+        <div class="card-header">
+          <h3>Conta Conectada</h3>
+          <span class="card-badge connected" id="igBadge">Ativa</span>
+        </div>
+
+        <!-- CONNECTED STATE -->
+        <div id="igConnectedState">
+          <div class="ig-profile">
+            <div class="ig-avatar-ring">
+              <div class="ig-avatar">GV</div>
+            </div>
+            <div class="ig-profile-info">
+              <h4 class="ig-username">@gvpbot_oficial</h4>
+              <p class="ig-fullname">GVP BOT Oficial</p>
+              <div class="ig-type-badge">Business Account ✓</div>
+            </div>
+            <div class="ig-stats-mini">
+              <div class="igs-item"><span class="igs-val">12.4K</span><span class="igs-lab">seguidores</span></div>
+              <div class="igs-item"><span class="igs-val">847</span><span class="igs-lab">seguindo</span></div>
+              <div class="igs-item"><span class="igs-val">234</span><span class="igs-lab">posts</span></div>
+            </div>
+          </div>
+
+          <!-- PERMISSÕES -->
+          <div class="permissions-section">
+            <h4 class="perm-title">🔐 Permissões concedidas</h4>
+            <div class="permissions-grid">
+              <div class="perm-item granted">
+                <div class="perm-icon">✅</div>
+                <div class="perm-info">
+                  <span class="perm-name">Direct Messages</span>
+                  <span class="perm-desc">Ler e enviar DMs</span>
+                </div>
+              </div>
+              <div class="perm-item granted">
+                <div class="perm-icon">✅</div>
+                <div class="perm-info">
+                  <span class="perm-name">Comentários</span>
+                  <span class="perm-desc">Responder automaticamente</span>
+                </div>
+              </div>
+              <div class="perm-item granted">
+                <div class="perm-icon">✅</div>
+                <div class="perm-info">
+                  <span class="perm-name">Perfil público</span>
+                  <span class="perm-desc">Dados da conta</span>
+                </div>
+              </div>
+              <div class="perm-item granted">
+                <div class="perm-icon">✅</div>
+                <div class="perm-info">
+                  <span class="perm-name">Stories</span>
+                  <span class="perm-desc">Interações com stories</span>
+                </div>
+              </div>
+              <div class="perm-item pending" onclick="requestPerm(this)">
+                <div class="perm-icon">⚠️</div>
+                <div class="perm-info">
+                  <span class="perm-name">Instagram Shopping</span>
+                  <span class="perm-desc">Clique para autorizar</span>
+                </div>
+              </div>
+              <div class="perm-item pending" onclick="requestPerm(this)">
+                <div class="perm-icon">⚠️</div>
+                <div class="perm-info">
+                  <span class="perm-name">Anúncios</span>
+                  <span class="perm-desc">Clique para autorizar</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="ig-actions">
+            <button class="btn-ig-primary" onclick="syncIG()">
+              <span id="syncText">🔄 Sincronizar dados</span>
+              <div class="btn-loader" id="syncLoader" style="display:none"></div>
+            </button>
+            <button class="btn-ig-ghost" onclick="disconnectIG()">Desconectar conta</button>
+          </div>
+        </div>
+
+        <!-- DISCONNECTED STATE -->
+        <div id="igDisconnectedState" style="display:none">
+          <div class="ig-connect-screen">
+            <div class="ig-connect-icon">
+              <div class="ig-big-logo">
+                <svg width="80" height="80" viewBox="0 0 24 24"><defs><linearGradient id="igGrad" x1="0%" y1="100%" x2="100%" y2="0%"><stop offset="0%" style="stop-color:#FD5949"/><stop offset="50%" style="stop-color:#D6249F"/><stop offset="100%" style="stop-color:#285AEB"/></linearGradient></defs><path fill="url(#igGrad)" d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+              </div>
+            </div>
+            <h4>Conecte seu Instagram Business</h4>
+            <p>Automatize respostas de DMs e comentários com IA</p>
+            <div class="connect-features">
+              <div class="cf-item">✅ Resposta automática de DMs</div>
+              <div class="cf-item">✅ Moderação de comentários</div>
+              <div class="cf-item">✅ Captura de leads pelo Direct</div>
+              <div class="cf-item">✅ Análise de engajamento</div>
+            </div>
+            <button class="btn-ig-connect" onclick="connectIG()">
+              <svg width="20" height="20" viewBox="0 0 24 24"><defs><linearGradient id="ig2" x1="0%" y1="100%" x2="100%" y2="0%"><stop offset="0%" style="stop-color:#FD5949"/><stop offset="100%" style="stop-color:#285AEB"/></linearGradient></defs><path fill="url(#ig2)" d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069z"/></svg>
+              <span id="igConnectText">Conectar com Instagram</span>
+              <div class="btn-loader" id="igConnectLoader" style="display:none"></div>
+            </button>
+            <p class="oauth-note">Você será redirecionado para autorizar via Meta Business</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- IG SIDEBAR -->
+      <div class="channel-sidebar">
+
+        <!-- AUTOMAÇÕES IG -->
+        <div class="channel-card">
+          <div class="card-header"><h3>🤖 Automações</h3></div>
+          <div class="config-list">
+            <div class="config-item">
+              <div class="ci-info"><span class="ci-name">Auto-resposta DMs</span><span class="ci-desc">Responde mensagens diretas</span></div>
+              <div class="toggle-sw-sm active" onclick="toggleConfig(this)"></div>
+            </div>
+            <div class="config-item">
+              <div class="ci-info"><span class="ci-name">Resposta comentários</span><span class="ci-desc">Moderar comentários</span></div>
+              <div class="toggle-sw-sm active" onclick="toggleConfig(this)"></div>
+            </div>
+            <div class="config-item">
+              <div class="ci-info"><span class="ci-name">Story mentions</span><span class="ci-desc">Responder menções em stories</span></div>
+              <div class="toggle-sw-sm" onclick="toggleConfig(this)"></div>
+            </div>
+            <div class="config-item">
+              <div class="ci-info"><span class="ci-name">Link na bio</span><span class="ci-desc">Rastrear cliques</span></div>
+              <div class="toggle-sw-sm active" onclick="toggleConfig(this)"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ENGAJAMENTO -->
+        <div class="channel-card">
+          <div class="card-header"><h3>📈 Engajamento</h3></div>
+          <div class="engagement-stats">
+            <div class="eng-row">
+              <div class="eng-item">
+                <div class="eng-bar-wrap">
+                  <div class="eng-label-row"><span>DMs respondidas</span><span class="eng-pct">94%</span></div>
+                  <div class="eng-bar"><div class="eng-fill" style="width:94%;background:linear-gradient(90deg,#3B82F6,#8B5CF6)"></div></div>
+                </div>
+              </div>
+            </div>
+            <div class="eng-row">
+              <div class="eng-item">
+                <div class="eng-bar-wrap">
+                  <div class="eng-label-row"><span>Comentários atendidos</span><span class="eng-pct">78%</span></div>
+                  <div class="eng-bar"><div class="eng-fill" style="width:78%;background:linear-gradient(90deg,#8B5CF6,#EC4899)"></div></div>
+                </div>
+              </div>
+            </div>
+            <div class="eng-row">
+              <div class="eng-item">
+                <div class="eng-bar-wrap">
+                  <div class="eng-label-row"><span>Leads convertidos</span><span class="eng-pct">34%</span></div>
+                  <div class="eng-bar"><div class="eng-fill" style="width:34%;background:linear-gradient(90deg,#22C55E,#16A34A)"></div></div>
+                </div>
+              </div>
+            </div>
+            <div class="eng-row">
+              <div class="eng-item">
+                <div class="eng-bar-wrap">
+                  <div class="eng-label-row"><span>Story interactions</span><span class="eng-pct">62%</span></div>
+                  <div class="eng-bar"><div class="eng-fill" style="width:62%;background:linear-gradient(90deg,#F59E0B,#EF4444)"></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ÚLTIMAS DMs -->
+        <div class="channel-card">
+          <div class="card-header"><h3>💬 Últimas DMs</h3></div>
+          <div class="dm-list">
+            <div class="dm-item">
+              <div class="dm-avatar" style="background:linear-gradient(135deg,#FD5949,#D6249F)">MC</div>
+              <div class="dm-info">
+                <span class="dm-name">@marcela_costa</span>
+                <span class="dm-msg">Oi! Vi no stories, quero comprar...</span>
+              </div>
+              <div class="dm-time">2min</div>
+            </div>
+            <div class="dm-item">
+              <div class="dm-avatar" style="background:linear-gradient(135deg,#285AEB,#8B5CF6)">RS</div>
+              <div class="dm-info">
+                <span class="dm-name">@rafael.s</span>
+                <span class="dm-msg">Tem promoção de Black Friday?</span>
+              </div>
+              <div class="dm-time">15min</div>
+            </div>
+            <div class="dm-item">
+              <div class="dm-avatar" style="background:linear-gradient(135deg,#22C55E,#16A34A)">AP</div>
+              <div class="dm-info">
+                <span class="dm-name">@ana.paula</span>
+                <span class="dm-msg">Qual o prazo de entrega?</span>
+              </div>
+              <div class="dm-time">28min</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ÚLTIMAS INTERAÇÕES -->
+    <div class="channel-card full-width">
+      <div class="card-header">
+        <h3>🔔 Interações recentes</h3>
+        <div style="display:flex;gap:.5rem">
+          <button class="cf-btn active" onclick="filterIGLog(this,'all')">Todas</button>
+          <button class="cf-btn" onclick="filterIGLog(this,'dm')">DMs</button>
+          <button class="cf-btn" onclick="filterIGLog(this,'comment')">Comentários</button>
+          <button class="cf-btn" onclick="filterIGLog(this,'story')">Stories</button>
+        </div>
+      </div>
+      <div class="activity-log" id="igActivityLog"></div>
+    </div>
+
+  </div>
+</main>
+
+<script src="js/main.js"></script>
+<script src="js/instagram.js"></script>
+</body>
+</html>

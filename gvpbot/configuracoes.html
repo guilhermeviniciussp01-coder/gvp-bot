@@ -1,0 +1,797 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Configurações — GVP BOT</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/configuracoes.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+</head>
+<body class="dashboard-page">
+
+<!-- SIDEBAR -->
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-header">
+    <div class="nav-logo">
+      <div class="logo-icon">
+        <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+          <defs><linearGradient id="lg4" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#3B82F6"/><stop offset="100%" style="stop-color:#8B5CF6"/></linearGradient></defs>
+          <rect width="32" height="32" rx="8" fill="url(#lg4)"/>
+          <path d="M8 10h16M8 16h10M8 22h13" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
+          <circle cx="24" cy="22" r="4" fill="#22C55E"/>
+        </svg>
+      </div>
+      <span class="logo-text">GVP<span class="logo-accent">BOT</span></span>
+    </div>
+    <button class="sidebar-toggle-btn" onclick="toggleSidebar()">☰</button>
+  </div>
+  <nav class="sidebar-nav">
+    <div class="nav-section-label">Principal</div>
+    <a href="dashboard.html" class="nav-item"><span class="nav-icon">📊</span><span class="nav-label">Dashboard</span></a>
+    <a href="#" class="nav-item"><span class="nav-icon">💬</span><span class="nav-label">Conversas</span><span class="nav-badge">23</span></a>
+    <a href="clientes.html" class="nav-item"><span class="nav-icon">👥</span><span class="nav-label">Clientes</span></a>
+    <a href="fluxos.html" class="nav-item"><span class="nav-icon">🔀</span><span class="nav-label">Fluxos</span></a>
+    <a href="#" class="nav-item"><span class="nav-icon">📣</span><span class="nav-label">Campanhas</span></a>
+    <div class="nav-section-label">Canais</div>
+    <a href="whatsapp.html" class="nav-item"><span class="nav-icon">🟢</span><span class="nav-label">WhatsApp</span><span class="channel-status online"></span></a>
+    <a href="instagram.html" class="nav-item"><span class="nav-icon">📸</span><span class="nav-label">Instagram</span><span class="channel-status online"></span></a>
+    <div class="nav-section-label">Config.</div>
+    <a href="ia.html" class="nav-item"><span class="nav-icon">🤖</span><span class="nav-label">Config. IA</span></a>
+    <a href="planos.html" class="nav-item"><span class="nav-icon">💳</span><span class="nav-label">Planos</span></a>
+    <a href="configuracoes.html" class="nav-item active"><span class="nav-icon">⚙️</span><span class="nav-label">Configurações</span></a>
+  </nav>
+  <div class="sidebar-footer">
+    <div class="user-mini">
+      <div class="user-avatar-sm">GV</div>
+      <div class="user-mini-info"><span class="user-mini-name">Guilherme V.</span><span class="user-mini-plan">Plano Business</span></div>
+    </div>
+    <a href="login.html" class="logout-btn">⬅️</a>
+  </div>
+</aside>
+
+<!-- MAIN -->
+<main class="main-content" id="mainContent">
+  <header class="topbar">
+    <div class="topbar-left">
+      <button class="mobile-sidebar-btn" onclick="toggleSidebar()">☰</button>
+      <div class="page-title">
+        <h1>Configurações</h1>
+        <p class="page-subtitle">Gerencie todas as preferências da sua conta</p>
+      </div>
+    </div>
+    <div class="topbar-right">
+      <div class="cfg-saved-badge" id="cfgSavedBadge" style="display:none">✅ Alterações salvas</div>
+      <button class="btn-primary" onclick="saveAll()">
+        <span id="saveAllText">💾 Salvar tudo</span>
+        <div class="btn-loader" id="saveAllLoader" style="display:none"></div>
+      </button>
+      <div class="topbar-user" onclick="toggleUserMenu()">
+        <div class="user-avatar">GV</div>
+        <span>Guilherme</span><span>▾</span>
+        <div class="user-dropdown" id="userDropdown">
+          <a href="#">👤 Perfil</a>
+          <a href="planos.html">💳 Planos</a>
+          <div class="dropdown-divider"></div>
+          <a href="login.html" style="color:#EF4444">⬅️ Sair</a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <div class="content-area cfg-layout">
+
+    <!-- LEFT NAV -->
+    <nav class="cfg-sidenav" id="cfgSidenav">
+      <div class="csn-item active" onclick="scrollToSection('empresa',this)">
+        <span class="csn-icon">🏢</span><span>Empresa</span>
+      </div>
+      <div class="csn-item" onclick="scrollToSection('horario',this)">
+        <span class="csn-icon">🕐</span><span>Horário</span>
+      </div>
+      <div class="csn-item" onclick="scrollToSection('respostas',this)">
+        <span class="csn-icon">⚡</span><span>Respostas rápidas</span>
+      </div>
+      <div class="csn-item" onclick="scrollToSection('notificacoes',this)">
+        <span class="csn-icon">🔔</span><span>Notificações</span>
+      </div>
+      <div class="csn-item" onclick="scrollToSection('seguranca',this)">
+        <span class="csn-icon">🔒</span><span>Segurança</span>
+      </div>
+      <div class="csn-item" onclick="scrollToSection('preferencias',this)">
+        <span class="csn-icon">🎛️</span><span>Preferências</span>
+      </div>
+      <div class="csn-item" onclick="scrollToSection('integracao',this)">
+        <span class="csn-icon">🔗</span><span>Integrações</span>
+      </div>
+      <div class="csn-divider"></div>
+      <div class="csn-item danger" onclick="openModal('deleteAccount')">
+        <span class="csn-icon">🗑️</span><span>Excluir conta</span>
+      </div>
+    </nav>
+
+    <!-- RIGHT CONTENT -->
+    <div class="cfg-content" id="cfgContent">
+
+      <!-- ══ EMPRESA ══ -->
+      <section class="cfg-section" id="sec-empresa">
+        <div class="cfg-sec-header">
+          <div class="cfg-sec-icon" style="background:linear-gradient(135deg,#3B82F6,#1D4ED8)">🏢</div>
+          <div>
+            <h2>Empresa</h2>
+            <p>Identidade visual e dados do negócio</p>
+          </div>
+        </div>
+
+        <!-- LOGO -->
+        <div class="cfg-card">
+          <div class="cfg-card-title">Logo da empresa</div>
+          <div class="logo-upload-area">
+            <div class="lua-preview" id="luaPreview">
+              <div class="lua-current" id="luaCurrent">
+                <div class="lua-initials">GV</div>
+              </div>
+              <div class="lua-overlay" onclick="triggerLogoUpload()">
+                <span>📷</span>
+                <span>Alterar logo</span>
+              </div>
+            </div>
+            <div class="lua-info">
+              <div class="lua-title">Logo atual</div>
+              <div class="lua-desc">PNG, JPG ou SVG — mínimo 200×200px, máx 2MB</div>
+              <div class="lua-actions">
+                <button class="lua-btn primary" onclick="triggerLogoUpload()">📤 Enviar nova logo</button>
+                <button class="lua-btn ghost" onclick="removeLogoPreview()">🗑 Remover</button>
+              </div>
+              <input type="file" id="logoInput" accept="image/*" style="display:none" onchange="previewLogo(event)" />
+            </div>
+          </div>
+        </div>
+
+        <!-- DADOS DA EMPRESA -->
+        <div class="cfg-card">
+          <div class="cfg-card-title">Dados da empresa</div>
+          <div class="cfg-form-grid">
+            <div class="cfg-field">
+              <label>Nome da empresa</label>
+              <div class="cfg-input-wrap">
+                <span class="cif-icon">🏢</span>
+                <input type="text" id="fEmpresaNome" value="GVP BOT Ltda" placeholder="Nome da empresa" oninput="markDirty()" />
+              </div>
+            </div>
+            <div class="cfg-field">
+              <label>Nome exibido no bot</label>
+              <div class="cfg-input-wrap">
+                <span class="cif-icon">🤖</span>
+                <input type="text" id="fBotNome" value="GVP BOT" placeholder="Nome do assistente" oninput="markDirty()" />
+              </div>
+            </div>
+            <div class="cfg-field">
+              <label>E-mail comercial</label>
+              <div class="cfg-input-wrap">
+                <span class="cif-icon">✉️</span>
+                <input type="email" id="fEmail" value="contato@gvpbot.com.br" oninput="markDirty()" />
+              </div>
+            </div>
+            <div class="cfg-field">
+              <label>Telefone</label>
+              <div class="cfg-input-wrap">
+                <span class="cif-icon">📱</span>
+                <input type="tel" id="fTel" value="(11) 9 9999-9999" oninput="markDirty()" />
+              </div>
+            </div>
+            <div class="cfg-field">
+              <label>Website</label>
+              <div class="cfg-input-wrap">
+                <span class="cif-icon">🌐</span>
+                <input type="url" id="fSite" value="https://gvpbot.com.br" oninput="markDirty()" />
+              </div>
+            </div>
+            <div class="cfg-field">
+              <label>Segmento</label>
+              <div class="cfg-input-wrap">
+                <span class="cif-icon">🏷️</span>
+                <select id="fSegmento" onchange="markDirty()">
+                  <option value="varejo" selected>Varejo / Loja</option>
+                  <option value="restaurante">Restaurante</option>
+                  <option value="saude">Saúde / Estética</option>
+                  <option value="servicos">Serviços</option>
+                  <option value="educacao">Educação</option>
+                  <option value="imoveis">Imóveis</option>
+                  <option value="tech">Tecnologia</option>
+                  <option value="outro">Outro</option>
+                </select>
+              </div>
+            </div>
+            <div class="cfg-field full-span">
+              <label>Endereço</label>
+              <div class="cfg-input-wrap">
+                <span class="cif-icon">📍</span>
+                <input type="text" id="fEndereco" value="Rua das Inovações, 123 – São Paulo, SP" oninput="markDirty()" />
+              </div>
+            </div>
+            <div class="cfg-field full-span">
+              <label>Descrição da empresa (usada pela IA)</label>
+              <textarea id="fDescricao" rows="3" oninput="markDirty()">Empresa de automação de atendimento via WhatsApp e Instagram com IA avançada. Atendemos negócios de todos os tamanhos que precisam escalar seu atendimento.</textarea>
+            </div>
+          </div>
+          <div class="cfg-card-footer">
+            <button class="cfg-btn-save" onclick="saveSection('empresa')">
+              <span>💾 Salvar dados</span>
+              <div class="btn-loader" id="loaderEmpresa" style="display:none"></div>
+            </button>
+          </div>
+        </div>
+
+        <!-- CORES E TEMA -->
+        <div class="cfg-card">
+          <div class="cfg-card-title">Cores e identidade visual</div>
+          <div class="color-config">
+            <div class="cc-item">
+              <div class="cc-info">
+                <span class="cc-name">Cor primária</span>
+                <span class="cc-desc">Botões e destaques</span>
+              </div>
+              <div class="cc-swatches" id="swatchPrimary">
+                <div class="color-swatch selected" style="background:#3B82F6" data-color="#3B82F6" onclick="selectColor('primary',this)"></div>
+                <div class="color-swatch" style="background:#8B5CF6" data-color="#8B5CF6" onclick="selectColor('primary',this)"></div>
+                <div class="color-swatch" style="background:#22C55E" data-color="#22C55E" onclick="selectColor('primary',this)"></div>
+                <div class="color-swatch" style="background:#F59E0B" data-color="#F59E0B" onclick="selectColor('primary',this)"></div>
+                <div class="color-swatch" style="background:#EC4899" data-color="#EC4899" onclick="selectColor('primary',this)"></div>
+                <div class="color-swatch" style="background:#EF4444" data-color="#EF4444" onclick="selectColor('primary',this)"></div>
+                <input type="color" id="colorPrimary" value="#3B82F6" onchange="customColor('primary',this)" class="color-input-custom" title="Cor personalizada" />
+              </div>
+            </div>
+            <div class="cc-item">
+              <div class="cc-info">
+                <span class="cc-name">Cor de acento</span>
+                <span class="cc-desc">Gradientes e destaques</span>
+              </div>
+              <div class="cc-swatches" id="swatchAccent">
+                <div class="color-swatch" style="background:#3B82F6" data-color="#3B82F6" onclick="selectColor('accent',this)"></div>
+                <div class="color-swatch selected" style="background:#8B5CF6" data-color="#8B5CF6" onclick="selectColor('accent',this)"></div>
+                <div class="color-swatch" style="background:#6366F1" data-color="#6366F1" onclick="selectColor('accent',this)"></div>
+                <div class="color-swatch" style="background:#14B8A6" data-color="#14B8A6" onclick="selectColor('accent',this)"></div>
+                <div class="color-swatch" style="background:#F97316" data-color="#F97316" onclick="selectColor('accent',this)"></div>
+                <input type="color" id="colorAccent" value="#8B5CF6" onchange="customColor('accent',this)" class="color-input-custom" title="Cor personalizada" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ══ HORÁRIO ══ -->
+      <section class="cfg-section" id="sec-horario">
+        <div class="cfg-sec-header">
+          <div class="cfg-sec-icon" style="background:linear-gradient(135deg,#F59E0B,#D97706)">🕐</div>
+          <div><h2>Horário de Atendimento</h2><p>Configure quando o bot e sua equipe estão disponíveis</p></div>
+        </div>
+
+        <div class="cfg-card">
+          <div class="cfg-card-title">Disponibilidade semanal</div>
+          <div class="schedule-grid" id="scheduleGrid">
+            <!-- injected by JS -->
+          </div>
+          <div class="cfg-card-footer">
+            <button class="cfg-btn-save" onclick="saveSection('horario')">💾 Salvar horários</button>
+          </div>
+        </div>
+
+        <div class="cfg-card">
+          <div class="cfg-card-title">Comportamento fora do horário</div>
+          <div class="offhours-config">
+            <div class="cfg-field">
+              <label>Mensagem fora do horário</label>
+              <textarea id="fOffHours" rows="3" oninput="markDirty()">Olá! 😊 Nosso atendimento funciona de Segunda a Sexta, das 9h às 18h. Em breve retornaremos. Deixe sua mensagem que responderemos assim que possível!</textarea>
+            </div>
+            <div class="cfg-toggle-row">
+              <div class="ctr-info">
+                <span class="ctr-name">Bot responde fora do horário</span>
+                <span class="ctr-desc">Enviar mensagem automática quando offline</span>
+              </div>
+              <div class="cfg-switch active" onclick="toggleSwitch(this)" id="swOffHours"></div>
+            </div>
+            <div class="cfg-toggle-row">
+              <div class="ctr-info">
+                <span class="ctr-name">Capturar leads fora do horário</span>
+                <span class="ctr-desc">Salvar contatos mesmo offline</span>
+              </div>
+              <div class="cfg-switch active" onclick="toggleSwitch(this)"></div>
+            </div>
+          </div>
+          <div class="cfg-card-footer">
+            <button class="cfg-btn-save" onclick="saveSection('horario')">💾 Salvar</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ══ RESPOSTAS RÁPIDAS ══ -->
+      <section class="cfg-section" id="sec-respostas">
+        <div class="cfg-sec-header">
+          <div class="cfg-sec-icon" style="background:linear-gradient(135deg,#22C55E,#16A34A)">⚡</div>
+          <div><h2>Respostas Rápidas</h2><p>Atalhos de texto para mensagens frequentes</p></div>
+        </div>
+
+        <div class="cfg-card">
+          <div class="cfg-card-topbar">
+            <div class="cfg-card-title">Seus atalhos</div>
+            <button class="cfg-btn-add" onclick="addResposta()">+ Nova resposta</button>
+          </div>
+          <div class="rr-search">
+            <span>🔍</span>
+            <input type="text" placeholder="Buscar atalho..." oninput="filterRespostas(this.value)" />
+          </div>
+          <div class="rr-list" id="rrList"></div>
+          <div class="cfg-card-footer">
+            <button class="cfg-btn-save" onclick="saveSection('respostas')">💾 Salvar respostas</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ══ NOTIFICAÇÕES ══ -->
+      <section class="cfg-section" id="sec-notificacoes">
+        <div class="cfg-sec-header">
+          <div class="cfg-sec-icon" style="background:linear-gradient(135deg,#EC4899,#BE185D)">🔔</div>
+          <div><h2>Notificações</h2><p>Controle como e quando você recebe alertas</p></div>
+        </div>
+
+        <div class="cfg-card">
+          <div class="cfg-card-title">Notificações por e-mail</div>
+          <div class="notif-list">
+            <div class="notif-item">
+              <div class="ni-icon" style="background:rgba(59,130,246,.15);color:#3B82F6">💬</div>
+              <div class="ni-info">
+                <span class="ni-name">Nova mensagem recebida</span>
+                <span class="ni-desc">Alertas de conversas novas</span>
+              </div>
+              <select class="ni-freq">
+                <option value="instant" selected>Instantâneo</option>
+                <option value="hourly">Por hora</option>
+                <option value="daily">Diário</option>
+                <option value="off">Desligado</option>
+              </select>
+              <div class="cfg-switch active" onclick="toggleSwitch(this)"></div>
+            </div>
+            <div class="notif-item">
+              <div class="ni-icon" style="background:rgba(139,92,246,.15);color:#8B5CF6">👤</div>
+              <div class="ni-info">
+                <span class="ni-name">Novo lead capturado</span>
+                <span class="ni-desc">Quando o bot captura um contato</span>
+              </div>
+              <select class="ni-freq">
+                <option value="instant" selected>Instantâneo</option>
+                <option value="hourly">Por hora</option>
+                <option value="daily">Diário</option>
+                <option value="off">Desligado</option>
+              </select>
+              <div class="cfg-switch active" onclick="toggleSwitch(this)"></div>
+            </div>
+            <div class="notif-item">
+              <div class="ni-icon" style="background:rgba(34,197,94,.15);color:#22C55E">📊</div>
+              <div class="ni-info">
+                <span class="ni-name">Relatório semanal</span>
+                <span class="ni-desc">Resumo de performance toda segunda</span>
+              </div>
+              <select class="ni-freq">
+                <option value="weekly" selected>Semanal</option>
+                <option value="daily">Diário</option>
+                <option value="monthly">Mensal</option>
+              </select>
+              <div class="cfg-switch active" onclick="toggleSwitch(this)"></div>
+            </div>
+            <div class="notif-item">
+              <div class="ni-icon" style="background:rgba(245,158,11,.15);color:#F59E0B">⚠️</div>
+              <div class="ni-info">
+                <span class="ni-name">Alertas do sistema</span>
+                <span class="ni-desc">Quedas, erros e manutenções</span>
+              </div>
+              <select class="ni-freq">
+                <option value="instant" selected>Instantâneo</option>
+              </select>
+              <div class="cfg-switch active" onclick="toggleSwitch(this)"></div>
+            </div>
+            <div class="notif-item">
+              <div class="ni-icon" style="background:rgba(239,68,68,.15);color:#EF4444">💳</div>
+              <div class="ni-info">
+                <span class="ni-name">Vencimento de plano</span>
+                <span class="ni-desc">7 dias antes do vencimento</span>
+              </div>
+              <select class="ni-freq">
+                <option value="instant" selected>7 dias antes</option>
+              </select>
+              <div class="cfg-switch active" onclick="toggleSwitch(this)"></div>
+            </div>
+            <div class="notif-item">
+              <div class="ni-icon" style="background:rgba(20,184,166,.15);color:#14B8A6">🎯</div>
+              <div class="ni-info">
+                <span class="ni-name">Metas atingidas</span>
+                <span class="ni-desc">Quando bater recordes de atendimento</span>
+              </div>
+              <select class="ni-freq">
+                <option value="instant" selected>Instantâneo</option>
+              </select>
+              <div class="cfg-switch" onclick="toggleSwitch(this)"></div>
+            </div>
+          </div>
+          <div class="cfg-card-footer">
+            <button class="cfg-btn-save" onclick="saveSection('notificacoes')">💾 Salvar notificações</button>
+          </div>
+        </div>
+
+        <div class="cfg-card">
+          <div class="cfg-card-title">Push e som</div>
+          <div class="notif-list">
+            <div class="cfg-toggle-row">
+              <div class="ctr-info">
+                <span class="ctr-name">Notificações push no navegador</span>
+                <span class="ctr-desc">Alertas mesmo com a aba minimizada</span>
+              </div>
+              <div class="cfg-switch active" onclick="toggleSwitch(this)"></div>
+            </div>
+            <div class="cfg-toggle-row">
+              <div class="ctr-info">
+                <span class="ctr-name">Sons de notificação</span>
+                <span class="ctr-desc">Toques ao receber mensagens</span>
+              </div>
+              <div class="cfg-switch" onclick="toggleSwitch(this)"></div>
+            </div>
+            <div class="cfg-toggle-row">
+              <div class="ctr-info">
+                <span class="ctr-name">Não perturbe (22h–8h)</span>
+                <span class="ctr-desc">Silenciar notificações durante a madrugada</span>
+              </div>
+              <div class="cfg-switch active" onclick="toggleSwitch(this)"></div>
+            </div>
+          </div>
+          <div class="cfg-card-footer">
+            <button class="cfg-btn-save" onclick="saveSection('notificacoes')">💾 Salvar</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ══ SEGURANÇA ══ -->
+      <section class="cfg-section" id="sec-seguranca">
+        <div class="cfg-sec-header">
+          <div class="cfg-sec-icon" style="background:linear-gradient(135deg,#EF4444,#DC2626)">🔒</div>
+          <div><h2>Segurança</h2><p>Senhas, autenticação e sessões ativas</p></div>
+        </div>
+
+        <!-- ALTERAR SENHA -->
+        <div class="cfg-card">
+          <div class="cfg-card-title">Alterar senha</div>
+          <div class="cfg-form-grid">
+            <div class="cfg-field full-span">
+              <label>Senha atual</label>
+              <div class="cfg-input-wrap pwd-wrap">
+                <span class="cif-icon">🔑</span>
+                <input type="password" id="fSenhaAtual" placeholder="••••••••" />
+                <button class="pwd-toggle" onclick="togglePwd('fSenhaAtual',this)">👁</button>
+              </div>
+            </div>
+            <div class="cfg-field">
+              <label>Nova senha</label>
+              <div class="cfg-input-wrap pwd-wrap">
+                <span class="cif-icon">🔒</span>
+                <input type="password" id="fSenhaNova" placeholder="Mínimo 8 caracteres" oninput="checkPwdStrength(this.value)" />
+                <button class="pwd-toggle" onclick="togglePwd('fSenhaNova',this)">👁</button>
+              </div>
+              <div class="pwd-strength-bar"><div id="pwdStrengthFill"></div></div>
+              <div class="pwd-strength-label" id="pwdStrengthLabel"></div>
+            </div>
+            <div class="cfg-field">
+              <label>Confirmar nova senha</label>
+              <div class="cfg-input-wrap pwd-wrap">
+                <span class="cif-icon">🔒</span>
+                <input type="password" id="fSenhaConf" placeholder="Repita a senha" oninput="checkPwdMatch()" />
+                <button class="pwd-toggle" onclick="togglePwd('fSenhaConf',this)">👁</button>
+              </div>
+              <div class="pwd-match-label" id="pwdMatchLabel"></div>
+            </div>
+          </div>
+          <div class="cfg-card-footer">
+            <button class="cfg-btn-save" onclick="savePassword()">🔒 Alterar senha</button>
+          </div>
+        </div>
+
+        <!-- 2FA -->
+        <div class="cfg-card">
+          <div class="cfg-card-title">Autenticação em dois fatores (2FA)</div>
+          <div class="tfa-block">
+            <div class="tfa-status off" id="tfaStatus">
+              <div class="tfa-icon">🔐</div>
+              <div class="tfa-info">
+                <span class="tfa-state">Desativado</span>
+                <span class="tfa-desc">Adicione uma camada extra de segurança à sua conta</span>
+              </div>
+              <button class="cfg-btn-save" onclick="openModal('tfa')">Ativar 2FA</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- SESSÕES -->
+        <div class="cfg-card">
+          <div class="cfg-card-topbar">
+            <div class="cfg-card-title">Sessões ativas</div>
+            <button class="cfg-btn-danger-sm" onclick="revokeAllSessions()">Encerrar todas</button>
+          </div>
+          <div class="sessions-list" id="sessionsList"></div>
+        </div>
+      </section>
+
+      <!-- ══ PREFERÊNCIAS ══ -->
+      <section class="cfg-section" id="sec-preferencias">
+        <div class="cfg-sec-header">
+          <div class="cfg-sec-icon" style="background:linear-gradient(135deg,#6366F1,#4338CA)">🎛️</div>
+          <div><h2>Preferências do Sistema</h2><p>Idioma, timezone, aparência e comportamento</p></div>
+        </div>
+
+        <div class="cfg-card">
+          <div class="cfg-card-title">Aparência e regional</div>
+          <div class="cfg-form-grid">
+            <div class="cfg-field">
+              <label>Idioma</label>
+              <div class="cfg-input-wrap">
+                <span class="cif-icon">🌐</span>
+                <select onchange="markDirty()">
+                  <option value="pt" selected>🇧🇷 Português (Brasil)</option>
+                  <option value="en">🇺🇸 English</option>
+                  <option value="es">🇪🇸 Español</option>
+                </select>
+              </div>
+            </div>
+            <div class="cfg-field">
+              <label>Fuso horário</label>
+              <div class="cfg-input-wrap">
+                <span class="cif-icon">🕐</span>
+                <select onchange="markDirty()">
+                  <option value="america/saopaulo" selected>America/São_Paulo (GMT-3)</option>
+                  <option value="america/manaus">America/Manaus (GMT-4)</option>
+                  <option value="america/belem">America/Belém (GMT-3)</option>
+                  <option value="america/fortaleza">America/Fortaleza (GMT-3)</option>
+                </select>
+              </div>
+            </div>
+            <div class="cfg-field">
+              <label>Formato de data</label>
+              <div class="cfg-input-wrap">
+                <span class="cif-icon">📅</span>
+                <select onchange="markDirty()">
+                  <option value="dmy" selected>DD/MM/AAAA</option>
+                  <option value="mdy">MM/DD/YYYY</option>
+                  <option value="ymd">AAAA-MM-DD</option>
+                </select>
+              </div>
+            </div>
+            <div class="cfg-field">
+              <label>Moeda</label>
+              <div class="cfg-input-wrap">
+                <span class="cif-icon">💰</span>
+                <select onchange="markDirty()">
+                  <option value="brl" selected>R$ — Real Brasileiro</option>
+                  <option value="usd">$ — Dólar Americano</option>
+                  <option value="eur">€ — Euro</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <!-- TEMA -->
+          <div class="theme-selector">
+            <div class="cfg-field-label">Tema</div>
+            <div class="theme-options">
+              <div class="theme-opt active" onclick="selectTheme(this,'dark')" data-theme="dark">
+                <div class="to-preview dark-prev">
+                  <div class="tp-bar"></div><div class="tp-content"><div class="tp-block"></div><div class="tp-block short"></div></div>
+                </div>
+                <span>Dark</span>
+              </div>
+              <div class="theme-opt" onclick="selectTheme(this,'light')" data-theme="light">
+                <div class="to-preview light-prev">
+                  <div class="tp-bar"></div><div class="tp-content"><div class="tp-block"></div><div class="tp-block short"></div></div>
+                </div>
+                <span>Light</span>
+              </div>
+              <div class="theme-opt" onclick="selectTheme(this,'auto')" data-theme="auto">
+                <div class="to-preview auto-prev">
+                  <div class="tp-bar"></div><div class="tp-content"><div class="tp-block"></div><div class="tp-block short"></div></div>
+                </div>
+                <span>Auto</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="cfg-card-footer">
+            <button class="cfg-btn-save" onclick="saveSection('preferencias')">💾 Salvar preferências</button>
+          </div>
+        </div>
+
+        <!-- COMPORTAMENTO -->
+        <div class="cfg-card">
+          <div class="cfg-card-title">Comportamento do sistema</div>
+          <div class="notif-list">
+            <div class="cfg-toggle-row">
+              <div class="ctr-info">
+                <span class="ctr-name">Sidebar compacta por padrão</span>
+                <span class="ctr-desc">Iniciar com menu recolhido</span>
+              </div>
+              <div class="cfg-switch" onclick="toggleSwitch(this)"></div>
+            </div>
+            <div class="cfg-toggle-row">
+              <div class="ctr-info">
+                <span class="ctr-name">Animações da interface</span>
+                <span class="ctr-desc">Transições e efeitos visuais</span>
+              </div>
+              <div class="cfg-switch active" onclick="toggleSwitch(this)"></div>
+            </div>
+            <div class="cfg-toggle-row">
+              <div class="ctr-info">
+                <span class="ctr-name">Salvar automaticamente</span>
+                <span class="ctr-desc">Salvar rascunhos de fluxos ao sair</span>
+              </div>
+              <div class="cfg-switch active" onclick="toggleSwitch(this)"></div>
+            </div>
+            <div class="cfg-toggle-row">
+              <div class="ctr-info">
+                <span class="ctr-name">Analytics anônimos</span>
+                <span class="ctr-desc">Ajudar a melhorar o produto</span>
+              </div>
+              <div class="cfg-switch active" onclick="toggleSwitch(this)"></div>
+            </div>
+            <div class="cfg-toggle-row">
+              <div class="ctr-info">
+                <span class="ctr-name">Pré-visualização de links</span>
+                <span class="ctr-desc">Mostrar thumbnails de URLs nas conversas</span>
+              </div>
+              <div class="cfg-switch active" onclick="toggleSwitch(this)"></div>
+            </div>
+          </div>
+          <div class="cfg-card-footer">
+            <button class="cfg-btn-save" onclick="saveSection('preferencias')">💾 Salvar</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ══ INTEGRAÇÕES ══ -->
+      <section class="cfg-section" id="sec-integracao">
+        <div class="cfg-sec-header">
+          <div class="cfg-sec-icon" style="background:linear-gradient(135deg,#14B8A6,#0D9488)">🔗</div>
+          <div><h2>Integrações</h2><p>Conecte ferramentas externas ao GVP BOT</p></div>
+        </div>
+
+        <div class="cfg-card">
+          <div class="cfg-card-title">Webhooks e APIs</div>
+          <div class="cfg-field">
+            <label>Chave de API</label>
+            <div class="cfg-input-wrap api-key-wrap">
+              <span class="cif-icon">🔑</span>
+              <input type="password" id="apiKeyInput" value="gvp_live_sk_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" readonly />
+              <button class="api-show-btn" onclick="togglePwd('apiKeyInput',this)">👁</button>
+              <button class="api-copy-btn" onclick="copyAPIKey()">📋</button>
+              <button class="api-regen-btn" onclick="regenAPIKey()">↺</button>
+            </div>
+          </div>
+
+          <div class="integrations-grid" id="integrationsGrid"></div>
+          <div class="cfg-card-footer">
+            <button class="cfg-btn-save" onclick="saveSection('integracao')">💾 Salvar integrações</button>
+          </div>
+        </div>
+      </section>
+
+    </div><!-- /cfg-content -->
+  </div><!-- /cfg-layout -->
+</main>
+
+<!-- ══════════════ MODALS ══════════════ -->
+
+<!-- 2FA MODAL -->
+<div class="modal-overlay" id="tfaModal" onclick="closeModal('tfa')">
+  <div class="cfg-modal-box" onclick="event.stopPropagation()">
+    <div class="cmb-header">
+      <div class="cmb-htitle"><span class="cmb-hicon">🔐</span><div><h3>Ativar autenticação 2FA</h3><p>Escaneie o QR Code com seu app autenticador</p></div></div>
+      <button class="modal-close-btn" onclick="closeModal('tfa')">✕</button>
+    </div>
+    <div class="tfa-modal-body">
+      <div class="tfa-qr-wrap">
+        <canvas id="tfa2QRCanvas" width="160" height="160"></canvas>
+      </div>
+      <p class="tfa-hint">Use Google Authenticator, Authy ou similar</p>
+      <div class="tfa-code-input">
+        <label>Digite o código de 6 dígitos</label>
+        <div class="tfa-digits" id="tfaDigits">
+          <input type="text" maxlength="1" class="tfa-digit" oninput="tfaInputNext(this,0)" />
+          <input type="text" maxlength="1" class="tfa-digit" oninput="tfaInputNext(this,1)" />
+          <input type="text" maxlength="1" class="tfa-digit" oninput="tfaInputNext(this,2)" />
+          <input type="text" maxlength="1" class="tfa-digit" oninput="tfaInputNext(this,3)" />
+          <input type="text" maxlength="1" class="tfa-digit" oninput="tfaInputNext(this,4)" />
+          <input type="text" maxlength="1" class="tfa-digit" oninput="tfaInputNext(this,5)" />
+        </div>
+      </div>
+    </div>
+    <div class="cmb-footer">
+      <button class="cmb-cancel" onclick="closeModal('tfa')">Cancelar</button>
+      <button class="cfg-btn-save" onclick="activate2FA()">✅ Verificar e ativar</button>
+    </div>
+  </div>
+</div>
+
+<!-- DELETE ACCOUNT MODAL -->
+<div class="modal-overlay" id="deleteAccountModal" onclick="closeModal('deleteAccount')">
+  <div class="cfg-modal-box danger-modal" onclick="event.stopPropagation()">
+    <div class="danger-header">
+      <div class="dh-icon">⚠️</div>
+      <h3>Excluir conta permanentemente</h3>
+      <p>Esta ação é <strong>irreversível</strong>. Todos os dados, fluxos, clientes e configurações serão apagados.</p>
+    </div>
+    <div class="danger-checklist">
+      <label class="dck-item"><input type="checkbox" id="dck1" onchange="checkDeleteReady()" /><span>Entendo que todos os meus dados serão excluídos</span></label>
+      <label class="dck-item"><input type="checkbox" id="dck2" onchange="checkDeleteReady()" /><span>Entendo que minha assinatura será cancelada</span></label>
+      <label class="dck-item"><input type="checkbox" id="dck3" onchange="checkDeleteReady()" /><span>Confirmo que quero excluir minha conta</span></label>
+    </div>
+    <div class="cfg-field" style="margin-top:1rem">
+      <label>Digite <strong>EXCLUIR CONTA</strong> para confirmar</label>
+      <input type="text" id="deleteConfirmInput" placeholder="EXCLUIR CONTA" oninput="checkDeleteReady()" class="danger-input" />
+    </div>
+    <div class="cmb-footer">
+      <button class="cmb-cancel" onclick="closeModal('deleteAccount')">Cancelar</button>
+      <button class="dmb-confirm" id="deleteConfirmBtn" disabled onclick="confirmDeleteAccount()">🗑️ Excluir conta</button>
+    </div>
+  </div>
+</div>
+
+<!-- ADD RESPOSTA RÁPIDA MODAL -->
+<div class="modal-overlay" id="addRespostaModal" onclick="closeModal('addResposta')">
+  <div class="cfg-modal-box" onclick="event.stopPropagation()">
+    <div class="cmb-header">
+      <div class="cmb-htitle"><span class="cmb-hicon">⚡</span><div><h3 id="rrModalTitle">Nova Resposta Rápida</h3><p>Crie um atalho de texto reutilizável</p></div></div>
+      <button class="modal-close-btn" onclick="closeModal('addResposta')">✕</button>
+    </div>
+    <div style="padding:1.25rem 1.5rem;display:flex;flex-direction:column;gap:1rem">
+      <div class="cfg-field">
+        <label>Atalho (comando)</label>
+        <div class="cfg-input-wrap">
+          <span class="cif-icon">/</span>
+          <input type="text" id="fRRAtualho" placeholder="ex: saudacao, preco, horario" />
+        </div>
+        <span style="font-size:.72rem;color:var(--text-muted);margin-top:.2rem;display:block">Use apenas letras, sem espaços</span>
+      </div>
+      <div class="cfg-field">
+        <label>Título</label>
+        <div class="cfg-input-wrap">
+          <span class="cif-icon">📝</span>
+          <input type="text" id="fRRTitulo" placeholder="ex: Mensagem de boas-vindas" />
+        </div>
+      </div>
+      <div class="cfg-field">
+        <label>Conteúdo da resposta</label>
+        <textarea id="fRRConteudo" rows="4" placeholder="Escreva a mensagem completa aqui...
+Use {{nome_cliente}} para variáveis"></textarea>
+      </div>
+      <div class="cfg-field">
+        <label>Categoria</label>
+        <div class="cfg-input-wrap">
+          <span class="cif-icon">📁</span>
+          <select id="fRRCategoria">
+            <option value="geral">Geral</option>
+            <option value="vendas">Vendas</option>
+            <option value="suporte">Suporte</option>
+            <option value="cobranca">Cobrança</option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <div class="cmb-footer">
+      <button class="cmb-cancel" onclick="closeModal('addResposta')">Cancelar</button>
+      <button class="cfg-btn-save" onclick="saveResposta()">✅ Salvar atalho</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast-container" id="toastContainer"></div>
+
+<script src="js/main.js"></script>
+<script src="js/configuracoes.js"></script>
+</body>
+</html>

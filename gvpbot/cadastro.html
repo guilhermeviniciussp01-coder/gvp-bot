@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Criar Conta — GVP BOT</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+</head>
+<body class="auth-page">
+  <div class="auth-bg">
+    <div class="auth-orb orb-1"></div>
+    <div class="auth-orb orb-2"></div>
+    <div class="grid-overlay"></div>
+  </div>
+
+  <div class="auth-container">
+    <div class="auth-card wide-card">
+      <a href="index.html" class="auth-logo">
+        <svg width="40" height="40" viewBox="0 0 32 32" fill="none">
+          <defs>
+            <linearGradient id="lg2" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" style="stop-color:#3B82F6"/>
+              <stop offset="100%" style="stop-color:#8B5CF6"/>
+            </linearGradient>
+          </defs>
+          <rect width="32" height="32" rx="8" fill="url(#lg2)"/>
+          <path d="M8 10h16M8 16h10M8 22h13" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
+          <circle cx="24" cy="22" r="4" fill="#22C55E"/>
+        </svg>
+        <span class="logo-text">GVP<span class="logo-accent">BOT</span></span>
+      </a>
+
+      <h1 class="auth-title">Crie sua conta grátis</h1>
+      <p class="auth-subtitle">7 dias grátis · Sem cartão de crédito</p>
+
+      <div class="progress-steps">
+        <div class="progress-step active" id="pStep1">
+          <div class="ps-num">1</div>
+          <span>Dados</span>
+        </div>
+        <div class="progress-line" id="pLine1"></div>
+        <div class="progress-step" id="pStep2">
+          <div class="ps-num">2</div>
+          <span>Empresa</span>
+        </div>
+        <div class="progress-line" id="pLine2"></div>
+        <div class="progress-step" id="pStep3">
+          <div class="ps-num">3</div>
+          <span>Plano</span>
+        </div>
+      </div>
+
+      <form class="auth-form" id="cadastroForm" onsubmit="handleCadastro(event)">
+        <!-- STEP 1 -->
+        <div class="form-step active" id="step1">
+          <div class="form-row">
+            <div class="form-group">
+              <label>Nome completo</label>
+              <div class="input-wrapper">
+                <span class="input-icon">👤</span>
+                <input type="text" id="nome" placeholder="Seu nome" />
+              </div>
+              <span class="field-error" id="nomeError"></span>
+            </div>
+            <div class="form-group">
+              <label>Telefone / WhatsApp</label>
+              <div class="input-wrapper">
+                <span class="input-icon">📱</span>
+                <input type="tel" id="tel" placeholder="(11) 9 9999-9999" />
+              </div>
+              <span class="field-error" id="telError"></span>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>E-mail</label>
+            <div class="input-wrapper">
+              <span class="input-icon">✉️</span>
+              <input type="email" id="email" placeholder="seu@email.com" />
+            </div>
+            <span class="field-error" id="emailError"></span>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Senha</label>
+              <div class="input-wrapper">
+                <span class="input-icon">🔒</span>
+                <input type="password" id="senha" placeholder="Mínimo 8 caracteres" oninput="checkStrength(this.value)" />
+                <button type="button" class="toggle-pw" onclick="togglePassword('senha', this)">👁️</button>
+              </div>
+              <div class="pw-strength" id="pwStrength">
+                <div class="pw-bar"><div class="pw-fill" id="pwFill"></div></div>
+                <span id="pwLabel"></span>
+              </div>
+              <span class="field-error" id="senhaError"></span>
+            </div>
+            <div class="form-group">
+              <label>Confirmar senha</label>
+              <div class="input-wrapper">
+                <span class="input-icon">🔒</span>
+                <input type="password" id="confirmarSenha" placeholder="Repita a senha" />
+                <button type="button" class="toggle-pw" onclick="togglePassword('confirmarSenha', this)">👁️</button>
+              </div>
+              <span class="field-error" id="confirmarSenhaError"></span>
+            </div>
+          </div>
+          <button type="button" class="btn-submit" onclick="nextStep(2)">Próximo →</button>
+        </div>
+
+        <!-- STEP 2 -->
+        <div class="form-step" id="step2">
+          <div class="form-group">
+            <label>Nome da empresa</label>
+            <div class="input-wrapper">
+              <span class="input-icon">🏢</span>
+              <input type="text" id="empresa" placeholder="Nome do seu negócio" />
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Segmento</label>
+            <div class="input-wrapper select-wrapper">
+              <span class="input-icon">🏷️</span>
+              <select id="segmento">
+                <option value="">Selecione seu segmento</option>
+                <option>Loja de roupas/moda</option>
+                <option>Restaurante/delivery</option>
+                <option>Clínica/saúde/estética</option>
+                <option>Imóveis</option>
+                <option>Educação/cursos</option>
+                <option>Serviços</option>
+                <option>Outro</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Quantos atendimentos por dia?</label>
+            <div class="volume-options">
+              <button type="button" class="volume-btn" onclick="selectVolume(this)">1-20</button>
+              <button type="button" class="volume-btn" onclick="selectVolume(this)">20-100</button>
+              <button type="button" class="volume-btn" onclick="selectVolume(this)">100-500</button>
+              <button type="button" class="volume-btn" onclick="selectVolume(this)">500+</button>
+            </div>
+          </div>
+          <div class="form-nav">
+            <button type="button" class="btn-ghost-sm" onclick="nextStep(1)">← Voltar</button>
+            <button type="button" class="btn-submit" style="flex:1" onclick="nextStep(3)">Próximo →</button>
+          </div>
+        </div>
+
+        <!-- STEP 3 -->
+        <div class="form-step" id="step3">
+          <div class="mini-pricing">
+            <div class="mini-plan" onclick="selectPlan(this, 'starter')">
+              <div class="mp-name">Starter</div>
+              <div class="mp-price">R$ 47<span>/mês</span></div>
+              <div class="mp-note">500 conversas</div>
+            </div>
+            <div class="mini-plan selected" onclick="selectPlan(this, 'pro')">
+              <div class="mp-badge">Popular</div>
+              <div class="mp-name">Pro</div>
+              <div class="mp-price">R$ 97<span>/mês</span></div>
+              <div class="mp-note">Ilimitado + IA</div>
+            </div>
+            <div class="mini-plan" onclick="selectPlan(this, 'enterprise')">
+              <div class="mp-name">Enterprise</div>
+              <div class="mp-price">R$ 247<span>/mês</span></div>
+              <div class="mp-note">Multi-agente</div>
+            </div>
+          </div>
+          <div class="form-check" style="margin:1rem 0">
+            <label class="checkbox-label">
+              <input type="checkbox" id="terms" />
+              <span class="checkmark"></span>
+              Concordo com os <a href="#" style="color:var(--blue)">Termos de Uso</a> e <a href="#" style="color:var(--blue)">Política de Privacidade</a>
+            </label>
+          </div>
+          <div class="form-error" id="formError"></div>
+          <div class="form-nav">
+            <button type="button" class="btn-ghost-sm" onclick="nextStep(2)">← Voltar</button>
+            <button type="submit" class="btn-submit" style="flex:1" id="submitBtn">
+              <span class="btn-text">Criar conta grátis 🚀</span>
+              <div class="btn-loader" id="btnLoader"></div>
+            </button>
+          </div>
+        </div>
+      </form>
+
+      <p class="auth-footer-text">
+        Já tem uma conta? <a href="login.html">Entrar</a>
+      </p>
+    </div>
+  </div>
+
+  <script src="js/main.js"></script>
+  <script>
+    let currentStep = 1;
+    let selectedPlan = 'pro';
+
+    function nextStep(step) {
+      if (step > currentStep && !validateStep(currentStep)) return;
+      document.getElementById('step' + currentStep).classList.remove('active');
+      document.getElementById('pStep' + currentStep).classList.remove('active');
+      currentStep = step;
+      document.getElementById('step' + currentStep).classList.add('active');
+      document.getElementById('pStep' + currentStep).classList.add('active');
+      if (step > 1) document.getElementById('pLine' + (step-1)).classList.add('active');
+      if (step < 3) document.getElementById('pLine' + step)?.classList.remove('active');
+    }
+
+    function validateStep(s) {
+      if (s === 1) {
+        const n = document.getElementById('nome').value;
+        const e = document.getElementById('email').value;
+        const pw = document.getElementById('senha').value;
+        const cpw = document.getElementById('confirmarSenha').value;
+        let ok = true;
+        if (!n) { showFieldError('nomeError','Digite seu nome'); ok=false; }
+        if (!e || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e)) { showFieldError('emailError','E-mail inválido'); ok=false; }
+        if (pw.length < 8) { showFieldError('senhaError','Mínimo 8 caracteres'); ok=false; }
+        if (pw !== cpw) { showFieldError('confirmarSenhaError','As senhas não coincidem'); ok=false; }
+        return ok;
+      }
+      return true;
+    }
+
+    function showFieldError(id, msg) { document.getElementById(id).textContent = msg; setTimeout(()=>document.getElementById(id).textContent='',3000); }
+
+    function checkStrength(pw) {
+      const fill = document.getElementById('pwFill');
+      const label = document.getElementById('pwLabel');
+      let score = 0;
+      if (pw.length >= 8) score++;
+      if (/[A-Z]/.test(pw)) score++;
+      if (/[0-9]/.test(pw)) score++;
+      if (/[^A-Za-z0-9]/.test(pw)) score++;
+      const colors = ['#EF4444','#F59E0B','#3B82F6','#22C55E'];
+      const labels = ['Fraca','Média','Boa','Forte'];
+      fill.style.width = (score*25)+'%';
+      fill.style.background = colors[score-1] || '#333';
+      label.textContent = labels[score-1] || '';
+      label.style.color = colors[score-1] || '';
+    }
+
+    function togglePassword(id, btn) {
+      const inp = document.getElementById(id);
+      inp.type = inp.type === 'password' ? 'text' : 'password';
+      btn.textContent = inp.type === 'password' ? '👁️' : '🙈';
+    }
+
+    function selectVolume(btn) {
+      document.querySelectorAll('.volume-btn').forEach(b => b.classList.remove('selected'));
+      btn.classList.add('selected');
+    }
+
+    function selectPlan(el, plan) {
+      document.querySelectorAll('.mini-plan').forEach(p => p.classList.remove('selected'));
+      el.classList.add('selected');
+      selectedPlan = plan;
+    }
+
+    function handleCadastro(e) {
+      e.preventDefault();
+      if (!document.getElementById('terms').checked) {
+        document.getElementById('formError').textContent = 'Você precisa aceitar os termos para continuar.';
+        return;
+      }
+      document.getElementById('formError').textContent = '';
+      const btn = document.getElementById('submitBtn');
+      btn.classList.add('loading');
+      setTimeout(() => { window.location.href = 'dashboard.html'; }, 2000);
+    }
+  </script>
+</body>
+</html>

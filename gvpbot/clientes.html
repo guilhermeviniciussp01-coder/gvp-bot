@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Clientes — GVP BOT</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/clientes.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+</head>
+<body class="dashboard-page">
+
+<!-- SIDEBAR -->
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-header">
+    <div class="nav-logo">
+      <div class="logo-icon">
+        <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+          <defs><linearGradient id="lg4" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#3B82F6"/><stop offset="100%" style="stop-color:#8B5CF6"/></linearGradient></defs>
+          <rect width="32" height="32" rx="8" fill="url(#lg4)"/>
+          <path d="M8 10h16M8 16h10M8 22h13" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
+          <circle cx="24" cy="22" r="4" fill="#22C55E"/>
+        </svg>
+      </div>
+      <span class="logo-text">GVP<span class="logo-accent">BOT</span></span>
+    </div>
+    <button class="sidebar-toggle-btn" onclick="toggleSidebar()">☰</button>
+  </div>
+  <nav class="sidebar-nav">
+    <div class="nav-section-label">Principal</div>
+    <a href="dashboard.html" class="nav-item"><span class="nav-icon">📊</span><span class="nav-label">Dashboard</span></a>
+    <a href="#" class="nav-item"><span class="nav-icon">💬</span><span class="nav-label">Conversas</span><span class="nav-badge">23</span></a>
+    <a href="clientes.html" class="nav-item active"><span class="nav-icon">👥</span><span class="nav-label">Clientes</span></a>
+    <a href="fluxos.html" class="nav-item"><span class="nav-icon">🔀</span><span class="nav-label">Fluxos</span></a>
+    <a href="#" class="nav-item"><span class="nav-icon">📣</span><span class="nav-label">Campanhas</span></a>
+    <div class="nav-section-label">Canais</div>
+    <a href="whatsapp.html" class="nav-item"><span class="nav-icon">🟢</span><span class="nav-label">WhatsApp</span><span class="channel-status online"></span></a>
+    <a href="instagram.html" class="nav-item"><span class="nav-icon">📸</span><span class="nav-label">Instagram</span><span class="channel-status online"></span></a>
+    <div class="nav-section-label">Config.</div>
+    <a href="ia.html" class="nav-item"><span class="nav-icon">🤖</span><span class="nav-label">Config. IA</span></a>
+    <a href="#" class="nav-item"><span class="nav-icon">🔗</span><span class="nav-label">Integrações</span></a>
+    <a href="#" class="nav-item"><span class="nav-icon">⚙️</span><span class="nav-label">Configurações</span></a>
+  </nav>
+  <div class="sidebar-footer">
+    <div class="user-mini">
+      <div class="user-avatar-sm">GV</div>
+      <div class="user-mini-info"><span class="user-mini-name">Guilherme V.</span><span class="user-mini-plan">Plano Pro</span></div>
+    </div>
+    <a href="login.html" class="logout-btn">⬅️</a>
+  </div>
+</aside>
+
+<!-- MAIN -->
+<main class="main-content" id="mainContent">
+
+  <!-- TOPBAR -->
+  <header class="topbar">
+    <div class="topbar-left">
+      <button class="mobile-sidebar-btn" onclick="toggleSidebar()">☰</button>
+      <div class="page-title">
+        <h1>Clientes</h1>
+        <p class="page-subtitle">Gerencie todos os seus clientes em um só lugar</p>
+      </div>
+    </div>
+    <div class="topbar-right">
+      <button class="topbar-btn" onclick="exportCSV()" title="Exportar CSV">📤 Exportar</button>
+      <button class="btn-primary" onclick="openModal('new')">
+        + Novo Cliente
+      </button>
+      <div class="topbar-user" onclick="toggleUserMenu()">
+        <div class="user-avatar">GV</div>
+        <span>Guilherme</span>
+        <span>▾</span>
+        <div class="user-dropdown" id="userDropdown">
+          <a href="#">👤 Perfil</a>
+          <a href="#">⚙️ Configurações</a>
+          <div class="dropdown-divider"></div>
+          <a href="login.html" style="color:#EF4444">⬅️ Sair</a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <div class="content-area">
+
+    <!-- KPI ROW -->
+    <div class="cl-kpi-row" id="kpiRow">
+      <div class="cl-kpi">
+        <div class="clk-icon" style="background:linear-gradient(135deg,#3B82F6,#1D4ED8)">👥</div>
+        <div class="clk-info">
+          <span class="clk-val" id="kpiTotal">0</span>
+          <span class="clk-lab">Total de clientes</span>
+        </div>
+        <div class="clk-trend up">↑ 12%</div>
+      </div>
+      <div class="cl-kpi">
+        <div class="clk-icon" style="background:linear-gradient(135deg,#22C55E,#16A34A)">✅</div>
+        <div class="clk-info">
+          <span class="clk-val" id="kpiActive">0</span>
+          <span class="clk-lab">Ativos</span>
+        </div>
+        <div class="clk-trend up">↑ 8%</div>
+      </div>
+      <div class="cl-kpi">
+        <div class="clk-icon" style="background:linear-gradient(135deg,#8B5CF6,#6D28D9)">💎</div>
+        <div class="clk-info">
+          <span class="clk-val" id="kpiPro">0</span>
+          <span class="clk-lab">Plano Pro+</span>
+        </div>
+        <div class="clk-trend up">↑ 5%</div>
+      </div>
+      <div class="cl-kpi">
+        <div class="clk-icon" style="background:linear-gradient(135deg,#F59E0B,#D97706)">⚠️</div>
+        <div class="clk-info">
+          <span class="clk-val" id="kpiTrial">0</span>
+          <span class="clk-lab">Trial / Inativo</span>
+        </div>
+        <div class="clk-trend down">↓ 3%</div>
+      </div>
+    </div>
+
+    <!-- TOOLBAR -->
+    <div class="cl-toolbar">
+      <div class="cl-search">
+        <span class="cls-icon">🔍</span>
+        <input type="text" id="searchInput" placeholder="Buscar por nome, telefone ou empresa..." oninput="filterTable()" />
+        <button class="cls-clear" id="searchClear" onclick="clearSearch()" style="display:none">✕</button>
+      </div>
+      <div class="cl-filters">
+        <div class="cl-filter-group">
+          <select id="filterStatus" onchange="filterTable()">
+            <option value="">Todos os status</option>
+            <option value="Ativo">✅ Ativo</option>
+            <option value="Trial">🟡 Trial</option>
+            <option value="Inativo">🔴 Inativo</option>
+            <option value="Bloqueado">🚫 Bloqueado</option>
+          </select>
+        </div>
+        <div class="cl-filter-group">
+          <select id="filterPlano" onchange="filterTable()">
+            <option value="">Todos os planos</option>
+            <option value="Starter">Starter</option>
+            <option value="Pro">Pro</option>
+            <option value="Enterprise">Enterprise</option>
+          </select>
+        </div>
+        <div class="cl-filter-group">
+          <select id="filterOrder" onchange="filterTable()">
+            <option value="newer">Mais recentes</option>
+            <option value="older">Mais antigos</option>
+            <option value="name">Nome A-Z</option>
+            <option value="plano">Plano</option>
+          </select>
+        </div>
+        <button class="cl-filter-reset" onclick="resetFilters()">↺ Limpar</button>
+      </div>
+      <div class="cl-view-toggle">
+        <button class="vt-btn active" id="vtTable" onclick="setView('table',this)" title="Tabela">☰</button>
+        <button class="vt-btn" id="vtGrid" onclick="setView('grid',this)" title="Cards">⊞</button>
+      </div>
+    </div>
+
+    <!-- SELECTION BAR -->
+    <div class="selection-bar" id="selectionBar" style="display:none">
+      <span id="selCount">0 selecionados</span>
+      <div class="sb-actions">
+        <button onclick="bulkAction('email')">📧 Enviar e-mail</button>
+        <button onclick="bulkAction('export')">📤 Exportar selecionados</button>
+        <button onclick="bulkAction('delete')" class="sb-danger">🗑️ Deletar</button>
+      </div>
+      <button class="sb-close" onclick="clearSelection()">✕</button>
+    </div>
+
+    <!-- TABLE CARD -->
+    <div class="cl-table-card" id="tableCard">
+      <div class="table-responsive">
+        <table class="cl-table" id="clientesTable">
+          <thead>
+            <tr>
+              <th class="th-check">
+                <label class="checkbox-label">
+                  <input type="checkbox" id="selectAll" onchange="toggleSelectAll(this)" />
+                  <span class="checkmark"></span>
+                </label>
+              </th>
+              <th class="sortable" onclick="sortBy('nome')">
+                Cliente <span class="sort-icon" id="sort-nome">↕</span>
+              </th>
+              <th>Telefone</th>
+              <th class="sortable" onclick="sortBy('empresa')">
+                Empresa <span class="sort-icon" id="sort-empresa">↕</span>
+              </th>
+              <th class="sortable" onclick="sortBy('plano')">
+                Plano <span class="sort-icon" id="sort-plano">↕</span>
+              </th>
+              <th class="sortable" onclick="sortBy('status')">
+                Status <span class="sort-icon" id="sort-status">↕</span>
+              </th>
+              <th class="sortable" onclick="sortBy('data')">
+                Cadastro <span class="sort-icon" id="sort-data">↕</span>
+              </th>
+              <th class="th-actions">Ações</th>
+            </tr>
+          </thead>
+          <tbody id="tableBody"></tbody>
+        </table>
+      </div>
+
+      <!-- EMPTY STATE -->
+      <div class="empty-state" id="emptyState" style="display:none">
+        <div class="es-icon">🔍</div>
+        <h4>Nenhum cliente encontrado</h4>
+        <p>Tente ajustar os filtros ou adicione novos clientes</p>
+        <button class="btn-primary" onclick="resetFilters()">Limpar filtros</button>
+      </div>
+
+      <!-- PAGINATION -->
+      <div class="cl-pagination" id="pagination">
+        <div class="pag-info" id="pagInfo">Mostrando 1-10 de 42 clientes</div>
+        <div class="pag-controls">
+          <button class="pag-btn" id="pagPrev" onclick="changePage(-1)">‹ Anterior</button>
+          <div class="pag-pages" id="pagPages"></div>
+          <button class="pag-btn" id="pagNext" onclick="changePage(1)">Próximo ›</button>
+        </div>
+        <div class="pag-size">
+          <span>Linhas:</span>
+          <select onchange="changePageSize(this.value)">
+            <option value="10" selected>10</option>
+            <option value="25">25</option>
+            <option value="50">50</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <!-- GRID VIEW -->
+    <div class="cl-grid-view" id="gridView" style="display:none">
+      <div class="cl-cards-grid" id="cardsGrid"></div>
+      <div class="cl-pagination" id="paginationGrid">
+        <div class="pag-info" id="pagInfoGrid"></div>
+        <div class="pag-controls">
+          <button class="pag-btn" onclick="changePage(-1)">‹</button>
+          <div class="pag-pages" id="pagPagesGrid"></div>
+          <button class="pag-btn" onclick="changePage(1)">›</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<!-- ── MODALS ── -->
+
+<!-- EDIT / NEW / VIEW MODAL -->
+<div class="modal-overlay" id="clientModal" onclick="closeModal()">
+  <div class="client-modal-box" onclick="event.stopPropagation()">
+    <div class="cmb-header">
+      <div class="cmb-title">
+        <div class="cmb-icon" id="cmbIcon">👤</div>
+        <div>
+          <h3 id="modalTitle">Novo Cliente</h3>
+          <span id="modalSubtitle" style="font-size:.75rem;color:var(--text-muted)">Preencha os dados abaixo</span>
+        </div>
+      </div>
+      <button class="modal-close-btn" onclick="closeModal()">✕</button>
+    </div>
+
+    <!-- VIEW MODE HEADER -->
+    <div class="view-profile" id="viewProfile" style="display:none">
+      <div class="vp-avatar" id="vpAvatar"></div>
+      <div class="vp-info">
+        <h2 id="vpName"></h2>
+        <span id="vpCompany" class="vp-company"></span>
+        <div id="vpBadges" class="vp-badges"></div>
+      </div>
+      <div class="vp-stats">
+        <div class="vps-item"><span class="vps-val" id="vpMsgs">0</span><span class="vps-lab">mensagens</span></div>
+        <div class="vps-item"><span class="vps-val" id="vpLeads">0</span><span class="vps-lab">leads</span></div>
+        <div class="vps-item"><span class="vps-val" id="vpDays">0</span><span class="vps-lab">dias ativo</span></div>
+      </div>
+    </div>
+
+    <div class="cmb-body" id="cmbBody">
+      <div class="modal-tabs" id="modalTabs">
+        <button class="modal-tab active" onclick="switchModalTab(this,'dados')">Dados</button>
+        <button class="modal-tab" onclick="switchModalTab(this,'plano')">Plano</button>
+        <button class="modal-tab" onclick="switchModalTab(this,'historico')">Histórico</button>
+      </div>
+
+      <!-- DADOS TAB -->
+      <div class="modal-tab-panel active" id="mtab-dados">
+        <div class="modal-form-grid">
+          <div class="mfg-field">
+            <label>Nome completo *</label>
+            <input type="text" id="fNome" placeholder="Nome do cliente" />
+          </div>
+          <div class="mfg-field">
+            <label>Telefone / WhatsApp *</label>
+            <input type="tel" id="fTel" placeholder="(11) 9 9999-9999" />
+          </div>
+          <div class="mfg-field">
+            <label>E-mail</label>
+            <input type="email" id="fEmail" placeholder="email@empresa.com" />
+          </div>
+          <div class="mfg-field">
+            <label>Empresa</label>
+            <input type="text" id="fEmpresa" placeholder="Nome da empresa" />
+          </div>
+          <div class="mfg-field">
+            <label>Cargo</label>
+            <input type="text" id="fCargo" placeholder="Ex: CEO, Proprietário..." />
+          </div>
+          <div class="mfg-field">
+            <label>Segmento</label>
+            <select id="fSegmento">
+              <option value="">Selecionar...</option>
+              <option>Loja / Varejo</option>
+              <option>Restaurante / Delivery</option>
+              <option>Saúde / Estética</option>
+              <option>Imóveis</option>
+              <option>Educação</option>
+              <option>Serviços</option>
+              <option>Outro</option>
+            </select>
+          </div>
+        </div>
+        <div class="mfg-field full-width">
+          <label>Observações</label>
+          <textarea id="fObs" rows="3" placeholder="Notas internas sobre o cliente..."></textarea>
+        </div>
+      </div>
+
+      <!-- PLANO TAB -->
+      <div class="modal-tab-panel" id="mtab-plano">
+        <div class="modal-form-grid">
+          <div class="mfg-field">
+            <label>Plano</label>
+            <select id="fPlano">
+              <option value="Starter">Starter — R$ 47/mês</option>
+              <option value="Pro">Pro — R$ 97/mês</option>
+              <option value="Enterprise">Enterprise — R$ 247/mês</option>
+            </select>
+          </div>
+          <div class="mfg-field">
+            <label>Status</label>
+            <select id="fStatus">
+              <option value="Ativo">✅ Ativo</option>
+              <option value="Trial">🟡 Trial</option>
+              <option value="Inativo">🔴 Inativo</option>
+              <option value="Bloqueado">🚫 Bloqueado</option>
+            </select>
+          </div>
+          <div class="mfg-field">
+            <label>Data de cadastro</label>
+            <input type="date" id="fData" />
+          </div>
+          <div class="mfg-field">
+            <label>Vencimento</label>
+            <input type="date" id="fVenc" />
+          </div>
+        </div>
+        <div class="plan-features-check">
+          <div class="pfc-label">Recursos ativos</div>
+          <div class="pfc-grid">
+            <label class="pfc-item"><input type="checkbox" checked /><span class="pfc-check"></span>WhatsApp Bot</label>
+            <label class="pfc-item"><input type="checkbox" checked /><span class="pfc-check"></span>Instagram Bot</label>
+            <label class="pfc-item"><input type="checkbox" checked /><span class="pfc-check"></span>IA Avançada</label>
+            <label class="pfc-item"><input type="checkbox" /><span class="pfc-check"></span>Analytics Pro</label>
+            <label class="pfc-item"><input type="checkbox" /><span class="pfc-check"></span>API Acesso</label>
+            <label class="pfc-item"><input type="checkbox" checked /><span class="pfc-check"></span>Suporte Prioritário</label>
+          </div>
+        </div>
+      </div>
+
+      <!-- HISTÓRICO TAB -->
+      <div class="modal-tab-panel" id="mtab-historico">
+        <div class="historico-list" id="historicoList"></div>
+      </div>
+    </div>
+
+    <div class="cmb-footer" id="cmbFooter">
+      <button class="cmb-cancel" onclick="closeModal()">Cancelar</button>
+      <div style="display:flex;gap:.5rem">
+        <button class="cmb-delete-btn" id="cmbDeleteBtn" onclick="deleteFromModal()" style="display:none">🗑️ Deletar</button>
+        <button class="cmb-save" id="cmbSave" onclick="saveModal()">
+          <span id="cmbSaveText">Salvar cliente</span>
+          <div class="btn-loader" id="cmbSaveLoader" style="display:none"></div>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- DELETE CONFIRM MODAL -->
+<div class="modal-overlay" id="deleteModal" onclick="closeDeleteModal()">
+  <div class="delete-modal-box" onclick="event.stopPropagation()">
+    <div class="dmb-icon">🗑️</div>
+    <h3>Deletar cliente?</h3>
+    <p id="deleteModalDesc">Esta ação não pode ser desfeita.</p>
+    <div class="dmb-actions">
+      <button class="cmb-cancel" onclick="closeDeleteModal()">Cancelar</button>
+      <button class="dmb-confirm" onclick="confirmDelete()">
+        <span id="dmConfirmText">Sim, deletar</span>
+        <div class="btn-loader" id="dmLoader" style="display:none"></div>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast-container" id="toastContainer"></div>
+
+<script src="js/main.js"></script>
+<script src="js/clientes.js"></script>
+</body>
+</html>

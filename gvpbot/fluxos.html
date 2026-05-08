@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Construtor de Fluxos — GVP BOT</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/flowbuilder.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+</head>
+<body class="dashboard-page flow-builder-page">
+
+<!-- SIDEBAR NAV -->
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-header">
+    <div class="nav-logo">
+      <div class="logo-icon">
+        <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+          <defs><linearGradient id="lg4" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#3B82F6"/><stop offset="100%" style="stop-color:#8B5CF6"/></linearGradient></defs>
+          <rect width="32" height="32" rx="8" fill="url(#lg4)"/>
+          <path d="M8 10h16M8 16h10M8 22h13" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
+          <circle cx="24" cy="22" r="4" fill="#22C55E"/>
+        </svg>
+      </div>
+      <span class="logo-text">GVP<span class="logo-accent">BOT</span></span>
+    </div>
+    <button class="sidebar-toggle-btn" onclick="toggleSidebar()">☰</button>
+  </div>
+  <nav class="sidebar-nav">
+    <div class="nav-section-label">Principal</div>
+    <a href="dashboard.html" class="nav-item"><span class="nav-icon">📊</span><span class="nav-label">Dashboard</span></a>
+    <a href="#" class="nav-item"><span class="nav-icon">💬</span><span class="nav-label">Conversas</span><span class="nav-badge">23</span></a>
+    <a href="#" class="nav-item"><span class="nav-icon">👥</span><span class="nav-label">Leads</span></a>
+    <a href="fluxos.html" class="nav-item active"><span class="nav-icon">🔀</span><span class="nav-label">Fluxos</span></a>
+    <a href="#" class="nav-item"><span class="nav-icon">📣</span><span class="nav-label">Campanhas</span></a>
+    <div class="nav-section-label">Canais</div>
+    <a href="whatsapp.html" class="nav-item"><span class="nav-icon">🟢</span><span class="nav-label">WhatsApp</span><span class="channel-status online"></span></a>
+    <a href="instagram.html" class="nav-item"><span class="nav-icon">📸</span><span class="nav-label">Instagram</span><span class="channel-status online"></span></a>
+    <div class="nav-section-label">Config.</div>
+    <a href="#" class="nav-item"><span class="nav-icon">🔗</span><span class="nav-label">Integrações</span></a>
+    <a href="#" class="nav-item"><span class="nav-icon">⚙️</span><span class="nav-label">Configurações</span></a>
+  </nav>
+  <div class="sidebar-footer">
+    <div class="user-mini">
+      <div class="user-avatar-sm">GV</div>
+      <div class="user-mini-info"><span class="user-mini-name">Guilherme V.</span><span class="user-mini-plan">Plano Pro</span></div>
+    </div>
+    <a href="login.html" class="logout-btn">⬅️</a>
+  </div>
+</aside>
+
+<!-- MAIN -->
+<main class="main-content flow-main" id="mainContent">
+
+  <!-- FLOW TOPBAR -->
+  <header class="flow-topbar">
+    <div class="ft-left">
+      <button class="mobile-sidebar-btn" onclick="toggleSidebar()">☰</button>
+      <div class="flow-breadcrumb">
+        <span class="fb-parent" onclick="showFlowList()">Meus Fluxos</span>
+        <span class="fb-sep">›</span>
+        <span class="fb-current" id="flowNameDisplay" contenteditable="true" spellcheck="false">Fluxo de Boas-vindas</span>
+      </div>
+      <div class="flow-status-pill" id="flowStatusPill">
+        <span class="fsp-dot published"></span>
+        <span id="flowStatusText">Publicado</span>
+      </div>
+    </div>
+    <div class="ft-center">
+      <div class="zoom-controls">
+        <button class="zoom-btn" onclick="zoomOut()" title="Zoom out">−</button>
+        <span class="zoom-val" id="zoomVal">100%</span>
+        <button class="zoom-btn" onclick="zoomIn()" title="Zoom in">+</button>
+        <button class="zoom-btn fit-btn" onclick="fitView()" title="Fit to screen">⊡</button>
+      </div>
+    </div>
+    <div class="ft-right">
+      <button class="ft-btn" onclick="undoAction()" title="Desfazer">↩</button>
+      <button class="ft-btn" onclick="redoAction()" title="Refazer">↪</button>
+      <button class="ft-btn" onclick="togglePreview()" title="Pré-visualizar">▶ Preview</button>
+      <button class="btn-save" id="saveBtn" onclick="saveFlow()">
+        <span class="save-text">💾 Salvar</span>
+        <div class="btn-loader" id="saveLoader" style="display:none"></div>
+      </button>
+      <button class="btn-publish" id="publishBtn" onclick="publishFlow()">
+        <span class="pub-text">🚀 Publicar</span>
+        <div class="btn-loader" id="pubLoader" style="display:none"></div>
+      </button>
+      <div class="topbar-user" onclick="toggleUserMenu()">
+        <div class="user-avatar">GV</div>
+        <div class="user-dropdown" id="userDropdown">
+          <a href="dashboard.html">📊 Dashboard</a>
+          <a href="#">⚙️ Configurações</a>
+          <div class="dropdown-divider"></div>
+          <a href="login.html" style="color:#EF4444">⬅️ Sair</a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- BUILDER AREA -->
+  <div class="builder-wrap">
+
+    <!-- LEFT PANEL: BLOCKS PALETTE -->
+    <aside class="blocks-panel" id="blocksPanel">
+      <div class="bp-header">
+        <h3>Blocos</h3>
+        <button class="bp-collapse" onclick="toggleBlocksPanel()" title="Colapsar">‹</button>
+      </div>
+      <div class="bp-search">
+        <span>🔍</span>
+        <input type="text" placeholder="Buscar bloco..." oninput="filterBlocks(this.value)" />
+      </div>
+      <div class="bp-sections" id="bpSections">
+        <div class="bp-section">
+          <div class="bps-label">Início</div>
+          <div class="block-item" draggable="true" data-type="start" ondragstart="dragStart(event)" onclick="addBlock('start')">
+            <div class="bi-icon" style="background:linear-gradient(135deg,#22C55E,#16A34A)">▶</div>
+            <div class="bi-info"><span class="bi-name">Mensagem inicial</span><span class="bi-desc">Inicia o fluxo</span></div>
+          </div>
+        </div>
+        <div class="bp-section">
+          <div class="bps-label">Mensagens</div>
+          <div class="block-item" draggable="true" data-type="text" ondragstart="dragStart(event)" onclick="addBlock('text')">
+            <div class="bi-icon" style="background:linear-gradient(135deg,#3B82F6,#1D4ED8)">💬</div>
+            <div class="bi-info"><span class="bi-name">Texto</span><span class="bi-desc">Enviar mensagem</span></div>
+          </div>
+          <div class="block-item" draggable="true" data-type="image" ondragstart="dragStart(event)" onclick="addBlock('image')">
+            <div class="bi-icon" style="background:linear-gradient(135deg,#8B5CF6,#6D28D9)">🖼</div>
+            <div class="bi-info"><span class="bi-name">Imagem</span><span class="bi-desc">Enviar mídia</span></div>
+          </div>
+          <div class="block-item" draggable="true" data-type="audio" ondragstart="dragStart(event)" onclick="addBlock('audio')">
+            <div class="bi-icon" style="background:linear-gradient(135deg,#EC4899,#BE185D)">🎵</div>
+            <div class="bi-info"><span class="bi-name">Áudio</span><span class="bi-desc">Mensagem de voz</span></div>
+          </div>
+        </div>
+        <div class="bp-section">
+          <div class="bps-label">Interação</div>
+          <div class="block-item" draggable="true" data-type="menu" ondragstart="dragStart(event)" onclick="addBlock('menu')">
+            <div class="bi-icon" style="background:linear-gradient(135deg,#F59E0B,#D97706)">📋</div>
+            <div class="bi-info"><span class="bi-name">Menu</span><span class="bi-desc">Opções interativas</span></div>
+          </div>
+          <div class="block-item" draggable="true" data-type="input" ondragstart="dragStart(event)" onclick="addBlock('input')">
+            <div class="bi-icon" style="background:linear-gradient(135deg,#14B8A6,#0D9488)">✏️</div>
+            <div class="bi-info"><span class="bi-name">Input</span><span class="bi-desc">Capturar resposta</span></div>
+          </div>
+          <div class="block-item" draggable="true" data-type="condition" ondragstart="dragStart(event)" onclick="addBlock('condition')">
+            <div class="bi-icon" style="background:linear-gradient(135deg,#F97316,#EA580C)">⚡</div>
+            <div class="bi-info"><span class="bi-name">Condição</span><span class="bi-desc">Lógica if/else</span></div>
+          </div>
+        </div>
+        <div class="bp-section">
+          <div class="bps-label">Ações</div>
+          <div class="block-item" draggable="true" data-type="lead" ondragstart="dragStart(event)" onclick="addBlock('lead')">
+            <div class="bi-icon" style="background:linear-gradient(135deg,#06B6D4,#0284C7)">👤</div>
+            <div class="bi-info"><span class="bi-name">Capturar Lead</span><span class="bi-desc">Salvar dados</span></div>
+          </div>
+          <div class="block-item" draggable="true" data-type="agent" ondragstart="dragStart(event)" onclick="addBlock('agent')">
+            <div class="bi-icon" style="background:linear-gradient(135deg,#10B981,#059669)">👨‍💼</div>
+            <div class="bi-info"><span class="bi-name">Atendente</span><span class="bi-desc">Encaminhar humano</span></div>
+          </div>
+          <div class="block-item" draggable="true" data-type="redirect" ondragstart="dragStart(event)" onclick="addBlock('redirect')">
+            <div class="bi-icon" style="background:linear-gradient(135deg,#6366F1,#4338CA)">🔀</div>
+            <div class="bi-info"><span class="bi-name">Redirecionar</span><span class="bi-desc">Ir para outro fluxo</span></div>
+          </div>
+          <div class="block-item" draggable="true" data-type="webhook" ondragstart="dragStart(event)" onclick="addBlock('webhook')">
+            <div class="bi-icon" style="background:linear-gradient(135deg,#EF4444,#DC2626)">🔗</div>
+            <div class="bi-info"><span class="bi-name">Webhook</span><span class="bi-desc">Chamar API externa</span></div>
+          </div>
+          <div class="block-item" draggable="true" data-type="end" ondragstart="dragStart(event)" onclick="addBlock('end')">
+            <div class="bi-icon" style="background:linear-gradient(135deg,#64748B,#475569)">⏹</div>
+            <div class="bi-info"><span class="bi-name">Encerrar</span><span class="bi-desc">Finalizar fluxo</span></div>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- CANVAS -->
+    <div class="canvas-wrap" id="canvasWrap"
+         ondragover="event.preventDefault()"
+         ondrop="dropBlock(event)">
+      <div class="canvas-grid" id="canvasGrid">
+        <svg class="connections-svg" id="connectionsSvg" xmlns="http://www.w3.org/2000/svg"></svg>
+        <div class="canvas-nodes" id="canvasNodes"></div>
+      </div>
+    </div>
+
+    <!-- RIGHT PANEL: INSPECTOR -->
+    <aside class="inspector-panel" id="inspectorPanel">
+      <div class="ip-empty" id="ipEmpty">
+        <div class="ip-empty-icon">🖱️</div>
+        <p>Selecione um bloco para editar suas propriedades</p>
+      </div>
+      <div class="ip-content" id="ipContent" style="display:none">
+        <div class="ip-header">
+          <div class="ip-block-icon" id="ipBlockIcon"></div>
+          <div>
+            <div class="ip-block-type" id="ipBlockType"></div>
+            <div class="ip-block-id" id="ipBlockId"></div>
+          </div>
+          <button class="ip-delete-btn" onclick="deleteSelectedBlock()" title="Deletar bloco">🗑️</button>
+        </div>
+        <div class="ip-body" id="ipBody"></div>
+      </div>
+    </aside>
+
+  </div>
+
+  <!-- MINI MAP -->
+  <div class="minimap" id="minimap">
+    <canvas id="minimapCanvas" width="160" height="100"></canvas>
+    <div class="minimap-viewport" id="minimapViewport"></div>
+  </div>
+
+  <!-- BOTTOM TOOLBAR -->
+  <div class="bottom-toolbar">
+    <button class="bt-btn" onclick="addBlock('text')" title="Adicionar Texto">
+      <span>+</span> Adicionar Bloco
+    </button>
+    <div class="bt-sep"></div>
+    <button class="bt-btn danger" onclick="deleteSelectedBlock()" title="Deletar selecionado">
+      🗑️ Deletar
+    </button>
+    <button class="bt-btn" onclick="duplicateBlock()" title="Duplicar">
+      ⎘ Duplicar
+    </button>
+    <div class="bt-sep"></div>
+    <button class="bt-btn" onclick="clearCanvas()" title="Limpar tudo">
+      🧹 Limpar
+    </button>
+    <div class="bt-spacer"></div>
+    <span class="bt-info" id="btInfo">0 blocos · 0 conexões</span>
+  </div>
+
+</main>
+
+<!-- BLOCK TYPE PICKER MODAL -->
+<div class="modal-overlay" id="blockPickerModal" onclick="closeBlockPicker()">
+  <div class="block-picker-box" onclick="event.stopPropagation()">
+    <div class="bpb-header">
+      <h3>Adicionar Bloco</h3>
+      <button onclick="closeBlockPicker()">✕</button>
+    </div>
+    <div class="bpb-grid" id="bpbGrid"></div>
+  </div>
+</div>
+
+<!-- PREVIEW MODAL -->
+<div class="modal-overlay" id="previewModal">
+  <div class="preview-box" onclick="event.stopPropagation()">
+    <div class="preview-header">
+      <h3>▶ Preview do Fluxo</h3>
+      <button onclick="togglePreview()">✕</button>
+    </div>
+    <div class="preview-phone">
+      <div class="preview-chat-header">
+        <div class="pch-avatar wa-gradient">G</div>
+        <div class="pch-info"><span>GVP BOT</span><span style="font-size:.72rem;color:#22C55E">● online</span></div>
+      </div>
+      <div class="preview-messages" id="previewMessages"></div>
+      <div class="preview-input-bar">
+        <span>Digite uma mensagem...</span>
+        <button onclick="advancePreview()">▶</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast-container" id="toastContainer"></div>
+
+<!-- FLOW LIST PANEL -->
+<div class="flow-list-overlay" id="flowListOverlay">
+  <div class="flow-list-panel" onclick="event.stopPropagation()">
+    <div class="flp-header">
+      <h3>Meus Fluxos</h3>
+      <div style="display:flex;gap:.5rem">
+        <button class="btn-primary" onclick="createNewFlow()">+ Novo Fluxo</button>
+        <button onclick="closeFlowList()">✕</button>
+      </div>
+    </div>
+    <div class="flp-list" id="flpList"></div>
+  </div>
+</div>
+
+<script src="js/main.js"></script>
+<script src="js/flowbuilder.js"></script>
+</body>
+</html>
