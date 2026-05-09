@@ -272,7 +272,20 @@
       const empresa  = document.getElementById('empresa').value.trim();
       const segmento = document.getElementById('segmento').value;
 
+      // Timeout de 10 segundos
+      const timeout = setTimeout(() => {
+        btn.classList.remove('loading');
+        btn.disabled = false;
+        document.getElementById('formError').textContent = '⏱️ Tempo esgotado. Verifique sua conexão e tente novamente.';
+      }, 10000);
+
       try {
+        console.log('Tentando cadastrar:', email);
+
+        if (typeof _sb === 'undefined') {
+          throw new Error('Supabase não carregou. Recarregue a página.');
+        }
+
         const { data, error } = await _sb.auth.signUp({
           email,
           password: senha,
@@ -281,22 +294,25 @@
           }
         });
 
+        clearTimeout(timeout);
+        console.log('Resultado:', data, error);
+
         if (error) {
           btn.classList.remove('loading');
           btn.disabled = false;
           const msg = error.message.includes('already') ? 'Este e-mail já está cadastrado.' : error.message;
-          document.getElementById('formError').textContent = msg;
+          document.getElementById('formError').textContent = '❌ ' + msg;
           return;
         }
 
-        // O trigger do Supabase cria o perfil automaticamente
-        // Vai direto para o dashboard!
         window.location.href = 'dashboard.html';
 
       } catch (err) {
+        clearTimeout(timeout);
         btn.classList.remove('loading');
         btn.disabled = false;
-        document.getElementById('formError').textContent = 'Erro: ' + err.message;
+        console.error('Erro cadastro:', err);
+        document.getElementById('formError').textContent = '❌ Erro: ' + err.message;
       }
     }
   </script>
