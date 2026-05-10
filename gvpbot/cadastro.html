@@ -184,8 +184,6 @@
     </div>
   </div>
 
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
-  <script src="js/supabase-config.js"></script>
   <script>
     let currentStep = 1;
     let selectedPlan = 'pro';
@@ -274,30 +272,13 @@
       const empresa  = document.getElementById('empresa').value.trim();
       const segmento = document.getElementById('segmento').value;
 
-      // Timeout de 10 segundos
-      const timeout = setTimeout(() => {
-        btn.classList.remove('loading');
-        btn.disabled = false;
-        document.getElementById('formError').textContent = '⏱️ Tempo esgotado. Verifique sua conexão e tente novamente.';
-      }, 10000);
-
       try {
-        console.log('Tentando cadastrar:', email);
-
-        if (typeof _sb === 'undefined') {
-          throw new Error('Supabase não carregou. Recarregue a página.');
-        }
-
-        const { data, error } = await _sb.auth.signUp({
+        const sb = await _getSb();
+        const { data, error } = await sb.auth.signUp({
           email,
           password: senha,
-          options: {
-            data: { nome, telefone: tel, empresa, segmento, plano: selectedPlan }
-          }
+          options: { data: { nome, telefone: tel, empresa, segmento, plano: selectedPlan } }
         });
-
-        clearTimeout(timeout);
-        console.log('Resultado:', data, error);
 
         if (error) {
           btn.classList.remove('loading');
@@ -310,10 +291,8 @@
         window.location.href = 'dashboard.html';
 
       } catch (err) {
-        clearTimeout(timeout);
         btn.classList.remove('loading');
         btn.disabled = false;
-        console.error('Erro cadastro:', err);
         document.getElementById('formError').textContent = '❌ Erro: ' + err.message;
       }
     }
