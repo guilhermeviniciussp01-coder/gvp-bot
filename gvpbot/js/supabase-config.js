@@ -1,12 +1,15 @@
 // ============================================================
 // SUPABASE CONFIG — GVP BOT
 // ============================================================
+// Carrega o CDN do Supabase automaticamente se não estiver carregado
+if (!window.supabase) {
+  document.write('<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"><\/script>');
+}
+
 const SUPABASE_URL = 'https://ypeqnvmaenlnlxmotbrr.supabase.co';
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InlwZXFudm1hZW5sbmx4bW90YnJyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgxOTgzMzgsImV4cCI6MjA5Mzc3NDMzOH0.DX2ZX6a4cxy2dyTgxSl5HjUqaGGQmblLNUk860Zab2U';
 
-const _sbLib = window.supabase || (typeof supabase !== 'undefined' ? supabase : null);
-if (!_sbLib) { console.error('ERRO: Supabase não carregou!'); }
-const _sb = _sbLib.createClient(SUPABASE_URL, SUPABASE_KEY);
+const _sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
 // ── AUTH ────────────────────────────────────────────────────
 async function requireAuth() {
